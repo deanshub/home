@@ -23,7 +23,7 @@
   }
 }
 
-localhost{
+localhost, handle {
     tls internal
     respond "Hello, world!"
 }
