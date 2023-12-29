@@ -1,6 +1,8 @@
 version: "3"
+networks:
+  caddy:
+    external: true
 services:
-
   homeassistant:
     restart: unless-stopped
     container_name: homeassistant
@@ -40,6 +42,8 @@ services:
       - /media/external/caddy_config/:/config/
     env_file:
       - ./caddy/.env
+    networks:
+      - caddy
 
   watchtower:
     restart: unless-stopped
