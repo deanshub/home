@@ -18,6 +18,12 @@ docker-compose up -d
 
 ## TODOS
 
+### compose
+
+- add mqtt
+- add watchtower
+- add git server
+
 ### downloader
 
 - remove git update
