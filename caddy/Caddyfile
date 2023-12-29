@@ -2,12 +2,19 @@
   tls {
     dns godaddy {env.GODADDY_TOKEN}
   }
-}
 
-test.home.shubapp.com {
-  respond "Hello, world!"
-}
+  @test host test.home.shubapp.com 
+  handle @test {
+    respond "Hello, world!"
+  }
 
-ha.home.shubapp.com {
-  reverse_proxy localhost:8123
+  @ha host ha.home.shubapp.com
+  handle @ha {
+    reverse_proxy localhost:8123
+  }
+
+  @caddy host caddy.home.shubapp.com
+  handle @caddy {
+    reverse_proxy localhost:2019
+  }
 }
