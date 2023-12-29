@@ -28,6 +28,7 @@ services:
     # image: caddy:stable
     build: ./caddy
     restart: unless-stopped
+    container_name: caddy
     ports:
       - "80:80"
       - "443:443"
@@ -35,14 +36,15 @@ services:
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       # - ./site:/srv
-      # - caddy_data:/data
       - /media/external/caddy_data/:/data/
-      # - caddy_config:/config
       - /media/external/caddy_config/:/config/
     env_file:
       - ./caddy/.env
-volumes:
-  # caddy_data: /media/external/caddy_data
-  caddy_data:
-  # caddy_config: /media/external/caddy_config
-  caddy_config:
+
+  watchtower:
+    restart: unless-stopped
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: '--cleanup'

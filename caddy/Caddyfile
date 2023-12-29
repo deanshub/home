@@ -1,6 +1,6 @@
-*.home.shubapp.com{
+*.home.shubapp.com, 192.168.31.153.nip.io {
   tls {
-    dns godaddy {env.GODADDY_TOKEN}
+    dns godaddy {$GODADDY_TOKEN}
   }
 
   @test host test.home.shubapp.com 
@@ -23,7 +23,12 @@
   }
 }
 
-localhost, handle {
-    tls internal
+localhost {
+    # tls internal
+    respond "Hello, world!"
+}
+
+192.168.31.153 {
+    # tls internal
     respond "Hello, world!"
 }
