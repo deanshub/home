@@ -18,4 +18,8 @@ docker-compose up -d
 
 ## TODOS
 
-# downloader
+### downloader
+
+- remove git update
+- replace yarn with pnpm
+- update deps
