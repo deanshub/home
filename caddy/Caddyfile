@@ -1,0 +1,13 @@
+*.home.shubapp.com{
+  tls {
+    dns godaddy {env.GODADDY_TOKEN}
+  }
+}
+
+test.home.shubapp.com {
+  respond "Hello, world!"
+}
+
+ha.home.shubapp.com {
+  reverse_proxy localhost:8123
+}

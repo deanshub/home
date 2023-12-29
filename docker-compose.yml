@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+
+  homeassistant:
+    restart: unless-stopped
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/homeassistant-config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /media/external/library:/library
+    privileged: true
+    network_mode: host
+
+  downloader:
+    restart: unless-stopped
+    container_name: downloader
+    build: ./downloader
+    # image:
+    #environment:
+    volumes:
+      - /media/external:/media/external
+    privileged: true
+
+  caddy:
+    # image: caddy:stable
+    build: ./caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      # - ./site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    env_file:
+      - ./caddy/.env
+
+volumes:
+  caddy_data: /media/external/caddy_data
+  caddy_config: /media/external/caddy_config
