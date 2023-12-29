@@ -1,1 +1,4 @@
-.env
+*
+!caddy/*
+!.gitignore
+!docker-compose.yml
