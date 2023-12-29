@@ -3,6 +3,10 @@
     dns godaddy {env.GODADDY_TOKEN}
   }
 
+  handle {
+    respond "Hello, world!"
+  }
+
   @test host test.home.shubapp.com 
   handle @test {
     respond "Hello, world!"
