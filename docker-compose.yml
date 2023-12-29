@@ -35,8 +35,10 @@ services:
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       # - ./site:/srv
-      - caddy_data:/data
-      - caddy_config:/config
+      # - caddy_data:/data
+      - /media/external/caddy_data/:/data/
+      # - caddy_config:/config
+      - /media/external/caddy_config/:/config/
     env_file:
       - ./caddy/.env
 volumes:
