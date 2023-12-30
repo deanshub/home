@@ -55,6 +55,10 @@ services:
     env_file: ./tailscale/.env
     environment:
       - TZ=Asia/Jerusalem
+    cap_add: # Required for tailscale to work
+      - net_admin
+      - sys_module
+    command: tailscaled
     volumes:
       - /var/lib:/var/lib
       - /dev/net/tun:/dev/net/tun
