@@ -45,6 +45,20 @@ services:
     networks:
       - caddy
 
+  tailscale:
+    restart: unless-stopped
+    image: tailscale/tailscale
+    privileged: true
+    container_name: tailscale
+    hostname: vpn.home.shubapp.com
+    network_mode: host
+    env_file: ./tailscale/.env
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /var/lib:/var/lib
+      - /dev/net/tun:/dev/net/tun
+
   watchtower:
     restart: unless-stopped
     image: containrrr/watchtower
