@@ -29,6 +29,6 @@ localhost {
 }
 
 192.168.31.153 {
-    # tls internal
+    tls internal
     respond "Hello, world!"
 }
