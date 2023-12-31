@@ -44,6 +44,11 @@ services:
       - ./caddy/.env
     networks:
       - caddy
+    command:
+      - caddy
+      - run
+      - "--config"
+      - "/etc/caddy/Caddyfile"
 
   tailscale:
     restart: unless-stopped
