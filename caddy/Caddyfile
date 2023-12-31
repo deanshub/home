@@ -1,11 +1,11 @@
-*.home.shubapp.com, 192.168.31.153.nip.io {
+*.home.shubapp.com {
   tls {
     dns godaddy {$GODADDY_TOKEN}
   }
 
   @test host test.home.shubapp.com 
   handle @test {
-    respond "Hello, world!"
+    respond "test success!"
   }
 
   @ha host ha.home.shubapp.com
@@ -16,6 +16,16 @@
   @caddy host caddy.home.shubapp.com
   handle @caddy {
     reverse_proxy localhost:2019
+  }
+
+  handle {
+    respond "Hello, world!"
+  }
+}
+
+home.shubapp.com {
+  tls {
+    dns godaddy {$GODADDY_TOKEN}
   }
 
   handle {
