@@ -10,7 +10,7 @@
 
   @ha host ha.home.shubapp.com
   handle @ha {
-    reverse_proxy localhost:8123
+    reverse_proxy http://192.168.31.53:8123
   }
 
   @caddy host caddy.home.shubapp.com
@@ -31,14 +31,4 @@ home.shubapp.com {
   handle {
     respond "Hello, world!"
   }
-}
-
-localhost {
-    # tls internal
-    respond "Hello, world!"
-}
-
-192.168.31.153 {
-    tls internal
-    respond "Hello, world!"
 }
