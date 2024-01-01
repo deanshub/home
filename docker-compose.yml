@@ -69,6 +69,20 @@ services:
       - /var/lib:/var/lib
       - /dev/net/tun:/dev/net/tun
 
+  mosquitto:
+    restart: unless-stopped
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    networks:
+      - caddy
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/mosquitto:/mosquitto
+    ports:
+      - published: 1883
+        target: 1883
+
   filebrowser:
     restart: unless-stopped
     image: filebrowser/filebrowser:s6
@@ -86,6 +100,99 @@ services:
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
       - /media/external:/srv
+  
+  transmission:
+    restart: unless-stopped
+    container_name: transmission
+    image: linuxserver/transmission
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/library/downloads:/downloads
+      - /media/external/configs/transmission:/config
+
+  jackett:
+    restart: unless-stopped
+    networks:
+      - caddy
+    image: linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/jackett:/config
+
+  sonarr:
+    restart: unless-stopped
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/sonarr:/config
+      - /media/external/library/tv:/tv
+      - /media/external/library/downloads:/downloads
+
+  radarr:
+    restart: unless-stopped
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/radarr:/config
+      - /media/external/library/movies:/movies
+      - /media/external/library/downloads:/downloads
+
+  bazarr:
+    restart: unless-stopped
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/bazarr:/config
+      - /media/external/library/movies:/movies
+      - /media/external/library/tv:/tv
+
+  jellyfin:
+    restart: unless-stopped
+    image: linuxserver/jellyfin
+    container_name: jellyfin
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/jellyfin:/config
+      - /media/external/library/tv:/data/tvshows
+      - /media/external/library/movies:/data/movies
+      - type: tmpfs
+        target: /tmp-transcoding
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
 
   watchtower:
     restart: unless-stopped

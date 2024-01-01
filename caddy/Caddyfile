@@ -13,15 +13,45 @@
     reverse_proxy http://192.168.31.153:8123
   }
 
+  @files host files.home.shubapp.com
+  handle @files {
+    reverse_proxy filebrowser:80
+  }
+
+  @torrent host torrent.home.shubapp.com
+  handle @torrent {
+    reverse_proxy transmission:9091
+  }
+
+  @jackett host jackett.home.shubapp.com
+  handle @jackett {
+    reverse_proxy jackett:9117
+  }
+
+  @sonarr host sonarr.home.shubapp.com
+  handle @sonarr {
+    reverse_proxy sonarr:8989
+  }
+
+  @radarr host radarr.home.shubapp.com
+  handle @radarr {
+    reverse_proxy radarr:7878
+  }
+
+  @bazarr host bazarr.home.shubapp.com
+  handle @bazarr {
+    reverse_proxy bazarr:6767
+  }
+
+  @jellyfin host jellyfin.home.shubapp.com
+  handle @jellyfin {
+    reverse_proxy jellyfin:8096
+  }
+
   @caddy host caddy.home.shubapp.com
   handle @caddy {
     request_header Host "localhost:2019"
     reverse_proxy http://localhost:2019
-  }
-
-  @files host files.home.shubapp.com
-  handle @files {
-    reverse_proxy filebrowser:80
   }
 
   handle {
