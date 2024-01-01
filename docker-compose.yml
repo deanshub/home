@@ -44,6 +44,8 @@ services:
       - ./caddy/.env
     networks:
       - caddy
+    environment:
+      - CADDY_INGRESS_NETWORKS=caddy
     command:
       - caddy
       - run
