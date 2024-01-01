@@ -1,5 +1,6 @@
 *
 !caddy/
+!home-assistant/
 !.gitignore
 !docker-compose.yml
 !README.md

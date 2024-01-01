@@ -2,6 +2,7 @@ version: "3"
 networks:
   caddy:
     external: true
+
 services:
   homeassistant:
     restart: unless-stopped
@@ -11,6 +12,7 @@ services:
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/homeassistant-config:/config
+      # - ./home-assistant/configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
       - /media/external/library:/library
     privileged: true
@@ -44,8 +46,6 @@ services:
       - ./caddy/.env
     networks:
       - caddy
-    environment:
-      - CADDY_INGRESS_NETWORKS=caddy
     command:
       - caddy
       - run
