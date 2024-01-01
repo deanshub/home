@@ -10,12 +10,18 @@
 
   @ha host ha.home.shubapp.com
   handle @ha {
-    reverse_proxy http://192.168.31.53:8123
+    reverse_proxy http://192.168.31.153:8123
   }
 
   @caddy host caddy.home.shubapp.com
   handle @caddy {
-    reverse_proxy localhost:2019
+    request_header Host "localhost:2019"
+    reverse_proxy http://localhost:2019
+  }
+
+  @files host files.home.shubapp.com
+  handle @files {
+    reverse_proxy http://localhost:8080
   }
 
   handle {
