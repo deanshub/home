@@ -21,7 +21,7 @@
 
   @files host files.home.shubapp.com
   handle @files {
-    reverse_proxy http://localhost:8080
+    reverse_proxy filebrowser:80
   }
 
   handle {
