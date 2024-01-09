@@ -88,7 +88,7 @@ services:
     command: >
       sh -c '
         echo "${USER}:${PASSWORD}" > passwordfile &&
-        mosquitto_passwd -U passwordfile ||
+        mosquitto_passwd -U passwordfile &&
         mosquitto -c /mosquitto/config/mosquitto.conf
       '
 
