@@ -84,7 +84,7 @@ services:
         target: 1883
     env_file:
       - ./mosquitto/.env
-    command: echo %USER%:%PASSWORD% > passwordfile && mosquitto_passwd -U passwordfile ;
+    command: echo $USER:$PASSWORD > passwordfile && mosquitto_passwd -U passwordfile ; mosquitto -c /mosquitto/config/mosquitto.conf
 
   filebrowser:
     restart: unless-stopped
