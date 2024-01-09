@@ -79,12 +79,18 @@ services:
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/configs/mosquitto:/mosquitto
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
     ports:
       - published: 1883
         target: 1883
-    env_file:
-      - ./mosquitto/.env
-    command: echo $USER:$PASSWORD > passwordfile && mosquitto_passwd -U passwordfile ; mosquitto -c /mosquitto/config/mosquitto.conf
+    # env_file:
+    #   - ./mosquitto/.env
+    command: >
+      sh -c '
+        echo "${USER}:${PASSWORD}" > passwordfile &&
+        mosquitto_passwd -U passwordfile ||
+        mosquitto -c /mosquitto/config/mosquitto.conf
+      '
 
   filebrowser:
     restart: unless-stopped
