@@ -12,7 +12,7 @@ services:
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/homeassistant-config:/config
-      # - ./home-assistant/configuration.yaml:/config/configuration.yaml
+      - ./home-assistant/configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
       - /media/external/library:/library
     privileged: true
@@ -88,6 +88,7 @@ services:
     command: >
       sh -c '
         echo "${USER}:${PASSWORD}" > passwordfile &&
+        chmod 0700 passwordfile &&
         mosquitto_passwd -U passwordfile &&
         mosquitto -c /mosquitto/config/mosquitto.conf
       '
@@ -109,7 +110,7 @@ services:
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
       - /media/external:/srv
-  
+
   transmission:
     restart: unless-stopped
     container_name: transmission
@@ -209,4 +210,4 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: '--cleanup'
+    command: "--cleanup"
