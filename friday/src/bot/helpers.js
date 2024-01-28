@@ -5,6 +5,10 @@ export function isAdmin(ctx) {
   return ADMINS.includes(ctx.from.id);
 }
 
+export function getFirstAdmin() {
+  return ADMINS[0];
+}
+
 export function isAuthorized(ctx) {
   const now = new Date();
   // now is between 8am and 8pm

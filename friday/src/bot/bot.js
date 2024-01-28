@@ -43,5 +43,6 @@ export function createBot() {
   ]);
 
   bot.launch();
+
   return bot;
 }
