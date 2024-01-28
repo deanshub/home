@@ -28,6 +28,17 @@ services:
       - /media/external:/media/external
     privileged: true
 
+  friday:
+    restart: unless-stopped
+    container_name: friday
+    build: ./friday
+    # image:
+    env_file:
+      - ./friday/.env
+    volumes:
+      - /media/external:/media/external
+    privileged: true
+
   caddy:
     # image: caddy:stable
     build: ./caddy
@@ -88,7 +99,6 @@ services:
     command: >
       sh -c '
         echo "${USER}:${PASSWORD}" > passwordfile &&
-        chmod 0700 passwordfile &&
         mosquitto_passwd -U passwordfile &&
         mosquitto -c /mosquitto/config/mosquitto.conf
       '
