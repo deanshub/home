@@ -23,7 +23,6 @@ export function createBot() {
   });
 
   bot.on("callback_query", async (ctx) => {
-    console.log(ctx.callbackQuery.data);
     const [action, userId] = ctx.callbackQuery.data.split("@");
     if (action === "open") {
       await open();
