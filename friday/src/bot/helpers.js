@@ -23,7 +23,7 @@ export async function requestFromAdmin(ctx, action) {
   ADMINS.forEach((admin) => {
     ctx.telegram.sendMessage(
       admin,
-      `User ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name}" requested to open the door`,
+      `User ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}" requested to open the door`,
       {
         reply_markup: {
           inline_keyboard: [

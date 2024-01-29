@@ -1,6 +1,11 @@
 import { Telegraf } from "telegraf";
 import { open } from "../actions/door";
-import { isAdmin, isAuthorized, requestFromAdmin } from "./helpers";
+import {
+  getFirstAdmin,
+  isAdmin,
+  isAuthorized,
+  requestFromAdmin,
+} from "./helpers";
 
 export function createBot() {
   const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -9,9 +14,17 @@ export function createBot() {
   bot.command("open", async (ctx) => {
     console.log(ctx.from);
     try {
-      if (isAdmin(ctx) || isAuthorized(ctx)) {
+      if (isAdmin(ctx)) {
         await open();
         ctx.reply("Door open");
+      } else if (isAuthorized(ctx)) {
+        await open();
+        ctx.reply("Door open");
+        const adminId = getFirstAdmin();
+        ctx.telegram.sendMessage(
+          adminId,
+          `Door opened by ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+        );
       } else {
         await requestFromAdmin(ctx, open);
         ctx.reply("A request to open the door has been sent to the admins");
