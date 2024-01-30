@@ -12,7 +12,6 @@ export function createBot() {
   bot.command("start", (ctx) => ctx.reply("Hello"));
   bot.command("help", Telegraf.reply("You can control the door with /open"));
   bot.command("open", async (ctx) => {
-    console.log(ctx.from);
     try {
       if (isAdmin(ctx)) {
         await open();
@@ -23,7 +22,7 @@ export function createBot() {
         adminIds.forEach((adminId) => {
           ctx.telegram.sendMessage(
             adminId,
-            `Door opened by ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+            `Door opened by @${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
           );
         });
         ctx.reply("Door open");
@@ -50,7 +49,7 @@ export function createBot() {
       if (adminId !== ctx.from.id) {
         ctx.telegram.sendMessage(
           adminId,
-          `Door ${action === "open" ? "opened" : "denied"} by Admin ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+          `Door ${action === "open" ? "opened" : "denied"} by Admin @${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
         );
       }
     });
