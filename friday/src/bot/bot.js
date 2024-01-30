@@ -1,7 +1,7 @@
 import { Telegraf } from "telegraf";
 import { open } from "../actions/door";
 import {
-  getFirstAdmin,
+  getAllAdmins,
   isAdmin,
   isAuthorized,
   requestFromAdmin,
@@ -19,14 +19,16 @@ export function createBot() {
         ctx.reply("Door open");
       } else if (isAuthorized(ctx)) {
         await open();
+        const adminIds = getAllAdmins();
+        adminIds.forEach((adminId) => {
+          ctx.telegram.sendMessage(
+            adminId,
+            `Door opened by ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+          );
+        });
         ctx.reply("Door open");
-        const adminId = getFirstAdmin();
-        ctx.telegram.sendMessage(
-          adminId,
-          `Door opened by ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
-        );
       } else {
-        await requestFromAdmin(ctx, open);
+        await requestFromAdmin(ctx, "open");
         ctx.reply("A request to open the door has been sent to the admins");
       }
     } catch (e) {
@@ -44,6 +46,14 @@ export function createBot() {
     } else {
       ctx.telegram.sendMessage(userId, "Request denied");
     }
+    getAllAdmins().forEach((adminId) => {
+      if (adminId !== ctx.from.id) {
+        ctx.telegram.sendMessage(
+          adminId,
+          `Door ${action === "open" ? "opened" : "denied"} by Admin ${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+        );
+      }
+    });
     ctx.editMessageReplyMarkup();
   });
 

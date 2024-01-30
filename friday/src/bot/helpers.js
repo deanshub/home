@@ -9,6 +9,10 @@ export function getFirstAdmin() {
   return ADMINS[0];
 }
 
+export function getAllAdmins() {
+  return ADMINS;
+}
+
 export function isAuthorized(ctx) {
   const now = new Date();
   // now is between 8am and 8pm
@@ -29,8 +33,8 @@ export async function requestFromAdmin(ctx, action) {
           inline_keyboard: [
             [
               {
-                text: "Open",
-                callback_data: `open@${ctx.from.id}`,
+                text: `${action.charAt(0).toUpperCase()}${action.slice(1)}`,
+                callback_data: `${action}@${ctx.from.id}`,
               },
               {
                 text: "Nope",
