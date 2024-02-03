@@ -39,6 +39,17 @@ services:
       - /media/external:/media/external
     privileged: true
 
+  gpt-bot:
+    restart: unless-stopped
+    container_name: gpt-bot
+    build: ./gpt-bot
+    # image:
+    env_file:
+      - ./gpt-bot/.env
+    volumes:
+      - /media/external:/media/external
+    privileged: true
+
   caddy:
     # image: caddy:stable
     build: ./caddy
