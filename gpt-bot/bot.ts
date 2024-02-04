@@ -3,6 +3,10 @@ import { alternateImage, image, talk } from "./openai";
 import { message } from "telegraf/filters";
 import { getOrThrow } from "./getOrThrow";
 import { isAdmin } from "./helpers";
+import fetch from "node-fetch";
+import { createWriteStream, createReadStream } from "fs";
+import { ensureDir } from "fs-extra";
+import { join } from "path";
 
 export function createBot() {
   const bot = new Telegraf(getOrThrow("BOT_TOKEN"));
@@ -20,7 +24,8 @@ export function createBot() {
       return;
     }
     try {
-      const img = await image({ text: ctx.message.text.replace("/img", "") });
+      const text = ctx.message.text.replace("/img", "");
+      const img = await image({ text });
       if (!img) {
         throw new Error("No image generated");
       }
@@ -79,8 +84,19 @@ export function createBot() {
       const photoLink = await bot.telegram.getFileLink(
         ctx.message.photo[0].file_id,
       );
+      const date = new Date();
+      await ensureDir(join(import.meta.dir, "images"));
+      const photoPath = join(import.meta.dir, `images/${date.getTime()}.png`);
+      const response = await fetch(photoLink.toString());
+      if (!response.ok || !response.body) {
+        throw new Error("No image generated");
+      }
+      response.body.pipe(createWriteStream(photoPath));
+
+      const file = createReadStream(photoPath);
+
       const img = await alternateImage({
-        url: photoLink,
+        file,
       });
       if (!img) {
         throw new Error("No image generated");
@@ -105,3 +121,10 @@ export function createBot() {
 
   return bot;
 }
+
+// function getSize(text: string): string | undefined {
+//   const size = text.match(/(\d+)x(\d+)/);
+//   if (size) {
+//     return size[0];
+//   }
+// }

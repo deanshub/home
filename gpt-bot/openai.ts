@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { getOrThrow } from "./getOrThrow";
+import type { FsReadStream } from "openai/_shims/index.mjs";
 
 const openai = new OpenAI({
   apiKey: getOrThrow("OPENAI_API_KEY"),
@@ -26,20 +27,13 @@ export async function image({ text }: { text: string }) {
   return img.data[0].url;
 }
 
-export async function alternateImage({ url }: { url: URL }) {
-  const file = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "image/png",
-      responseType: "stream",
-    },
-  });
-
+export async function alternateImage({ file }: { file: FsReadStream }) {
   const img = await openai.images.createVariation({
     image: file,
+    // model: "dall-e-2",
     // model: "dall-e-3",
-    size: "1024x1024",
-    n: 1,
+    // size: "1024x1024",
+    // n: 1,
   });
   return img.data[0].url;
 }
