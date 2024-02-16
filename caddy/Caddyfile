@@ -3,7 +3,7 @@
     dns godaddy {$GODADDY_TOKEN}
   }
 
-  @test host test.home.shubapp.com 
+  @test host test.home.shubapp.com
   handle @test {
     respond "test success!"
   }
@@ -52,6 +52,21 @@
   handle @caddy {
     request_header Host "localhost:2019"
     reverse_proxy http://localhost:2019
+  }
+
+  @apps host apps.home.shubapp.com
+  handle @apps {
+    root /apps/ /media/external/auto-git/apps
+    @html {
+        file {
+            try_files {path} {file} {path}/index.html {file}/inde.html /index.html
+        }
+    }
+    route @html {
+        file_server
+    }
+
+    cgi /apps/* /media/external/auto-git/apps/{file}/dist/{file}
   }
 
   handle {

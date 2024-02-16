@@ -39,6 +39,16 @@ services:
       - /media/external:/media/external
     privileged: true
 
+  auto-git:
+    restart: unless-stopped
+    container_name: auto-git
+    build: ./auto-git
+    # image:
+    volumes:
+      - /media/external/auto-git/repos:/repos
+      - /media/external/auto-git/apps:/apps
+    privileged: true
+
   gpt-bot:
     restart: unless-stopped
     container_name: gpt-bot
