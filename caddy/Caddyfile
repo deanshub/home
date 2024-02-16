@@ -60,7 +60,7 @@
 
   @apps host apps.home.shubapp.com
   handle @apps {
-    root / /apps
+    root /* /apps/
     @html {
         file {
             try_files {path} {file} {path}/index.html {file}/inde.html /index.html
