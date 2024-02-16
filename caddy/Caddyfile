@@ -1,3 +1,7 @@
+{
+    order cgi before respond
+}
+
 *.home.shubapp.com {
   tls {
     dns godaddy {$GODADDY_TOKEN}
