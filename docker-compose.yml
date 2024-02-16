@@ -44,6 +44,8 @@ services:
     container_name: auto-git
     build: ./auto-git
     # image:
+    env_file:
+      - ./auto-git/.env
     volumes:
       - /media/external/auto-git/repos:/repos
       - /media/external/auto-git/apps:/apps
