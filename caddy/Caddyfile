@@ -69,6 +69,11 @@
     cgi /apps/* /media/external/auto-git/apps/{file}/dist/{file}
   }
 
+  @git host git.home.shubapp.com
+  handle @git {
+    reverse_proxy http://auto-git:7005
+  }
+
   handle {
     respond "Hello, world!"
   }

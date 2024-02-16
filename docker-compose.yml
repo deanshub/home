@@ -46,6 +46,8 @@ services:
     # image:
     env_file:
       - ./auto-git/.env
+    ports:
+      - 7005:7005
     volumes:
       - /media/external/auto-git/repos:/repos
       - /media/external/auto-git/apps:/apps
