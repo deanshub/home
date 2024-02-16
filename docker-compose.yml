@@ -41,6 +41,7 @@ services:
 
   auto-git:
     restart: unless-stopped
+    user: root
     container_name: auto-git
     build: ./auto-git
     # image:
