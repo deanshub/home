@@ -60,7 +60,7 @@
 
   @apps host apps.home.shubapp.com
   handle @apps {
-    root / /media/external/auto-git/apps
+    root / /apps
     @html {
         file {
             try_files {path} {file} {path}/index.html {file}/inde.html /index.html
@@ -70,7 +70,7 @@
         file_server
     }
 
-    cgi /* /media/external/auto-git/apps/{file}/dist/{file}
+    cgi /* /apps/{file}/dist/{file}
   }
 
   @git host git.home.shubapp.com

@@ -80,6 +80,7 @@ services:
       # - ./site:/srv
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
+      - /media/external/auto-git/apps/:/apps/
     env_file:
       - ./caddy/.env
     networks:
