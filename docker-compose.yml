@@ -51,6 +51,8 @@ services:
     volumes:
       - /media/external/auto-git/repos:/repos
       - /media/external/auto-git/apps:/apps
+    networks:
+      - caddy
     privileged: true
 
   gpt-bot:
