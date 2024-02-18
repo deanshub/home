@@ -148,6 +148,7 @@ services:
       - /media/external/configs/filebrowser/settings:/config
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
       - /media/external:/srv
 
   transmission:
@@ -162,6 +163,7 @@ services:
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
       - /media/external/configs/transmission:/config
 
   jackett:
@@ -191,6 +193,7 @@ services:
       - /media/external/configs/sonarr:/config
       - /media/external/library/tv:/tv
       - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
 
   radarr:
     restart: unless-stopped
@@ -206,6 +209,7 @@ services:
       - /media/external/configs/radarr:/config
       - /media/external/library/movies:/movies
       - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
 
   bazarr:
     restart: unless-stopped

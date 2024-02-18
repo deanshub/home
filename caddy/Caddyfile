@@ -67,7 +67,7 @@
         }
     }
     route @html {
-        file_server
+        file_server browse
     }
 
     cgi /* /apps/{file}/dist/{file}
