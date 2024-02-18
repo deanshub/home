@@ -180,7 +180,9 @@ services:
       - /media/external/configs/jackett:/config
 
   flaresolverr:
-    # DockerHub mirror flaresolverr/flaresolverr:latest
+    restart: unless-stopped
+    networks:
+      - caddy
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
     environment:
@@ -190,7 +192,6 @@ services:
       - TZ=Europe/London
     ports:
       - "${PORT:-8191}:8191"
-    restart: unless-stopped
 
   sonarr:
     restart: unless-stopped
