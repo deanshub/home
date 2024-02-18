@@ -32,6 +32,11 @@
     reverse_proxy jackett:9117
   }
 
+  @flaresolverr host flaresolverr.home.shubapp.com
+  handle @flaresolverr {
+    reverse_proxy jackett:8191
+  }
+
   @sonarr host sonarr.home.shubapp.com
   handle @sonarr {
     reverse_proxy sonarr:8989
