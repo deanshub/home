@@ -39,6 +39,16 @@ services:
       - /media/external:/media/external
     privileged: true
 
+  shopping-bot:
+    restart: unless-stopped
+    container_name: shopping-bot
+    image: ghcr.io/deanshub/shopping-bot:main
+    env_file:
+      - ./shopping-bot/.env
+    volumes:
+      - /media/external:/media/external
+    privileged: true
+
   auto-git:
     restart: unless-stopped
     user: root
