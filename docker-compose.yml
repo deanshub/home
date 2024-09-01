@@ -21,11 +21,13 @@ services:
   downloader:
     restart: unless-stopped
     container_name: downloader
-    build: ./downloader
-    # image:
-    #environment:
+    # build: ./downloader
+    image: ghcr.io/deanshub/downloader:master
+    env_file:
+      - ./downloader/.env
     volumes:
       - /media/external:/media/external
+      - /media/external2:/media/external2
     privileged: true
 
   friday:
