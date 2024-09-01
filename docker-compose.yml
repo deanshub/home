@@ -71,8 +71,8 @@ services:
   gpt-bot:
     restart: unless-stopped
     container_name: gpt-bot
-    build: ./gpt-bot
-    # image:
+    # build: ./gpt-bot
+    image: ghcr.io/deanshub/gpt-bot:main
     env_file:
       - ./gpt-bot/.env
     volumes:
@@ -161,7 +161,7 @@ services:
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
       - /media/external2/library/downloads:/downloads2
-      - /media/external:/srv
+      - /media:/srv
 
   transmission:
     restart: unless-stopped
