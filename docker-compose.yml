@@ -76,7 +76,7 @@ services:
     env_file:
       - ./gpt-bot/.env
     volumes:
-      - /media/external:/media/external
+      - /media/external2:/media/external2
     privileged: true
 
   caddy:
