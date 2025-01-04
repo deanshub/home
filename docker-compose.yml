@@ -30,6 +30,15 @@ services:
       - /media/external2:/media/external2
     privileged: true
 
+  telegram-bot-api:
+    image: aiogram/telegram-bot-api:latest
+    env_file:
+      - ./telegram-bot-api/.env
+    volumes:
+      - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
+    ports:
+      - "8081:8081"
+
   friday:
     restart: unless-stopped
     container_name: friday
@@ -261,8 +270,10 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Jerusalem
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.home.shubapp.com
     volumes:
       - /media/external/configs/jellyfin:/config
+      - /media/external/cache/jellyfin:/cache
       - /media/external/library/tv:/data/tvshows
       - /media/external/library/movies:/data/movies
       - type: tmpfs
