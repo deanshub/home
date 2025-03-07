@@ -23,6 +23,10 @@ services:
     container_name: downloader
     # build: ./downloader
     image: ghcr.io/deanshub/downloader:master
+    depends_on:
+      telegram-bot-api:
+        condition: service_healthy
+        restart: true
     env_file:
       - ./downloader/.env
     volumes:
