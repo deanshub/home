@@ -24,9 +24,7 @@ services:
     # build: ./downloader
     image: ghcr.io/deanshub/downloader:master
     depends_on:
-      telegram-bot-api:
-        condition: service_healthy
-        restart: true
+      - telegram-bot-api
     env_file:
       - ./downloader/.env
     volumes:
@@ -42,12 +40,6 @@ services:
       - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
     ports:
       - "8081:8081"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081"]
-      interval: 30s
-      retries: 5
-      timeout: 10s
-      start_period: 60s
 
   friday:
     restart: unless-stopped
