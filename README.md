@@ -16,16 +16,30 @@ docker-compose build
 docker-compose up -d
 ```
 
-## TODOS
+---
 
-### compose
+## **Automatic Refresh with `update-repo.sh`**
 
-- add mqtt
-- add watchtower
-- add git server
+### **Purpose**
 
-### downloader
+This script pulls the latest changes from Git and restarts the Docker services.
 
-- remove git update
-- replace yarn with pnpm
-- update deps
+### **Usage**
+
+Run manually:
+
+```sh
+./update-repo.sh
+```
+
+Schedule it with **cron** (e.g., run at 9 AM and 9 PM daily):
+
+```sh
+crontab -e
+```
+
+Add the following line:
+
+```sh
+0 4,16 * * * /home/dean/dev/home/update-repo.sh
+```
