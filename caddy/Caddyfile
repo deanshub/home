@@ -93,7 +93,6 @@ home.shubapp.com {
     dns godaddy {$GODADDY_TOKEN}
   }
 
-  handle {
-    respond "Hello, world!"
-  }
+  root * ./index.html
+  file_server
 }
