@@ -1,0 +1,5 @@
+- hosts: home_lab
+  become: yes
+  roles:
+    - network
+    - docker

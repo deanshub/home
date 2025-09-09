@@ -1,0 +1,32 @@
+- name: Install prerequisite packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+    update_cache: yes
+
+- name: Add Docker's official GPG key
+  apt_key:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: Install Docker engine
+  apt:
+    name: docker-ce
+    state: present
+    update_cache: yes
+
+- name: Start and enable Docker service
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Install Docker Compose binary
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
