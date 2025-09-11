@@ -21,7 +21,6 @@ services:
   downloader:
     restart: unless-stopped
     container_name: downloader
-    # build: ./downloader
     image: ghcr.io/deanshub/downloader:master
     depends_on:
       - telegram-bot-api
@@ -62,27 +61,26 @@ services:
       - /media/external:/media/external
     privileged: true
 
-  auto-git:
-    restart: unless-stopped
-    user: root
-    container_name: auto-git
-    build: ./auto-git
-    # image:
-    env_file:
-      - ./auto-git/.env
-    ports:
-      - 7005:7005
-    volumes:
-      - /media/external/auto-git/repos:/repos
-      - /media/external/auto-git/apps:/apps
-    networks:
-      - caddy
-    privileged: true
+  # auto-git:
+  #   restart: unless-stopped
+  #   user: root
+  #   container_name: auto-git
+  #   build: ./auto-git
+  #   # image:
+  #   env_file:
+  #     - ./auto-git/.env
+  #   ports:
+  #     - 7005:7005
+  #   volumes:
+  #     - /media/external/auto-git/repos:/repos
+  #     - /media/external/auto-git/apps:/apps
+  #   networks:
+  #     - caddy
+  #   privileged: true
 
   gpt-bot:
     restart: unless-stopped
     container_name: gpt-bot
-    # build: ./gpt-bot
     image: ghcr.io/deanshub/gpt-bot:main
     env_file:
       - ./gpt-bot/.env
