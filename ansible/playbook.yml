@@ -3,7 +3,8 @@
 
   vars_prompt:
     - name: "static_ip"
-      prompt: "Enter the static IP address you want for this host (e.g. 192.168.31.153)"
+      prompt: "Enter the static IP address you want for this host"
+      default: "192.168.31.153"
       private: no
 
   tasks:
