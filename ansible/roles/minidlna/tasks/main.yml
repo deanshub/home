@@ -1,0 +1,45 @@
+- name: Install minidlna
+  apt:
+    name: minidlna
+    state: present
+    update_cache: yes
+
+- name: Configure minidlna
+  copy:
+    dest: /etc/minidlna.conf
+    content: |
+      # Media directories
+      media_dir=A,/media/external
+      media_dir=V,/media/external
+      media_dir=P,/media/external
+      media_dir=A,/media/external2
+      media_dir=V,/media/external2
+      media_dir=P,/media/external2
+      
+      # Server settings
+      friendly_name=shub-media
+      db_dir=/var/cache/minidlna
+      log_dir=/var/log
+      
+      # Network settings
+      network_interface=
+      port=8200
+      
+      # Enable inotify for automatic rescanning
+      inotify=yes
+      
+      # Other settings
+      enable_tivo=no
+      strict_dlna=no
+      presentation_url=http://{{ ansible_default_ipv4.address }}:8200/
+    backup: yes
+
+- name: Start and enable minidlna service
+  systemd:
+    name: minidlna
+    enabled: yes
+    state: started
+
+- name: Force initial scan
+  command: minidlnad -R
+  ignore_errors: yes
