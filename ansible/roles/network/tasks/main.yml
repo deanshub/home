@@ -2,6 +2,13 @@
   shell: ip route | grep default | awk '{print $5}' | head -1
   register: network_interface
 
+- name: Get current gateway
+  shell: ip route | grep default | awk '{print $3}' | head -1
+  register: current_gateway
+
+- name: Remove existing netplan files
+  shell: rm -f /etc/netplan/*.yaml /etc/netplan/*.yml
+
 - name: Configure static IP with netplan
   copy:
     dest: /etc/netplan/01-netcfg.yml
@@ -11,9 +18,10 @@
         ethernets:
           {{ network_interface.stdout }}:
             dhcp4: no
-            addresses: [{{ static_ip }}]
-            gateway4: 192.168.31.229
+            addresses: [{{ static_ip }}/24]
+            gateway4: {{ current_gateway.stdout }}
             nameservers:
               addresses: [8.8.8.8,8.8.4.4]
+
 - name: Apply netplan
   command: netplan apply
