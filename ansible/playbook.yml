@@ -9,8 +9,8 @@
 
   vars:
     external_drives:
-      - { src: "UUID=86265-B19B", path: "/media/external" }
-      - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/external2" }
+      - { src: "UUID=8265-B19B", path: "/media/external", fstype: "exfat" }
+      - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/external2", fstype: "ntfs" }
 
   tasks:
     - name: Create mount point directories
@@ -24,7 +24,7 @@
       mount:
         path: "{{ item.path }}"
         src: "{{ item.src }}"
-        fstype: xfs
+        fstype: "{{ item.fstype }}"
         opts: defaults
         state: mounted
       loop: "{{ external_drives }}"
