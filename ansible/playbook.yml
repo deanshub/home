@@ -8,13 +8,20 @@
       private: no
 
   tasks:
-    - name: Mount external drives
-      mount:
-        path: "{{ item.path }}"
-        src: "{{ item.src }}"
-        fstype: xfs
-        opts: defaults
-        state: mounted
+    - name: Create mount point directories and mount external drives
+      block:
+        - name: Create mount point directory
+          file:
+            path: "{{ item.path }}"
+            state: directory
+            mode: '0755'
+        - name: Mount external drive
+          mount:
+            path: "{{ item.path }}"
+            src: "{{ item.src }}"
+            fstype: xfs
+            opts: defaults
+            state: mounted
       loop:
         - { src: "UUID=49F680B8-A19F-4943-85A8-E62613BED1D8", path: "/media/external" }
         - { src: "UUID=0x00c01f25", path: "/media/external2" }
