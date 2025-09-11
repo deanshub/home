@@ -1,3 +1,7 @@
+- name: Get active network interface
+  shell: ip route | grep default | awk '{print $5}' | head -1
+  register: network_interface
+
 - name: Configure static IP with netplan
   copy:
     dest: /etc/netplan/01-netcfg.yml
@@ -5,7 +9,7 @@
       network:
         version: 2
         ethernets:
-          enp194s0:
+          {{ network_interface.stdout }}:
             dhcp4: no
             addresses: [{{ static_ip }}]
             gateway4: 192.168.31.229
