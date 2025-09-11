@@ -6,6 +6,18 @@
       prompt: "Enter the static IP address you want for this host (e.g. 192.168.31.153)"
       private: no
 
+  tasks:
+    - name: Mount external drives
+      mount:
+        path: "{{ item.path }}"
+        src: "{{ item.src }}"
+        fstype: xfs
+        opts: defaults
+        state: mounted
+      loop:
+        - { src: "UUID=49F680B8-A19F-4943-85A8-E62613BED1D8", path: "/media/external" }
+        - { src: "UUID=0x00c01f25", path: "/media/external2" }
+
   roles:
     - network
     - docker
