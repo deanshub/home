@@ -25,3 +25,10 @@
 
 - name: Apply netplan
   command: netplan apply
+
+- name: Ensure DNS is configured correctly
+  copy:
+    dest: /etc/resolv.conf
+    content: |
+      nameserver 8.8.8.8
+      nameserver 8.8.4.4
