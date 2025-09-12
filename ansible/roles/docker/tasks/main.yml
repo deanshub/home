@@ -85,3 +85,4 @@
   community.docker.docker_compose_v2:
     project_src: /home/{{ username }}/dev/home
     state: present
+    detach: true
