@@ -85,18 +85,13 @@
   #   reverse_proxy http://auto-git:7005
   # }
 
+  @home host home.shubapp.com
+  handle @home {
+    root * /srv
+    file_server
+  }
+
   handle {
     respond "Hello, world!"
   }
-}
-
-home.shubapp.com {
-  tls {
-    dns godaddy {
-      api_token {$GODADDY_TOKEN}
-    }
-  }
-
-  root * /srv
-  file_server
 }
