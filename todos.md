@@ -5,12 +5,13 @@
   - [ ] (make all disks be linear lvm with single mount)
   - [ ] (enhance the ansible and the fstab)
 - work on one container at a time
-  - [ ] copy .env
-  - [ ] start it
+  - [x] copy .env
+  - [x] start it
   - [ ] (split the docker compose file so that each container has it's own)
   - [ ] (make ansible allow selecting which container to add)
   - [ ] (make a script of docker compose up with --profile or something that will start only the relevant/enabled ones)
 - [ ] fix index.html for caddy
+- [ ] move friday to typescript
 - [ ] make the beelink auto power on when power is restored
-- [ ] connect beelink to the no-power-down
+- [ ] move it downstairs - connect beelink to the no-power-down
 - [ ] (add git crypt)
