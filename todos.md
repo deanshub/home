@@ -10,7 +10,7 @@
   - [ ] (split the docker compose file so that each container has it's own)
   - [ ] (make ansible allow selecting which container to add)
   - [ ] (make a script of docker compose up with --profile or something that will start only the relevant/enabled ones)
-- [ ] fix index.html for caddy
+- [x] fix index.html for caddy
 - [ ] move friday to typescript
 - [ ] make the beelink auto power on when power is restored
 - [ ] move it downstairs - connect beelink to the no-power-down
