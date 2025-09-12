@@ -28,21 +28,11 @@
     state: present
     update_cache: yes
 
-# - name: Start and enable Docker service
-#   systemd:
-#     name: docker
-#     enabled: yes
-#     state: started
-
 - name: Add user to docker group
   user:
     name: "{{ username }}"
     groups: docker
     append: yes
-
-# - name: Create caddy network
-#   docker_network:
-#     name: caddy
 
 - name: Create required directories for docker services
   file:

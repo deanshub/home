@@ -13,6 +13,6 @@
 - [x] fix index.html for caddy
 - [x] move friday to typescript
 - [x] make the beelink auto power on when power is restored
-- [ ] auto start docker compose
+- [x] auto start docker compose
 - [ ] move it downstairs - connect beelink to the no-power-down
 - [ ] (add git crypt)
