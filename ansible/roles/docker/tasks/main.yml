@@ -68,6 +68,12 @@
     - /media/external/configs/radarr
     - /media/external/configs/bazarr
     - /media/external/configs/jellyfin
+    - /media/external/configs/jellyfin/cache
+    - /media/external/configs/jellyfin/data
+    - /media/external/configs/jellyfin/log
+    - /media/external/configs/jellyfin/data/plugins
+    - /media/external/configs/jellyfin/data/plugins/configurations
+    - /media/external/configs/jellyfin/data/transcodes
     - /media/external/cache/jellyfin
     - /media/external/library/downloads
     - /media/external/library/tv
