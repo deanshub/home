@@ -4,7 +4,9 @@
 
 *.home.shubapp.com {
   tls {
-    dns godaddy {$GODADDY_TOKEN}
+    dns godaddy {
+      api_token {$GODADDY_TOKEN}
+    }
   }
 
   @test host test.home.shubapp.com
@@ -90,7 +92,9 @@
 
 home.shubapp.com {
   tls {
-    dns godaddy {$GODADDY_TOKEN}
+    dns godaddy {
+      api_token {$GODADDY_TOKEN}
+    }
   }
 
   root * ./index.html
