@@ -102,7 +102,7 @@ services:
       # - ./site:/srv
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
-      - /media/external/auto-git/apps/:/apps/
+      # - /media/external/auto-git/apps/:/apps/
     env_file:
       - ./caddy/.env
     networks:
@@ -134,6 +134,7 @@ services:
     restart: unless-stopped
     image: eclipse-mosquitto:latest
     container_name: mosquitto
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -148,8 +149,11 @@ services:
     #   - ./mosquitto/.env
     command: >
       sh -c '
-        echo "${USER}:${PASSWORD}" > passwordfile &&
-        mosquitto_passwd -U passwordfile &&
+        mkdir -p /mosquitto/log &&
+        mkdir -p /mosquitto/data &&
+        echo "${USER}:${PASSWORD}" > /mosquitto/passwordfile &&
+        chmod 0700 /mosquitto/passwordfile &&
+        mosquitto_passwd -U /mosquitto/passwordfile &&
         mosquitto -c /mosquitto/config/mosquitto.conf
       '
 
