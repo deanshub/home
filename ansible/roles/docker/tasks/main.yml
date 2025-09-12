@@ -80,3 +80,8 @@
     - /media/external/library/movies
     - /media/external/videos
     - /media/external/library/watch
+
+- name: Start Docker Compose services
+  docker_compose:
+    project_src: /home/{{ username }}/dev/home
+    state: present
