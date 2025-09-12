@@ -13,7 +13,7 @@
   get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
-    mode: '0644'
+    mode: "0644"
 
 - name: Add Docker repository
   apt_repository:
@@ -22,7 +22,7 @@
 
 - name: Install Docker engine and compose plugin
   apt:
-    name: 
+    name:
       - docker-ce
       - docker-compose-plugin
     state: present
@@ -50,7 +50,7 @@
     state: directory
     owner: "{{ username }}"
     group: "{{ username }}"
-    mode: '0755'
+    mode: "0755"
   loop:
     - /media/external/homeassistant-config
     - /media/external/configs/telegram-bot-api
@@ -85,4 +85,4 @@
   community.docker.docker_compose_v2:
     project_src: /home/{{ username }}/dev/home
     state: present
-    detach: true
+    detached: true
