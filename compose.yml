@@ -22,8 +22,8 @@ services:
     container_name: downloader
     user: "1000:1000"
     image: ghcr.io/deanshub/downloader:master
-    depends_on:
-      - telegram-bot-api
+    # depends_on:
+    #   - telegram-bot-api
     env_file:
       - ./downloader/.env
     volumes:
@@ -31,15 +31,14 @@ services:
       - /media/external2:/media/external2
     privileged: true
 
-  telegram-bot-api:
-    image: aiogram/telegram-bot-api:latest
-    user: "1000:1000"
-    env_file:
-      - ./telegram-bot-api/.env
-    volumes:
-      - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
-    ports:
-      - "8081:8081"
+  # telegram-bot-api:
+  #   image: aiogram/telegram-bot-api:latest
+  #   env_file:
+  #     - ./telegram-bot-api/.env
+  #   volumes:
+  #     - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
+  #   ports:
+  #     - "8081:8081"
 
   friday:
     restart: unless-stopped
