@@ -103,7 +103,7 @@ services:
       - "443:443/udp"
     volumes:
       - ./caddy/:/etc/caddy/
-      # - ./site:/srv
+      - ./caddy/site:/srv
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
       # - /media/external/auto-git/apps/:/apps/

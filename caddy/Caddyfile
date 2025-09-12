@@ -97,6 +97,6 @@ home.shubapp.com {
     }
   }
 
-  root * ./index.html
+  root * /srv
   file_server
 }
