@@ -2,7 +2,7 @@
     order cgi before respond
 }
 
-*.home.shubapp.com {
+*.home.shubapp.com, home.shubapp.com {
   tls {
     dns godaddy {
       api_token {$GODADDY_TOKEN}
