@@ -18,7 +18,7 @@ services:
     network_mode: host
 
   downloader:
-    restart: unless-stopped
+    restart: on-failure:3
     container_name: downloader
     user: "1000:1000"
     image: ghcr.io/deanshub/downloader:master
@@ -222,7 +222,7 @@ services:
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Europe/London
     ports:
-      - "${PORT:-8191}:8191"
+      - "8192:8191"
 
   sonarr:
     restart: unless-stopped
