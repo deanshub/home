@@ -4,6 +4,16 @@
     state: present
     update_cache: yes
 
+- name: Stop minidlna service
+  systemd:
+    name: minidlna
+    state: stopped
+
+- name: Remove problematic art cache
+  file:
+    path: /var/cache/minidlna/art_cache
+    state: absent
+
 - name: Create minidlna cache directory
   file:
     path: /var/cache/minidlna
