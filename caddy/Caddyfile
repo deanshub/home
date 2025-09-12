@@ -4,7 +4,7 @@
 
 *.home.shubapp.com {
   tls {
-    dns godaddy {$GODADDY_TOKEN}
+    dns godaddy {env.GODADDY_TOKEN}
   }
 
   @test host test.home.shubapp.com
@@ -34,7 +34,7 @@
 
   @flaresolverr host flaresolverr.home.shubapp.com
   handle @flaresolverr {
-    reverse_proxy jackett:8191
+    reverse_proxy flaresolverr:8191
   }
 
   @sonarr host sonarr.home.shubapp.com
@@ -68,7 +68,7 @@
     root /* /apps/
     @html {
         file {
-            try_files {path} {file} {path}/index.html {file}/inde.html /index.html
+            try_files {path} {file} {path}/index.html {file}/index.html /index.html
         }
     }
     route @html {
@@ -78,10 +78,10 @@
     cgi /* /apps/{file}/dist/{file}
   }
 
-  @git host git.home.shubapp.com
-  handle @git {
-    reverse_proxy http://auto-git:7005
-  }
+  # @git host git.home.shubapp.com
+  # handle @git {
+  #   reverse_proxy http://auto-git:7005
+  # }
 
   handle {
     respond "Hello, world!"
@@ -90,7 +90,7 @@
 
 home.shubapp.com {
   tls {
-    dns godaddy {$GODADDY_TOKEN}
+    dns godaddy {env.GODADDY_TOKEN}
   }
 
   root * ./index.html
