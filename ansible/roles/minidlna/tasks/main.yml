@@ -4,31 +4,8 @@
     state: present
     update_cache: yes
 
-- name: Stop minidlna service
-  systemd:
-    name: minidlna
-    state: stopped
-
-- name: Remove problematic art cache
-  file:
-    path: /var/cache/minidlna/art_cache
-    state: absent
-
-- name: Create minidlna cache directory
-  file:
-    path: /var/cache/minidlna
-    state: directory
-    owner: minidlna
-    group: minidlna
-    mode: '0755'
-
-- name: Fix minidlna cache permissions
-  file:
-    path: /var/cache/minidlna
-    owner: minidlna
-    group: minidlna
-    recurse: yes
-    state: directory
+- name: Kill any existing minidlna processes
+  shell: pkill -f minidlnad || true
 
 - name: Configure minidlna
   copy:
@@ -59,14 +36,27 @@
       strict_dlna=no
       presentation_url=http://{{ ansible_default_ipv4.address }}:8200/
     backup: yes
-  notify: restart minidlna
 
-- name: Start and enable minidlna service
+- name: Create minidlna cache directory
+  file:
+    path: /var/cache/minidlna
+    state: directory
+    owner: minidlna
+    group: minidlna
+    mode: '0755'
+
+- name: Force rescan and rebuild database
+  command: minidlnad -R
+  
+- name: Enable minidlna service
   systemd:
     name: minidlna
     enabled: yes
-    state: started
 
-- name: Force initial scan
-  command: minidlnad -R
-  ignore_errors: yes
+- name: Add cron job for periodic rescan
+  cron:
+    name: "minidlna rescan"
+    minute: "0"
+    hour: "*/6"
+    job: "minidlnad -R"
+    user: root
