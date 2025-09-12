@@ -1,4 +1,3 @@
-version: "3"
 networks:
   caddy:
     external: true
@@ -167,7 +166,6 @@ services:
     restart: unless-stopped
     image: filebrowser/filebrowser:s6
     container_name: filebrowser
-    user: "1000:1000"
     networks:
       - caddy
     # ports:
