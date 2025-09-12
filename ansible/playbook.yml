@@ -8,7 +8,7 @@
       private: no
     - name: "username"
       prompt: "Enter your username for disk ownership"
-      default: "{{ ansible_user_id }}"
+      default: "{{ ansible_env.USER }}"
       private: no
 
   vars:
