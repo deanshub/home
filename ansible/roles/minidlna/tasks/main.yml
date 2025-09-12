@@ -4,9 +4,6 @@
     state: present
     update_cache: yes
 
-- name: Kill any existing minidlna processes
-  shell: pkill -f minidlnad || true
-
 - name: Configure minidlna
   copy:
     dest: /etc/minidlna.conf
@@ -18,19 +15,19 @@
       media_dir=A,/media/external2
       media_dir=V,/media/external2
       media_dir=P,/media/external2
-      
+
       # Server settings
       friendly_name=shub-media
       db_dir=/var/cache/minidlna
       log_dir=/var/log
-      
+
       # Network settings
       network_interface=
       port=8200
-      
+
       # Enable inotify for automatic rescanning
       inotify=yes
-      
+
       # Other settings
       enable_tivo=no
       strict_dlna=no
@@ -43,11 +40,11 @@
     state: directory
     owner: minidlna
     group: minidlna
-    mode: '0755'
+    mode: "0755"
 
 - name: Force rescan and rebuild database
   command: minidlnad -R
-  
+
 - name: Enable minidlna service
   systemd:
     name: minidlna
