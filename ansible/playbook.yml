@@ -6,6 +6,10 @@
       prompt: "Enter the static IP address you want for this host"
       default: "192.168.31.153"
       private: no
+    - name: "username"
+      prompt: "Enter your username for disk ownership"
+      default: "{{ ansible_user_id }}"
+      private: no
 
   vars:
     external_drives:
@@ -25,7 +29,7 @@
         path: "{{ item.path }}"
         src: "{{ item.src }}"
         fstype: "{{ item.fstype }}"
-        opts: defaults
+        opts: "defaults,uid={{ username }},gid={{ username }},umask=022"
         state: mounted
       loop: "{{ external_drives }}"
 
