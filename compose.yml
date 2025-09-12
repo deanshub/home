@@ -138,7 +138,6 @@ services:
     restart: unless-stopped
     image: eclipse-mosquitto:latest
     container_name: mosquitto
-    user: "1000:1000"
     networks:
       - caddy
     environment:
