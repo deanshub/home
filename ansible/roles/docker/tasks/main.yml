@@ -47,3 +47,33 @@
 - name: Create caddy network
   docker_network:
     name: caddy
+
+- name: Create required directories for docker services
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0755'
+  loop:
+    - /media/external/homeassistant-config
+    - /media/external/configs/telegram-bot-api
+    - /media/external/caddy_data
+    - /media/external/caddy_config
+    - /media/external/configs/mosquitto
+    - /media/external/configs/mosquitto/config
+    - /media/external/configs/mosquitto/data
+    - /media/external/configs/mosquitto/log
+    - /media/external/configs/filebrowser/settings
+    - /media/external/configs/filebrowser/db
+    - /media/external/configs/transmission
+    - /media/external/configs/jackett
+    - /media/external/configs/sonarr
+    - /media/external/configs/radarr
+    - /media/external/configs/bazarr
+    - /media/external/configs/jellyfin
+    - /media/external/cache/jellyfin
+    - /media/external/library/downloads
+    - /media/external/library/tv
+    - /media/external/library/movies
+    - /media/external/videos
