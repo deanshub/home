@@ -7,8 +7,8 @@ import {
   requestFromAdmin,
 } from "./helpers";
 
-export function createBot() {
-  const bot = new Telegraf(process.env.BOT_TOKEN);
+export function createBot(): Telegraf {
+  const bot = new Telegraf(process.env.BOT_TOKEN!);
   bot.command("start", (ctx) => ctx.reply("Hello"));
   bot.command("help", Telegraf.reply("You can control the door with /open"));
   bot.command("open", async (ctx) => {
@@ -22,7 +22,7 @@ export function createBot() {
         adminIds.forEach((adminId) => {
           ctx.telegram.sendMessage(
             adminId,
-            `Door opened by @${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+            `Door opened by @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
           );
         });
         ctx.reply("Door open");
@@ -37,6 +37,8 @@ export function createBot() {
   });
 
   bot.on("callback_query", async (ctx) => {
+    if (!("data" in ctx.callbackQuery)) return;
+    
     const [action, userId] = ctx.callbackQuery.data.split("@");
     if (action === "open") {
       await open();
@@ -46,14 +48,14 @@ export function createBot() {
       ctx.telegram.sendMessage(userId, "Request denied");
     }
     getAllAdmins().forEach((adminId) => {
-      if (adminId !== ctx.from.id) {
+      if (adminId !== ctx.from!.id) {
         ctx.telegram.sendMessage(
           adminId,
-          `Door ${action === "open" ? "opened" : "denied"} by Admin @${ctx.from.username} (${ctx.from.id}) "${ctx.from.first_name ?? ""} ${ctx.from.last_name ?? ""}"`,
+          `Door ${action === "open" ? "opened" : "denied"} by Admin @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
         );
       }
     });
-    ctx.editMessageReplyMarkup();
+    ctx.editMessageReplyMarkup(undefined);
   });
 
   // set up menu buttons

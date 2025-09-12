@@ -1,4 +1,4 @@
-export async function open() {
+export async function open(): Promise<void> {
   await fetch("https://ha.home.shubapp.com/api/services/lock/open", {
     method: "POST",
     headers: {

@@ -2,9 +2,10 @@
   "name": "friday",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "bun run index.js",
+    "start": "bun run index.ts",
+    "typecheck": "bunx tsc --noEmit --skipLibCheck",
     "test": ":",
     "build": ":"
   },
