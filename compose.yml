@@ -6,12 +6,11 @@ services:
   homeassistant:
     restart: unless-stopped
     container_name: homeassistant
-    user: "1000:1000"
     image: ghcr.io/home-assistant/home-assistant:stable
     environment:
       - TZ=Asia/Jerusalem
     volumes:
-      - /media/external/homeassistant-config:/config
+      - /media/external2/homeassistant-config:/config
       - ./home-assistant/configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
       - /media/external/library:/library
