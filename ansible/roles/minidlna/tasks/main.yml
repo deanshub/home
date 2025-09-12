@@ -4,6 +4,22 @@
     state: present
     update_cache: yes
 
+- name: Create minidlna cache directory
+  file:
+    path: /var/cache/minidlna
+    state: directory
+    owner: minidlna
+    group: minidlna
+    mode: '0755'
+
+- name: Fix minidlna cache permissions
+  file:
+    path: /var/cache/minidlna
+    owner: minidlna
+    group: minidlna
+    recurse: yes
+    state: directory
+
 - name: Configure minidlna
   copy:
     dest: /etc/minidlna.conf
@@ -33,6 +49,7 @@
       strict_dlna=no
       presentation_url=http://{{ ansible_default_ipv4.address }}:8200/
     backup: yes
+  notify: restart minidlna
 
 - name: Start and enable minidlna service
   systemd:
