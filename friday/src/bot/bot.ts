@@ -1,5 +1,5 @@
 import { Telegraf } from "telegraf";
-import { open } from "../actions/door";
+import { open, close } from "../actions/door";
 import {
   getAllAdmins,
   isAdmin,
@@ -7,34 +7,43 @@ import {
   requestFromAdmin,
 } from "./helpers";
 
+type DoorAction = "open" | "close";
+
+async function handleDoorCommand(ctx: any, action: DoorAction) {
+  const doorFunction = action === "open" ? open : close;
+  const actionPast = action === "open" ? "opened" : "closed";
+  
+  try {
+    if (isAdmin(ctx)) {
+      await doorFunction();
+      ctx.reply(`Door ${actionPast}`);
+    } else if (isAuthorized(ctx)) {
+      await doorFunction();
+      const adminIds = getAllAdmins();
+      adminIds.forEach((adminId) => {
+        ctx.telegram.sendMessage(
+          adminId,
+          `Door ${actionPast} by @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
+        );
+      });
+      ctx.reply(`Door ${actionPast}`);
+    } else {
+      await requestFromAdmin(ctx, action);
+      ctx.reply(`A request to ${action} the door has been sent to the admins`);
+    }
+  } catch (e) {
+    console.error(e);
+    ctx.reply(`Door couldn't be ${actionPast}`);
+  }
+}
+
 export function createBot(): Telegraf {
   const bot = new Telegraf(process.env.BOT_TOKEN!);
+
   bot.command("start", (ctx) => ctx.reply("Hello"));
-  bot.command("help", Telegraf.reply("You can control the door with /open"));
-  bot.command("open", async (ctx) => {
-    try {
-      if (isAdmin(ctx)) {
-        await open();
-        ctx.reply("Door open");
-      } else if (isAuthorized(ctx)) {
-        await open();
-        const adminIds = getAllAdmins();
-        adminIds.forEach((adminId) => {
-          ctx.telegram.sendMessage(
-            adminId,
-            `Door opened by @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
-          );
-        });
-        ctx.reply("Door open");
-      } else {
-        await requestFromAdmin(ctx, "open");
-        ctx.reply("A request to open the door has been sent to the admins");
-      }
-    } catch (e) {
-      console.error(e);
-      ctx.reply("Door couldn't be opened");
-    }
-  });
+  bot.command("help", Telegraf.reply("You can control the door with /open and /close"));
+  bot.command("open", (ctx) => handleDoorCommand(ctx, "open"));
+  bot.command("close", (ctx) => handleDoorCommand(ctx, "close"));
 
   bot.on("callback_query", async (ctx) => {
     if (!("data" in ctx.callbackQuery)) return;
@@ -44,6 +53,10 @@ export function createBot(): Telegraf {
       await open();
       ctx.answerCbQuery("Door opened");
       ctx.telegram.sendMessage(userId, "Door opened for you");
+    } else if (action === "close") {
+      await close();
+      ctx.answerCbQuery("Door closed");
+      ctx.telegram.sendMessage(userId, "Door closed for you");
     } else {
       ctx.telegram.sendMessage(userId, "Request denied");
     }
@@ -51,7 +64,7 @@ export function createBot(): Telegraf {
       if (adminId !== ctx.from!.id) {
         ctx.telegram.sendMessage(
           adminId,
-          `Door ${action === "open" ? "opened" : "denied"} by Admin @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
+          `Door ${action === "open" ? "opened" : action === "close" ? "closed" : "denied"} by Admin @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
         );
       }
     });
@@ -63,6 +76,7 @@ export function createBot(): Telegraf {
     { command: "start", description: "Start the bot" },
     { command: "help", description: "Show help" },
     { command: "open", description: "Open the door" },
+    { command: "close", description: "Close the door" },
   ]);
 
   bot.launch();

@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "bun run index.ts",
-    "typecheck": "bunx tsc --noEmit --skipLibCheck",
+    "typecheck": "bunx tsc --noEmit --skipLibCheck index.ts",
     "test": ":",
     "build": ":"
   },
