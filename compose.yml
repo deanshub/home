@@ -7,6 +7,7 @@ services:
   homeassistant:
     restart: unless-stopped
     container_name: homeassistant
+    user: "1000:1000"
     image: ghcr.io/home-assistant/home-assistant:stable
     environment:
       - TZ=Asia/Jerusalem
@@ -21,6 +22,7 @@ services:
   downloader:
     restart: unless-stopped
     container_name: downloader
+    user: "1000:1000"
     image: ghcr.io/deanshub/downloader:master
     depends_on:
       - telegram-bot-api
@@ -33,6 +35,7 @@ services:
 
   telegram-bot-api:
     image: aiogram/telegram-bot-api:latest
+    user: "1000:1000"
     env_file:
       - ./telegram-bot-api/.env
     volumes:
@@ -43,6 +46,7 @@ services:
   friday:
     restart: unless-stopped
     container_name: friday
+    user: "1000:1000"
     build: ./friday
     # image:
     env_file:
@@ -54,6 +58,7 @@ services:
   shopping-bot:
     restart: unless-stopped
     container_name: shopping-bot
+    user: "1000:1000"
     image: ghcr.io/deanshub/shopping-bot:main
     env_file:
       - ./shopping-bot/.env
@@ -93,6 +98,7 @@ services:
     build: ./caddy
     restart: unless-stopped
     container_name: caddy
+    user: "1000:1000"
     ports:
       - "80:80"
       - "443:443"
@@ -161,6 +167,7 @@ services:
     restart: unless-stopped
     image: filebrowser/filebrowser:s6
     container_name: filebrowser
+    user: "1000:1000"
     networks:
       - caddy
     # ports:
@@ -179,6 +186,7 @@ services:
   transmission:
     restart: unless-stopped
     container_name: transmission
+    user: "1000:1000"
     image: linuxserver/transmission
     networks:
       - caddy
@@ -197,6 +205,7 @@ services:
       - caddy
     image: linuxserver/jackett:latest
     container_name: jackett
+    user: "1000:1000"
     environment:
       - PUID=1000
       - PGID=1000
@@ -222,6 +231,7 @@ services:
     restart: unless-stopped
     image: linuxserver/sonarr:latest
     container_name: sonarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -238,6 +248,7 @@ services:
     restart: unless-stopped
     image: linuxserver/radarr:latest
     container_name: radarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -254,6 +265,7 @@ services:
     restart: unless-stopped
     image: linuxserver/bazarr:latest
     container_name: bazarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -269,6 +281,7 @@ services:
     restart: unless-stopped
     image: linuxserver/jellyfin
     container_name: jellyfin
+    user: "1000:1000"
     network_mode: host
     environment:
       - PUID=1000
