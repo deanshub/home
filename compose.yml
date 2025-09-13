@@ -13,7 +13,8 @@ services:
       - /media/external2/homeassistant-config:/config
       - ./home-assistant/configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
-      - /media/external/library:/library
+      - /media/external2/library:/library
+      - /run/dbus:/run/dbus:ro
     privileged: true
     network_mode: host
 
