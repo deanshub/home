@@ -134,6 +134,7 @@ services:
       - /dev/net/tun:/dev/net/tun
 
   mosquitto:
+    user: "1000:1000"
     restart: unless-stopped
     image: eclipse-mosquitto:latest
     container_name: mosquitto
