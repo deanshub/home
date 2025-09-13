@@ -29,7 +29,7 @@
         path: "{{ item.path }}"
         src: "{{ item.src }}"
         fstype: "{{ item.fstype }}"
-        opts: "defaults,uid={{ username }},gid={{ username }},umask=022"
+        opts: "defaults,gid=docker,umask=002"
         state: mounted
       loop: "{{ external_drives }}"
 
