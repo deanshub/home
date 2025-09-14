@@ -96,7 +96,6 @@ services:
     build: ./caddy
     restart: unless-stopped
     container_name: caddy
-    user: "1000:1000"
     ports:
       - "80:80"
       - "443:443"

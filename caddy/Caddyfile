@@ -4,9 +4,7 @@
 
 *.home.shubapp.com, home.shubapp.com {
   tls {
-    dns godaddy {
-      api_token {$GODADDY_TOKEN}
-    }
+    dns cloudflare {env.CF_API_TOKEN}
   }
 
   @test host test.home.shubapp.com
