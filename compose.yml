@@ -21,7 +21,6 @@ services:
   downloader:
     restart: on-failure:3
     container_name: downloader
-    user: "1000:1000"
     image: ghcr.io/deanshub/downloader:master
     # depends_on:
     #   - telegram-bot-api
