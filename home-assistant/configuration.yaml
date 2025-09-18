@@ -8,10 +8,16 @@ http:
     - 172.19.0.3
     - 0.0.0.0/0
 
-# Load frontend themes from the themes folder
-frontend:
-  themes: !include_dir_merge_named themes
+smartir:
 
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
+climate:
+  - platform: smartir
+    name: Attic AC
+    unique_id: attic_ac
+    device_code: 1340
+    controller_data: remote.attic_remote_control
+  - platform: smartir
+    name: Livingroom AC
+    unique_id: livingroom_ac
+    device_code: 1560
+    controller_data: remote.livingroom_remote_control

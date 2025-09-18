@@ -1,0 +1,39 @@
+- hosts: home_lab
+  become: yes
+
+  vars_prompt:
+    - name: "static_ip"
+      prompt: "Enter the static IP address you want for this host"
+      default: "192.168.31.153"
+      private: no
+    - name: "username"
+      prompt: "Enter your username for disk ownership"
+      default: "{{ lookup('env', 'USER') }}"
+      private: no
+
+  vars:
+    external_drives:
+      - { src: "UUID=8265-B19B", path: "/media/external", fstype: "exfat" }
+      - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/external2", fstype: "ntfs" }
+
+  tasks:
+    - name: Create mount point directories
+      file:
+        path: "{{ item.path }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ external_drives }}"
+
+    - name: Mount external drives
+      mount:
+        path: "{{ item.path }}"
+        src: "{{ item.src }}"
+        fstype: "{{ item.fstype }}"
+        opts: "defaults,gid=docker,umask=002"
+        state: mounted
+      loop: "{{ external_drives }}"
+
+  roles:
+    - network
+    - docker
+    - minidlna

@@ -1,0 +1,77 @@
+- name: Install prerequisite packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - gnupg
+    state: present
+    update_cache: yes
+
+- name: Add Docker's official GPG key
+  get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+
+- name: Add Docker repository
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Install Docker engine and compose plugin
+  apt:
+    name:
+      - docker-ce
+      - docker-compose-plugin
+    state: present
+    update_cache: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ username }}"
+    groups: docker
+    append: yes
+
+- name: Create required directories for docker services
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+  loop:
+    - /media/external/homeassistant-config
+    - /media/external/configs/telegram-bot-api
+    - /media/external/caddy_data
+    - /media/external/caddy_config
+    - /media/external/configs/mosquitto
+    - /media/external/configs/mosquitto/config
+    - /media/external/configs/mosquitto/data
+    - /media/external/configs/mosquitto/log
+    - /media/external/configs/filebrowser/settings
+    - /media/external/configs/filebrowser/db
+    - /media/external/configs/transmission
+    - /media/external/configs/jackett
+    - /media/external/configs/sonarr
+    - /media/external/configs/radarr
+    - /media/external/configs/bazarr
+    - /media/external/configs/jellyfin
+    - /media/external/configs/jellyfin/cache
+    - /media/external/configs/jellyfin/data
+    - /media/external/configs/jellyfin/log
+    - /media/external/configs/jellyfin/data/plugins
+    - /media/external/configs/jellyfin/data/plugins/configurations
+    - /media/external/configs/jellyfin/data/transcodes
+    - /media/external/cache/jellyfin
+    - /media/external/library/downloads
+    - /media/external/library/tv
+    - /media/external/library/movies
+    - /media/external/videos
+    - /media/external/library/watch
+
+- name: Start Docker Compose services
+  community.docker.docker_compose_v2:
+    project_src: /home/{{ username }}/dev/home
+    state: present

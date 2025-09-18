@@ -1,4 +1,3 @@
-version: "3"
 networks:
   caddy:
     external: true
@@ -11,20 +10,20 @@ services:
     environment:
       - TZ=Asia/Jerusalem
     volumes:
-      - /media/external/homeassistant-config:/config
+      - /media/external2/homeassistant-config:/config
       - ./home-assistant/configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
-      - /media/external/library:/library
+      - /media/external2/library:/library
+      - /run/dbus:/run/dbus:ro
     privileged: true
     network_mode: host
 
   downloader:
-    restart: unless-stopped
+    restart: on-failure:3
     container_name: downloader
-    # build: ./downloader
     image: ghcr.io/deanshub/downloader:master
-    depends_on:
-      - telegram-bot-api
+    # depends_on:
+    #   - telegram-bot-api
     env_file:
       - ./downloader/.env
     volumes:
@@ -32,18 +31,19 @@ services:
       - /media/external2:/media/external2
     privileged: true
 
-  telegram-bot-api:
-    image: aiogram/telegram-bot-api:latest
-    env_file:
-      - ./telegram-bot-api/.env
-    volumes:
-      - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
-    ports:
-      - "8081:8081"
+  # telegram-bot-api:
+  #   image: aiogram/telegram-bot-api:latest
+  #   env_file:
+  #     - ./telegram-bot-api/.env
+  #   volumes:
+  #     - /media/external/configs/telegram-bot-api:/var/lib/telegram-bot-api
+  #   ports:
+  #     - "8081:8081"
 
   friday:
     restart: unless-stopped
     container_name: friday
+    user: "1000:1000"
     build: ./friday
     # image:
     env_file:
@@ -55,6 +55,7 @@ services:
   shopping-bot:
     restart: unless-stopped
     container_name: shopping-bot
+    user: "1000:1000"
     image: ghcr.io/deanshub/shopping-bot:main
     env_file:
       - ./shopping-bot/.env
@@ -62,27 +63,26 @@ services:
       - /media/external:/media/external
     privileged: true
 
-  auto-git:
-    restart: unless-stopped
-    user: root
-    container_name: auto-git
-    build: ./auto-git
-    # image:
-    env_file:
-      - ./auto-git/.env
-    ports:
-      - 7005:7005
-    volumes:
-      - /media/external/auto-git/repos:/repos
-      - /media/external/auto-git/apps:/apps
-    networks:
-      - caddy
-    privileged: true
+  # auto-git:
+  #   restart: unless-stopped
+  #   user: root
+  #   container_name: auto-git
+  #   build: ./auto-git
+  #   # image:
+  #   env_file:
+  #     - ./auto-git/.env
+  #   ports:
+  #     - 7005:7005
+  #   volumes:
+  #     - /media/external/auto-git/repos:/repos
+  #     - /media/external/auto-git/apps:/apps
+  #   networks:
+  #     - caddy
+  #   privileged: true
 
   gpt-bot:
     restart: unless-stopped
     container_name: gpt-bot
-    # build: ./gpt-bot
     image: ghcr.io/deanshub/gpt-bot:main
     env_file:
       - ./gpt-bot/.env
@@ -101,10 +101,10 @@ services:
       - "443:443/udp"
     volumes:
       - ./caddy/:/etc/caddy/
-      # - ./site:/srv
+      - ./caddy/site:/srv
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
-      - /media/external/auto-git/apps/:/apps/
+      # - /media/external/auto-git/apps/:/apps/
     env_file:
       - ./caddy/.env
     networks:
@@ -150,8 +150,11 @@ services:
     #   - ./mosquitto/.env
     command: >
       sh -c '
-        echo "${USER}:${PASSWORD}" > passwordfile &&
-        mosquitto_passwd -U passwordfile &&
+        mkdir -p /mosquitto/log &&
+        mkdir -p /mosquitto/data &&
+        echo "${USER}:${PASSWORD}" > /mosquitto/passwordfile &&
+        chmod 0700 /mosquitto/passwordfile &&
+        mosquitto_passwd -U /mosquitto/passwordfile &&
         mosquitto -c /mosquitto/config/mosquitto.conf
       '
 
@@ -177,6 +180,7 @@ services:
   transmission:
     restart: unless-stopped
     container_name: transmission
+    user: "1000:1000"
     image: linuxserver/transmission
     networks:
       - caddy
@@ -188,6 +192,7 @@ services:
       - /media/external/library/downloads:/downloads
       - /media/external2/library/downloads:/downloads2
       - /media/external/configs/transmission:/config
+      - /media/external/library/watch:/watch
 
   jackett:
     restart: unless-stopped
@@ -195,6 +200,7 @@ services:
       - caddy
     image: linuxserver/jackett:latest
     container_name: jackett
+    user: "1000:1000"
     environment:
       - PUID=1000
       - PGID=1000
@@ -214,12 +220,13 @@ services:
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Europe/London
     ports:
-      - "${PORT:-8191}:8191"
+      - "8192:8191"
 
   sonarr:
     restart: unless-stopped
     image: linuxserver/sonarr:latest
     container_name: sonarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -236,6 +243,7 @@ services:
     restart: unless-stopped
     image: linuxserver/radarr:latest
     container_name: radarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:
@@ -252,6 +260,7 @@ services:
     restart: unless-stopped
     image: linuxserver/bazarr:latest
     container_name: bazarr
+    user: "1000:1000"
     networks:
       - caddy
     environment:

@@ -1,0 +1,18 @@
+- fstab
+  - [x] add the copy to ansible
+  - [x] make sure mounts work (properly)
+  - [ ] (make ansible show the devices and choose which to mount and where to)
+  - [ ] (make all disks be linear lvm with single mount)
+  - [ ] (enhance the ansible and the fstab)
+- work on one container at a time
+  - [x] copy .env
+  - [x] start it
+  - [ ] (split the docker compose file so that each container has it's own)
+  - [ ] (make ansible allow selecting which container to add)
+  - [ ] (make a script of docker compose up with --profile or something that will start only the relevant/enabled ones)
+- [x] fix index.html for caddy
+- [x] move friday to typescript
+- [x] make the beelink auto power on when power is restored
+- [x] auto start docker compose
+- [x] move it downstairs - connect beelink to the no-power-down
+- [ ] (add git crypt/secret)
