@@ -15,7 +15,7 @@
 
 - name: Configure static IP with netplan
   copy:
-    dest: /etc/netplan/01-netcfg.yml
+    dest: /etc/netplan/01-netcfg.yaml
     content: |
       network:
         version: 2

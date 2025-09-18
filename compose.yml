@@ -41,7 +41,7 @@ services:
   #     - "8081:8081"
 
   friday:
-    restart: unless-stopped
+    restart: on-failure:5
     container_name: friday
     user: "1000:1000"
     build: ./friday
@@ -55,7 +55,6 @@ services:
   shopping-bot:
     restart: unless-stopped
     container_name: shopping-bot
-    user: "1000:1000"
     image: ghcr.io/deanshub/shopping-bot:main
     env_file:
       - ./shopping-bot/.env
