@@ -7,7 +7,7 @@
 - work on one container at a time
   - [x] copy .env
   - [x] start it
-  - [ ] (split the docker compose file so that each container has it's own)
+  - [x] (split the docker compose file so that each container has it's own)
   - [ ] (make ansible allow selecting which container to add)
   - [ ] (make a script of docker compose up with --profile or something that will start only the relevant/enabled ones)
 - [x] fix index.html for caddy
