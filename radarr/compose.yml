@@ -18,4 +18,3 @@ services:
       - /media/external/configs/radarr:/config
       - /media/external/library/movies:/movies
       - /media/external/library/downloads:/downloads
-      - /media/external2/library/downloads:/downloads2

@@ -17,7 +17,7 @@ services:
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
     env_file:
-      - ./.env
+      - .env
     networks:
       - caddy
     command:

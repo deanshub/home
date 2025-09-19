@@ -12,9 +12,6 @@
       media_dir=A,/media/external
       media_dir=V,/media/external
       media_dir=P,/media/external
-      media_dir=A,/media/external2
-      media_dir=V,/media/external2
-      media_dir=P,/media/external2
 
       # Server settings
       friendly_name=shub-media

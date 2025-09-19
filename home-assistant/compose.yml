@@ -1,3 +1,7 @@
+networks:
+  caddy:
+    external: true
+
 services:
   homeassistant:
     restart: unless-stopped
@@ -6,10 +10,10 @@ services:
     environment:
       - TZ=Asia/Jerusalem
     volumes:
-      - /media/external2/homeassistant-config:/config
+      - /media/external/homeassistant-config:/config
       - ./configuration.yaml:/config/configuration.yaml
       - /etc/localtime:/etc/localtime:ro
-      - /media/external2/library:/library
+      - /media/external/library:/library
       - /run/dbus:/run/dbus:ro
     privileged: true
     network_mode: host
