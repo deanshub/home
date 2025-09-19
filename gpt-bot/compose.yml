@@ -1,0 +1,10 @@
+services:
+  gpt-bot:
+    restart: unless-stopped
+    container_name: gpt-bot
+    image: ghcr.io/deanshub/gpt-bot:main
+    env_file:
+      - ./.env
+    volumes:
+      - /media/external2/gpt-bot-data:/data
+    privileged: true

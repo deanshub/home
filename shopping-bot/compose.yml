@@ -1,0 +1,10 @@
+services:
+  shopping-bot:
+    restart: unless-stopped
+    container_name: shopping-bot
+    image: ghcr.io/deanshub/shopping-bot:main
+    env_file:
+      - ./.env
+    volumes:
+      - /media/external:/media/external
+    privileged: true

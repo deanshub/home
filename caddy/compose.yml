@@ -1,0 +1,27 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  caddy:
+    build: .
+    restart: unless-stopped
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - .:/etc/caddy/
+      - ./site:/srv
+      - /media/external/caddy_data/:/data/
+      - /media/external/caddy_config/:/config/
+    env_file:
+      - ./.env
+    networks:
+      - caddy
+    command:
+      - caddy
+      - run
+      - "--config"
+      - "/etc/caddy/Caddyfile"

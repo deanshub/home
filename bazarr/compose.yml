@@ -1,0 +1,20 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  bazarr:
+    restart: unless-stopped
+    image: linuxserver/bazarr:latest
+    container_name: bazarr
+    user: "1000:1000"
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/bazarr:/config
+      - /media/external/library/movies:/movies
+      - /media/external/library/tv:/tv

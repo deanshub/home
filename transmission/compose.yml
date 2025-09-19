@@ -1,0 +1,21 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  transmission:
+    restart: unless-stopped
+    container_name: transmission
+    user: "1000:1000"
+    image: linuxserver/transmission
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
+      - /media/external/configs/transmission:/config
+      - /media/external/library/watch:/watch

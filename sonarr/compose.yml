@@ -1,0 +1,21 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  sonarr:
+    restart: unless-stopped
+    image: linuxserver/sonarr:latest
+    container_name: sonarr
+    user: "1000:1000"
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/sonarr:/config
+      - /media/external/library/tv:/tv
+      - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2
