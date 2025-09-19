@@ -8,3 +8,4 @@
 !gpt-bot/
 !gpt-bot/**/*
 .env
+backups/
