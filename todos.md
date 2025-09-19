@@ -15,4 +15,4 @@
 - [x] make the beelink auto power on when power is restored
 - [x] auto start docker compose
 - [x] move it downstairs - connect beelink to the no-power-down
-- [ ] (add git crypt/secret)
+- [x] (add git crypt/secret)
