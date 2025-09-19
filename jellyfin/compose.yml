@@ -1,0 +1,26 @@
+services:
+  jellyfin:
+    restart: unless-stopped
+    image: linuxserver/jellyfin
+    container_name: jellyfin
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+      - JELLYFIN_PublishedServerUrl=https://jellyfin.home.shubapp.com
+    volumes:
+      - /media/external/configs/jellyfin:/config
+      - /media/external/cache/jellyfin:/cache
+      - /media/external/library/tv:/data/tvshows
+      - /media/external/library/movies:/data/movies
+      - /media/external/videos:/data/videos
+      - /media/external2:/data/external2
+      - /media/external3:/data/external3
+      - type: tmpfs
+        target: /tmp-transcoding
+    ports:
+      - 8096:8096
+      - 8920:8920
+      - 7359:7359/udp
+      - 1900:1900/udp

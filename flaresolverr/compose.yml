@@ -1,0 +1,18 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  flaresolverr:
+    restart: unless-stopped
+    networks:
+      - caddy
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    ports:
+      - "8192:8191"

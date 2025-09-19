@@ -72,6 +72,8 @@
     - /media/external/library/watch
 
 - name: Start Docker Compose services
-  community.docker.docker_compose_v2:
-    project_src: /home/{{ username }}/dev/home
-    state: present
+  shell: ./casa.sh up -d
+  args:
+    chdir: /home/{{ username }}/dev/home
+  become_user: "{{ username }}"
+  become: no

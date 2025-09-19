@@ -1,0 +1,21 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  radarr:
+    restart: unless-stopped
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    user: "1000:1000"
+    networks:
+      - caddy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/radarr:/config
+      - /media/external/library/movies:/movies
+      - /media/external/library/downloads:/downloads
+      - /media/external2/library/downloads:/downloads2

@@ -1,0 +1,28 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  mosquitto:
+    restart: unless-stopped
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    networks:
+      - caddy
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/configs/mosquitto:/mosquitto
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - published: 1883
+        target: 1883
+    command: >
+      sh -c '
+        mkdir -p /mosquitto/log &&
+        mkdir -p /mosquitto/data &&
+        echo "${USER}:${PASSWORD}" > /mosquitto/passwordfile &&
+        chmod 0700 /mosquitto/passwordfile &&
+        mosquitto_passwd -U /mosquitto/passwordfile &&
+        mosquitto -c /mosquitto/config/mosquitto.conf
+      '

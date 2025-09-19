@@ -1,0 +1,15 @@
+services:
+  homeassistant:
+    restart: unless-stopped
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external2/homeassistant-config:/config
+      - ./configuration.yaml:/config/configuration.yaml
+      - /etc/localtime:/etc/localtime:ro
+      - /media/external2/library:/library
+      - /run/dbus:/run/dbus:ro
+    privileged: true
+    network_mode: host
