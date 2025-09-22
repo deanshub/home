@@ -21,4 +21,4 @@
 - [ ] mount extreme sd
 - [ ] backup every 24 hours to it
 - [ ] integrate with the gate camera
-- [ ] replace jackett with Prowlarr
+- [ ] move services to services dir

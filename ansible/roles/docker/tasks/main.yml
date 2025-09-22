@@ -53,7 +53,7 @@
 #     - /media/external/configs/filebrowser/settings
 #     - /media/external/configs/filebrowser/db
 #     - /media/external/configs/transmission
-#     - /media/external/configs/jackett
+#     - /media/external/configs/prowlarr
 #     - /media/external/configs/sonarr
 #     - /media/external/configs/radarr
 #     - /media/external/configs/bazarr
