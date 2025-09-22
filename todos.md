@@ -22,4 +22,5 @@
 - [ ] backup every 24 hours to it
 - [ ] integrate with the gate camera
 - [x] replace jackett with prowlarr
+- [ ] replace bazarr
 - [ ] move services to services dir
