@@ -27,9 +27,9 @@
     reverse_proxy transmission:9091
   }
 
-  @jackett host jackett.home.shubapp.com
-  handle @jackett {
-    reverse_proxy jackett:9117
+  @prowlarr host prowlarr.home.shubapp.com
+  handle @prowlarr {
+    reverse_proxy prowlarr:9696
   }
 
   @flaresolverr host flaresolverr.home.shubapp.com

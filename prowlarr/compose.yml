@@ -3,16 +3,17 @@ networks:
     external: true
 
 services:
-  jackett:
+  prowlarr:
     restart: unless-stopped
     networks:
       - caddy
-    image: linuxserver/jackett:latest
-    container_name: jackett
-    user: "1000:1000"
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Jerusalem
+    ports:
+      - 9696:9696
     volumes:
-      - /media/external/configs/jackett:/config
+      - /media/external/configs/prowlarr:/config

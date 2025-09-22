@@ -12,7 +12,7 @@ compose_dirs=(
   "mosquitto"
   "filebrowser"
   "transmission"
-  "jackett"
+  "prowlarr"
   "flaresolverr"
   "sonarr"
   "radarr"
