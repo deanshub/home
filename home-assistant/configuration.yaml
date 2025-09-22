@@ -15,9 +15,9 @@ climate:
     name: Attic AC
     unique_id: attic_ac
     device_code: 1560
-    controller_data: remote.attic_remote_control
+    controller_data: remote.attic_rc
   - platform: smartir
     name: Livingroom AC
     unique_id: livingroom_ac
     device_code: 1340
-    controller_data: remote.livingroom_remote_control
+    controller_data: remote.livingroom_rc
