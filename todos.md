@@ -17,7 +17,6 @@
 - [x] move it downstairs - connect beelink to the no-power-down
 - [x] (add git crypt/secret)
 
-- [ ] fix Roof and livingroom AC
 - [ ] mount extreme sd
 - [ ] backup every 24 hours to it
 - [ ] integrate with the gate camera
