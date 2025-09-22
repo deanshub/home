@@ -3,13 +3,13 @@
   - [x] make sure mounts work (properly)
   - [ ] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
   - [ ] (enhance the ansible and the fstab)
+  - [ ] mount extreme sd
   - [ ] (auto backup to extreme sd)
 - work on one container at a time
   - [x] copy .env
   - [x] start it
   - [x] (split the docker compose file so that each container has it's own)
-  - [ ] (make ansible allow selecting which container to add)
-  - [ ] (make a script of docker compose up with --profile or something that will start only the relevant/enabled ones)
+  - [ ] (make ansible allow selecting which services to add to services.txt)
 - [x] fix index.html for caddy
 - [x] move friday to typescript
 - [x] make the beelink auto power on when power is restored
@@ -17,7 +17,6 @@
 - [x] move it downstairs - connect beelink to the no-power-down
 - [x] (add git crypt/secret)
 
-- [ ] mount extreme sd
-- [ ] backup every 24 hours to it
-- [ ] integrate with the gate camera
+- [ ] remove /media/external2 and /media/external3
 - [ ] move services to services dir
+- [ ] (integrate with the gate camera)
