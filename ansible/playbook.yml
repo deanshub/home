@@ -17,11 +17,6 @@
       - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/drive2", fstype: "ntfs" }
 
   tasks:
-    - name: Install mergerfs
-      apt:
-        name: mergerfs
-        state: present
-
     - name: Install bun
       shell: curl -fsSL https://bun.sh/install | bash
       args:
@@ -36,12 +31,6 @@
         mode: "0755"
       loop: "{{ external_drives }}"
 
-    - name: Create merged mount point
-      file:
-        path: "/media/external"
-        state: directory
-        mode: "0755"
-
     - name: Mount individual drives
       mount:
         path: "{{ item.path }}"
@@ -50,14 +39,6 @@
         opts: "defaults,gid=docker,umask=002"
         state: mounted
       loop: "{{ external_drives }}"
-
-    - name: Mount merged filesystem
-      mount:
-        path: "/media/external"
-        src: "/media/drive1:/media/drive2"
-        fstype: "fuse.mergerfs"
-        opts: "defaults,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=mfs"
-        state: mounted
 
   roles:
     - network
