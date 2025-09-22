@@ -1,0 +1,17 @@
+home-assistant
+downloader
+friday
+shopping-bot
+gpt-bot
+caddy
+tailscale
+mosquitto
+filebrowser
+transmission
+prowlarr
+flaresolverr
+sonarr
+radarr
+bazarr
+jellyfin
+watchtower
