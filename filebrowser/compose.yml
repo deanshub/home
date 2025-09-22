@@ -17,5 +17,4 @@ services:
       - /media/external/configs/filebrowser/settings:/config
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
-      - /media/external2/library/downloads:/downloads2
       - /media:/srv

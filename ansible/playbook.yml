@@ -13,18 +13,25 @@
 
   vars:
     external_drives:
-      - { src: "UUID=8265-B19B", path: "/media/external", fstype: "exfat" }
-      - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/external2", fstype: "ntfs" }
+      - { src: "UUID=8265-B19B", path: "/media/drive1", fstype: "exfat" }
+      - { src: "UUID=1C6CD5AE6CD582C6", path: "/media/drive2", fstype: "ntfs" }
 
   tasks:
-    - name: Create mount point directories
+    - name: Install bun
+      shell: curl -fsSL https://bun.sh/install | bash
+      args:
+        creates: /home/{{ username }}/.bun/bin/bun
+      become_user: "{{ username }}"
+      become: no
+
+    - name: Create individual drive mount points
       file:
         path: "{{ item.path }}"
         state: directory
         mode: "0755"
       loop: "{{ external_drives }}"
 
-    - name: Mount external drives
+    - name: Mount individual drives
       mount:
         path: "{{ item.path }}"
         src: "{{ item.src }}"

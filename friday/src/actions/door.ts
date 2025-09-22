@@ -1,18 +1,9 @@
-async function callDoorService(service: string): Promise<void> {
-  await fetch(`https://ha.home.shubapp.com/api/services/lock/${service}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.HA_TOKEN}`,
-    },
-    body: JSON.stringify({ entity_id: "lock.main" }),
-  });
-}
+import { callHAService } from "./ha-service";
 
 export async function open(): Promise<void> {
-  await callDoorService("open");
+  await callHAService("lock", "open", "lock.main");
 }
 
 export async function close(): Promise<void> {
-  await callDoorService("lock");
+  await callHAService("lock", "lock", "lock.main");
 }

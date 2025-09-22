@@ -1,9 +1,9 @@
 - fstab
   - [x] add the copy to ansible
   - [x] make sure mounts work (properly)
-  - [ ] (make ansible show the devices and choose which to mount and where to)
-  - [ ] (make all disks be linear lvm with single mount)
+  - [ ] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
   - [ ] (enhance the ansible and the fstab)
+  - [ ] (auto backup to extreme sd)
 - work on one container at a time
   - [x] copy .env
   - [x] start it
@@ -16,3 +16,9 @@
 - [x] auto start docker compose
 - [x] move it downstairs - connect beelink to the no-power-down
 - [x] (add git crypt/secret)
+
+- [ ] fix Roof and livingroom AC
+- [ ] mount extreme sd
+- [ ] backup every 24 hours to it
+- [ ] integrate with the gate camera
+- [ ] replace jackett with Prowlarr

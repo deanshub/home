@@ -1,5 +1,6 @@
 import { Telegraf } from "telegraf";
 import { open, close } from "../actions/door";
+import { openGate } from "../actions/gate";
 import {
   getAllAdmins,
   isAdmin,
@@ -37,13 +38,39 @@ async function handleDoorCommand(ctx: any, action: DoorAction) {
   }
 }
 
+async function handleGateCommand(ctx: any) {
+  try {
+    if (isAdmin(ctx)) {
+      await openGate();
+      ctx.reply("Gate opened");
+    } else if (isAuthorized(ctx)) {
+      await openGate();
+      const adminIds = getAllAdmins();
+      adminIds.forEach((adminId) => {
+        ctx.telegram.sendMessage(
+          adminId,
+          `Gate opened by @${ctx.from!.username} (${ctx.from!.id}) "${ctx.from!.first_name ?? ""} ${ctx.from!.last_name ?? ""}"`,
+        );
+      });
+      ctx.reply("Gate opened");
+    } else {
+      await requestFromAdmin(ctx, "gate");
+      ctx.reply("A request to open the gate has been sent to the admins");
+    }
+  } catch (e) {
+    console.error(e);
+    ctx.reply("Gate couldn't be opened");
+  }
+}
+
 export function createBot(): Telegraf {
   const bot = new Telegraf(process.env.BOT_TOKEN!);
 
   bot.command("start", (ctx) => ctx.reply("Hello"));
-  bot.command("help", Telegraf.reply("You can control the door with /open and /close"));
+  bot.command("help", Telegraf.reply("You can control the door with /open and /close, and the gate with /gate"));
   bot.command("open", (ctx) => handleDoorCommand(ctx, "open"));
   bot.command("close", (ctx) => handleDoorCommand(ctx, "close"));
+  bot.command("gate", (ctx) => handleGateCommand(ctx));
 
   bot.on("callback_query", async (ctx) => {
     if (!("data" in ctx.callbackQuery)) return;
@@ -77,6 +104,7 @@ export function createBot(): Telegraf {
     { command: "help", description: "Show help" },
     { command: "open", description: "Open the door" },
     { command: "close", description: "Close the door" },
+    { command: "gate", description: "Open the gate" },
   ]);
 
   bot.launch();

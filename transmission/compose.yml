@@ -16,6 +16,5 @@ services:
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/library/downloads:/downloads
-      - /media/external2/library/downloads:/downloads2
       - /media/external/configs/transmission:/config
       - /media/external/library/watch:/watch

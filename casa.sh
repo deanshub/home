@@ -1,20 +1,33 @@
 #!/bin/bash
-docker compose \
-  -f home-assistant/compose.yml \
-  -f downloader/compose.yml \
-  -f friday/compose.yml \
-  -f shopping-bot/compose.yml \
-  -f gpt-bot/compose.yml \
-  -f caddy/compose.yml \
-  -f tailscale/compose.yml \
-  -f mosquitto/compose.yml \
-  -f filebrowser/compose.yml \
-  -f transmission/compose.yml \
-  -f jackett/compose.yml \
-  -f flaresolverr/compose.yml \
-  -f sonarr/compose.yml \
-  -f radarr/compose.yml \
-  -f bazarr/compose.yml \
-  -f jellyfin/compose.yml \
-  -f watchtower/compose.yml \
-  "$@"
+set -e
+
+compose_dirs=(
+  "home-assistant"
+  "downloader"
+  "friday"
+  "shopping-bot"
+  "gpt-bot"
+  "caddy"
+  "tailscale"
+  "mosquitto"
+  "filebrowser"
+  "transmission"
+  "jackett"
+  "flaresolverr"
+  "sonarr"
+  "radarr"
+  "bazarr"
+  "jellyfin"
+  "watchtower"
+)
+
+for dir in "${compose_dirs[@]}"; do
+  echo "🚀 Processing $dir..."
+  if ! docker compose -f "$dir/compose.yml" "$@"; then
+    echo "❌ Failed on $dir"
+    exit 1
+  fi
+  echo "✅ $dir completed"
+done
+
+echo "🎉 All services processed successfully!"

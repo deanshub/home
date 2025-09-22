@@ -4,7 +4,7 @@ services:
     container_name: gpt-bot
     image: ghcr.io/deanshub/gpt-bot:main
     env_file:
-      - ./.env
+      - .env
     volumes:
-      - /media/external2/gpt-bot-data:/data
+      - /media/external/gpt-bot-data:/data
     privileged: true

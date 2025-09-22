@@ -4,8 +4,7 @@ services:
     container_name: downloader
     image: ghcr.io/deanshub/downloader:master
     env_file:
-      - ./.env
+      - .env
     volumes:
       - /media/external:/media/external
-      - /media/external2:/media/external2
     privileged: true

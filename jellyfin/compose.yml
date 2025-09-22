@@ -15,8 +15,7 @@ services:
       - /media/external/library/tv:/data/tvshows
       - /media/external/library/movies:/data/movies
       - /media/external/videos:/data/videos
-      - /media/external2:/data/external2
-      - /media/external3:/data/external3
+      - /media/external:/data/external
       - type: tmpfs
         target: /tmp-transcoding
     ports:

@@ -6,7 +6,7 @@ services:
     container_name: tailscale
     hostname: vpn.home.shubapp.com
     network_mode: host
-    env_file: ./.env
+    env_file: .env
     environment:
       - TZ=Asia/Jerusalem
     cap_add:
