@@ -63,6 +63,19 @@
     reverse_proxy http://localhost:2019
   }
 
+  @n8n host n8n.home.shubapp.com
+  handle @n8n {
+    reverse_proxy n8n:5678
+    header {
+      Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+      X-Content-Type-Options "nosniff"
+      X-Frame-Options "DENY"
+      X-XSS-Protection "1; mode=block"
+      Referrer-Policy "strict-origin-when-cross-origin"
+    }
+    encode gzip
+  }
+
   @apps host apps.home.shubapp.com
   handle @apps {
     root /* /apps/
