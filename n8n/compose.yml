@@ -13,13 +13,12 @@ services:
       - WEBHOOK_URL=https://n8n.home.shubapp.com/
       - GENERIC_TIMEZONE=Asia/Jerusalem
     volumes:
-      - n8n_data:/home/node/.n8n
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /media/external/configs/n8n:/home/node/.n8n
+      - /media/external/library/n8n:/files
     networks:
       - caddy
-
-volumes:
-  n8n_data:
+    ports:
+      - 5678:5678
 
 networks:
   caddy:
