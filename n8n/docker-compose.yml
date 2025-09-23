@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    environment:
+      - N8N_HOST=n8n.yourdomain.com
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.yourdomain.com/
+      - GENERIC_TIMEZONE=UTC
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - caddy
+    labels:
+      - "caddy=n8n.yourdomain.com"
+      - "caddy.reverse_proxy={{upstreams 5678}}"
+
+volumes:
+  n8n_data:
+
+networks:
+  caddy:
+    external: true
