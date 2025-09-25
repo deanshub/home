@@ -1,10 +1,11 @@
 import prompts from "prompts";
 import si from "systeminformation";
+import { stringify } from "yaml";
 
 async function main() {
   const usbPartitions = await getAllUSBPartitions();
   if (usbPartitions.length === 0) {
-    console.log("No USB partitions to mount");
+    // console.log("No USB partitions to mount");
     return "";
   }
   const response = await prompts({
@@ -27,7 +28,7 @@ async function main() {
     partition.mountPath = partitionMountPath.mountPath;
   }
 
-  console.log(response.partitions);
+  console.log(stringify(response.partitions));
 }
 
 async function getAllUSBPartitions() {

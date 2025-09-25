@@ -14,12 +14,14 @@
         below to access them.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8">
-        {{$services := .IncludeFile "services.json" | fromJSON}}
-        {{range $services}}
+        {{$data := .IncludeFile "../services.yaml" | fromYAML}}
+        {{range $data.services}}
+        {{if .url}}
         <a
           href="{{.url}}"
           class="flex items-center justify-center p-4 text-center text-pretty bg-{{.color}}-100 hover:bg-{{.color}}-200 capitalize h-40 text-4xl tracking-wide"
         >{{.label}}</a>
+        {{end}}
         {{end}}
       </div>
     </div>

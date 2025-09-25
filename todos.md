@@ -19,6 +19,6 @@
 
 - [ ] remove /media/external2 and /media/external3
 - [ ] move services to services dir
-- [ ] (integrate with the gate camera)
-- [ ] generat the web page based on services.txt
 - [ ] generate the caddyfile based on services.txt
+- [x] generate the web page based on services.txt
+- [ ] (integrate with the gate camera)
