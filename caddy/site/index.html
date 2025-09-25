@@ -14,7 +14,7 @@
         below to access them.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8">
-        {{$data := .IncludeFile "../services.yaml" | fromYAML}}
+        {{$data := .IncludeFile "services.json" | fromJSON}}
         {{range $data.services}}
         {{if .url}}
         <a
