@@ -2,7 +2,8 @@
   "name": "bun-script",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/prompts": "^2.4.9"
   },
   "dependencies": {
     "prompts": "^2.4.2",

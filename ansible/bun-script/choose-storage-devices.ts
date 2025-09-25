@@ -22,7 +22,7 @@ async function main() {
       type: "text",
       name: "mountPath",
       message: `Enter mount path for partition: "${partition.device}"`,
-      default: `/media/disk${index + 1}`,
+      initial: `/media/disk${index + 1}`,
     });
     partition.mountPath = partitionMountPath.mountPath;
   }
