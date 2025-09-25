@@ -36,7 +36,9 @@ async function getAllUSBPartitions() {
   const usbDevices = blockDevices.filter((device) => device.protocol === "usb");
 
   const usbPartitions = blockDevices
-    .filter((device) => device.type === "part" && device.device)
+    .filter(
+      (device) => device.type === "part" && device.device && !device.mount
+    )
     .map((device) => {
       const parent = usbDevices.find(
         (parent) => parent.device === device.device
