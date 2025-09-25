@@ -9,15 +9,25 @@ async function main() {
   }
   const response = await prompts({
     type: "multiselect",
-    name: "devices",
-    message: "Choose storage devices",
-    choices: usbPartitions.map((device) => ({
-      title: `${device.device} (${device.fsType}) @ ${device.parent.device} (${device.parent.model})`,
-      value: device.uuid,
+    name: "partitions",
+    message: "Choose storage partitions",
+    choices: usbPartitions.map((partition) => ({
+      title: `${partition.device} (${partition.fsType}) @ ${partition.parent.device} - ${partition.parent.model}`,
+      value: partition,
     })),
   });
 
-  console.log(response.devices);
+  for (const [index, partition] of response.partitions.entries()) {
+    const partitionMountPath = await prompts({
+      type: "text",
+      name: "mountPath",
+      message: `Enter mount path for partition: "${partition.device}"`,
+      default: `/media/disk${index + 1}`,
+    });
+    partition.mountPath = partitionMountPath.mountPath;
+  }
+
+  console.log(response.partitions);
 }
 
 async function getAllUSBPartitions() {
