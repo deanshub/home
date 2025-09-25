@@ -3,7 +3,7 @@
   - [x] make sure mounts work (properly)
   - [ ] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
   - [ ] (enhance the ansible and the fstab)
-  - [ ] mount extreme sd
+  - [x] mount extreme sd
   - [ ] (auto backup to extreme sd)
 - work on one container at a time
   - [x] copy .env
@@ -20,3 +20,5 @@
 - [ ] remove /media/external2 and /media/external3
 - [ ] move services to services dir
 - [ ] (integrate with the gate camera)
+- [ ] generat the web page based on services.txt
+- [ ] generate the caddyfile based on services.txt
