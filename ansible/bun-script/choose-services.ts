@@ -3,7 +3,7 @@ import { readFileSync } from "fs";
 import { parse, stringify } from "yaml";
 
 async function main() {
-  const yamlContent = readFileSync("../../services.yaml", "utf8");
+  const yamlContent = readFileSync("../../services/services.yaml", "utf8");
   const data = parse(yamlContent);
 
   const result = await prompts({
