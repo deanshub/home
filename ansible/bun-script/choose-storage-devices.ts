@@ -4,7 +4,7 @@ import si from "systeminformation";
 async function main() {
   const usbPartitions = await getAllUSBPartitions();
   if (usbPartitions.length === 0) {
-    console.log("No USB devices found");
+    console.log("No USB partitions to mount");
     return "";
   }
   const response = await prompts({
