@@ -6,6 +6,7 @@
       "dependencies": {
         "prompts": "^2.4.2",
         "systeminformation": "^5.27.10",
+        "yaml": "^2.8.1",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -35,5 +36,7 @@
     "systeminformation": ["systeminformation@5.27.10", "", { "os": "!aix", "bin": { "systeminformation": "lib/cli.js" } }, "sha512-jkeOerLSwLZqJrPHCYltlKHu0PisdepIuS4GwjFFtgQUG/5AQPVZekkECuULqdP0cgrrIHW8Nl8J7WQXo5ypEg=="],
 
     "undici-types": ["undici-types@7.12.0", "", {}, "sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ=="],
+
+    "yaml": ["yaml@2.8.1", "", { "bin": { "yaml": "bin.mjs" } }, "sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw=="],
   }
 }

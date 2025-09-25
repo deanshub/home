@@ -14,6 +14,7 @@ services:
     volumes:
       - .:/etc/caddy/
       - ./site:/srv
+      - ../services.yaml:/srv/services.yaml
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
     env_file:
@@ -21,7 +22,6 @@ services:
     networks:
       - caddy
     command:
-      - caddy
-      - run
-      - "--config"
-      - "/etc/caddy/Caddyfile"
+      - sh
+      - -c
+      - "apk add --no-cache yq && yq -o=json /srv/services.yaml > /srv/services.json && caddy run --config /etc/caddy/Caddyfile"
