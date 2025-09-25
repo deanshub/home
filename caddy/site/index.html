@@ -13,17 +13,21 @@
         These are some of the services I host at home. Click on any of the links
         below to access them.
       </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8">
-        {{$data := .IncludeFile "services.json" | fromJSON}}
-        {{range $data.services}}
-        {{if .url}}
-        <a
-          href="{{.url}}"
-          class="flex items-center justify-center p-4 text-center text-pretty bg-{{.color}}-100 hover:bg-{{.color}}-200 capitalize h-40 text-4xl tracking-wide"
-        >{{.label}}</a>
-        {{end}}
-        {{end}}
-      </div>
+      <div id="services" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8"></div>
     </div>
+
+    <script>
+      const servicesData = {{.Include "services.json"}};
+      const container = document.getElementById('services');
+      servicesData.services
+        .filter(service => service.url)
+        .forEach(service => {
+          const link = document.createElement('a');
+          link.href = service.url;
+          link.className = `flex items-center justify-center p-4 text-center text-pretty bg-${service.color}-100 hover:bg-${service.color}-200 capitalize h-40 text-4xl tracking-wide`;
+          link.textContent = service.label;
+          container.appendChild(link);
+        });
+    </script>
   </body>
 </html>
