@@ -12,7 +12,7 @@ async function main() {
     name: "partitions",
     message: "Choose storage partitions",
     choices: usbPartitions.map((partition) => ({
-      title: `${partition.device} (${partition.fsType}) @ ${partition.parent.device} - ${partition.parent.model}`,
+      title: `${partition.name} (${partition.fsType}) @ ${partition.parent.device} - ${partition.parent.model}`,
       value: partition,
     })),
   });
