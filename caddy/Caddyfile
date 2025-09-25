@@ -99,6 +99,7 @@
   @home host home.shubapp.com
   handle @home {
     root * /srv
+    templates
     file_server
   }
 

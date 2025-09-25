@@ -1,0 +1,11 @@
+[
+  { "label": "Ha", "url": "https://ha.home.shubapp.com", "color": "green" },
+  { "label": "Files", "url": "https://files.home.shubapp.com", "color": "yellow" },
+  { "label": "Torrent", "url": "https://torrent.home.shubapp.com", "color": "red" },
+  { "label": "Prowlarr", "url": "https://prowlarr.home.shubapp.com", "color": "purple" },
+  { "label": "Flaresolverr", "url": "https://flaresolverr.home.shubapp.com", "color": "pink" },
+  { "label": "Sonarr", "url": "https://sonarr.home.shubapp.com", "color": "indigo" },
+  { "label": "Radarr", "url": "https://radarr.home.shubapp.com", "color": "teal" },
+  { "label": "Bazarr", "url": "https://bazarr.home.shubapp.com", "color": "orange" },
+  { "label": "Jellyfin", "url": "https://jellyfin.home.shubapp.com", "color": "gray" }
+]
