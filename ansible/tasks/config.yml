@@ -1,10 +1,10 @@
 - name: Check if config.yaml exists
   stat:
-    path: "{{ playbook_dir }}/config.yaml"
+    path: "{{ playbook_dir }}/../config.yaml"
   register: config_file
 
 - name: Load existing config
-  include_vars: "{{ playbook_dir }}/config.yaml"
+  include_vars: "{{ playbook_dir }}/../config.yaml"
   when: config_file.stat.exists
 
 - name: Get current gateway for default
@@ -60,5 +60,5 @@
       gateway_ip: "{{ gateway_ip }}"
       services:
       {{ selected_services.stdout | indent(2, true) }}
-    dest: "{{ playbook_dir }}/config.yaml"
+    dest: "{{ playbook_dir }}/../config.yaml"
   when: not config_file.stat.exists

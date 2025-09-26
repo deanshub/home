@@ -12,7 +12,7 @@ const PROXY_TARGETS: Record<string, { target: string; config?: string }> = {
   jellyfin: { target: "http://192.168.31.153:8096" },
   transmission: { target: "transmission:9091" },
   filebrowser: { target: "filebrowser:80" },
-  n8n: { 
+  n8n: {
     target: "n8n:5678",
     config: `header {
       Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -21,12 +21,12 @@ const PROXY_TARGETS: Record<string, { target: string; config?: string }> = {
       X-XSS-Protection "1; mode=block"
       Referrer-Policy "strict-origin-when-cross-origin"
     }
-    encode gzip`
+    encode gzip`,
   },
 };
 
 async function generateCaddyfile() {
-  const yamlContent = await readFile("../../services/services.yaml", "utf8");
+  const yamlContent = await readFile("../../config.yaml", "utf8");
   const config = parse(yamlContent);
 
   const domain = config.domain;
@@ -57,12 +57,12 @@ async function generateCaddyfile() {
       caddyfile += `  @${service.name} host ${subdomain}.${domain}
   handle @${service.name} {
     reverse_proxy ${proxyConfig.target}`;
-      
+
       if (proxyConfig.config) {
         caddyfile += `
     ${proxyConfig.config}`;
       }
-      
+
       caddyfile += `
   }
 
