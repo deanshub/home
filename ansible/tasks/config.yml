@@ -58,6 +58,7 @@
       static_ip: "{{ static_ip }}"
       username: "{{ username }}"
       gateway_ip: "{{ gateway_ip }}"
-      {{ selected_services.stdout }}
+      services:
+      {{ selected_services.stdout | indent(2, true) }}
     dest: "{{ playbook_dir }}/config.yaml"
   when: not config_file.stat.exists
