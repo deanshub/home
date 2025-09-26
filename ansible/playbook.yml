@@ -5,13 +5,6 @@
     - name: Handle configuration management
       include_tasks: tasks/config.yml
 
-    - name: Install bun
-      shell: curl -fsSL https://bun.sh/install | bash
-      args:
-        creates: /home/{{ username }}/.bun/bin/bun
-      become_user: "{{ username }}"
-      become: no
-
     - name: Handle storage configuration
       include_tasks: tasks/storage.yml
 

@@ -1,5 +1,5 @@
 - name: Run storage device selection
-  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run choose-storage-devices.ts
+  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-partitions.ts
 
 - name: Check if partitions.yaml was generated
   stat:

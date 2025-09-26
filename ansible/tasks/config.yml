@@ -40,11 +40,24 @@
     gateway_ip: "{{ gateway_ip_input.user_input if gateway_ip_input.user_input != '' else (current_gateway.stdout if current_gateway.stdout else '192.168.31.1') }}"
   when: not config_file.stat.exists
 
+- name: Install bun
+  shell: curl -fsSL https://bun.sh/install | bash
+  args:
+    creates: /home/{{ username }}/.bun/bin/bun
+  become_user: "{{ username }}"
+  become: no
+
+- name: Run generate-services.ts to get selected services
+  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-services.ts
+  register: selected_services
+  when: not config_file.stat.exists
+
 - name: Create config.yaml
   copy:
     content: |
       static_ip: "{{ static_ip }}"
       username: "{{ username }}"
       gateway_ip: "{{ gateway_ip }}"
+      {{ selected_services.stdout }}
     dest: "{{ playbook_dir }}/config.yaml"
   when: not config_file.stat.exists

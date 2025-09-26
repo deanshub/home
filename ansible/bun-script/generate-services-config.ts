@@ -2,9 +2,17 @@ import prompts from "prompts";
 import { readFileSync } from "fs";
 import { parse, stringify } from "yaml";
 
+type ServiceInYaml = {
+  name: string;
+  label: string;
+  url?: string;
+  color?: string;
+  category?: string;
+};
+
 async function main() {
   const yamlContent = readFileSync("../../services/services.yaml", "utf8");
-  const data = parse(yamlContent);
+  const data = parse(yamlContent) as { services: ServiceInYaml[] };
 
   const result = await prompts({
     type: "multiselect",
@@ -17,9 +25,17 @@ async function main() {
     })),
   });
 
-  const servicesToActivate = stringify(result);
+  const servicesToActivate: ServiceInYaml[] = result.services.map(
+    (service: ServiceInYaml) => ({
+      name: service.name,
+      label: service.label,
+      url: service.url,
+      color: service.color,
+      category: service.category,
+    })
+  );
 
-  console.log(servicesToActivate);
+  console.log(stringify(servicesToActivate));
 }
 
 main();
