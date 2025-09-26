@@ -17,8 +17,9 @@
 - [x] move it downstairs - connect beelink to the no-power-down
 - [x] (add git crypt/secret)
 
+- [x] buy smrt.casa and smrt.homes domains and setup amit sub domain to 192.168.31.206
 - [ ] remove /media/external2 and /media/external3
-- [ ] move services to services dir
+- [x] move services to services dir
 - [ ] generate the caddyfile based on services.txt
 - [x] generate the web page based on services.txt
 - [ ] (integrate with the gate camera)
