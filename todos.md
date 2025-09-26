@@ -9,7 +9,7 @@
   - [x] copy .env
   - [x] start it
   - [x] (split the docker compose file so that each container has it's own)
-  - [ ] (make ansible allow selecting which services to add to services.txt)
+  - [x] (make ansible allow selecting which services to add to services.txt)
 - [x] fix index.html for caddy
 - [x] move friday to typescript
 - [x] make the beelink auto power on when power is restored
@@ -20,7 +20,7 @@
 - [x] buy smrt.casa and smrt.homes domains and setup amit sub domain to 192.168.31.206
 - [ ] remove /media/external2 and /media/external3
 - [x] move services to services dir
-- [ ] generate the caddyfile based on services.yaml
+- [x] generate the caddyfile based on services.yaml
   - [x] make a script to generate the caddyfile based on services.yaml
   - [x] make ansible generate config.yaml
   - [x] make changes to reference the new config.yaml (instead of services.yaml)
