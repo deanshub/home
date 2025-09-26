@@ -2,56 +2,8 @@
   become: yes
 
   tasks:
-    - name: Check if config.yaml exists
-      stat:
-        path: "{{ playbook_dir }}/config.yaml"
-      register: config_file
-
-    - name: Load existing config
-      include_vars: "{{ playbook_dir }}/config.yaml"
-      when: config_file.stat.exists
-
-    - name: Get current gateway for default
-      shell: ip route | grep default | awk '{print $3}' | head -1
-      register: current_gateway
-      when: gateway_ip is not defined
-
-    - name: Prompt for static IP if not in config
-      pause:
-        prompt: "Enter the static IP address you want for this host [192.168.31.153]"
-        echo: yes
-      register: static_ip_input
-      when: static_ip is not defined
-
-    - name: Prompt for username if not in config
-      pause:
-        prompt: "Enter your username for disk ownership [{{ lookup('env', 'USER') }}]"
-        echo: yes
-      register: username_input
-      when: username is not defined
-
-    - name: Prompt for gateway IP if not in config
-      pause:
-        prompt: "Enter the gateway IP address [{{ current_gateway.stdout if current_gateway.stdout else '192.168.31.1' }}]"
-        echo: yes
-      register: gateway_ip_input
-      when: gateway_ip is not defined
-
-    - name: Set variables from prompts with defaults
-      set_fact:
-        static_ip: "{{ static_ip_input.user_input if static_ip_input.user_input != '' else '192.168.31.153' }}"
-        username: "{{ username_input.user_input if username_input.user_input != '' else lookup('env', 'USER') }}"
-        gateway_ip: "{{ gateway_ip_input.user_input if gateway_ip_input.user_input != '' else (current_gateway.stdout if current_gateway.stdout else '192.168.31.1') }}"
-      when: not config_file.stat.exists
-
-    - name: Create config.yaml
-      copy:
-        content: |
-          static_ip: "{{ static_ip }}"
-          username: "{{ username }}"
-          gateway_ip: "{{ gateway_ip }}"
-        dest: "{{ playbook_dir }}/config.yaml"
-      when: not config_file.stat.exists
+    - name: Handle configuration management
+      include_tasks: tasks/config.yml
 
     - name: Install bun
       shell: curl -fsSL https://bun.sh/install | bash
@@ -60,33 +12,8 @@
       become_user: "{{ username }}"
       become: no
 
-    - name: Run storage device selection
-      shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run choose-storage-devices.ts
-
-    - name: Check if partitions.yaml was generated
-      stat:
-        path: "{{ playbook_dir }}/partitions.yaml"
-      register: partitions_file
-
-    - name: Load partitions config
-      include_vars: "{{ playbook_dir }}/partitions.yaml"
-      when: partitions_file.stat.exists
-
-    - name: Mount partitions
-      mount:
-        path: "{{ item.mountPath }}"
-        src: "{{ item.device }}"
-        fstype: "{{ item.fstype | default('ext4') }}"
-        state: mounted
-        fstab: yes
-      loop: "{{ partitions | default([]) }}"
-      when: partitions_file.stat.exists
-
-    - name: Delete partitions.yaml
-      file:
-        path: "{{ playbook_dir }}/partitions.yaml"
-        state: absent
-      when: partitions_file.stat.exists
+    - name: Handle storage configuration
+      include_tasks: tasks/storage.yml
 
   roles:
     - network
