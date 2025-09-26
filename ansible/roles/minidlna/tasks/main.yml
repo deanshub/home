@@ -28,7 +28,7 @@
       # Other settings
       enable_tivo=no
       strict_dlna=no
-      presentation_url=http://{{ ansible_default_ipv4.address }}:8200/
+      presentation_url=http://{{ static_ip }}:8200/
     backup: yes
 
 - name: Create minidlna cache directory
