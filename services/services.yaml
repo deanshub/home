@@ -1,65 +1,83 @@
 services:
   - name: caddy
     label: Caddy
+    category: infrastructure
   - name: tailscale
     label: Tailscale
+    category: infrastructure
   - name: mosquitto
     label: Mosquitto
+    category: infrastructure
   - name: watchtower
     label: Watchtower
+    category: infrastructure
   - name: homeassistant
     label: HA
     url: https://ha.home.shubapp.com
+    category: smart home
     color: green
   - name: sonarr
     label: Sonarr
     url: https://sonarr.home.shubapp.com
     color: indigo
+    category: media
   - name: radarr
     label: Radarr
     url: https://radarr.home.shubapp.com
     color: teal
+    category: media
   - name: prowlarr
     label: Prowlarr
     url: https://prowlarr.home.shubapp.com
     color: purple
+    category: media
   - name: flaresolverr
     label: Flaresolverr
     url: https://flaresolverr.home.shubapp.com
     color: pink
+    category: media
   - name: bazarr
     label: Bazarr
     url: https://bazarr.home.shubapp.com
     color: orange
+    category: media
   - name: jellyfin
     label: Jellyfin
     url: https://jellyfin.home.shubapp.com
     color: gray
+    category: media
   - name: transmission
     label: Torrent
     url: https://torrent.home.shubapp.com
     color: red
+    category: media
   - name: filebrowser
     label: Files
     url: https://files.home.shubapp.com
     color: yellow
+    category: media
   - name: downloader
     label: Downloader
     url: https://t.me/ShubDownloadBot
     color: blue
+    category: bot
   - name: friday
     label: Friday
     url: https://t.me/fridayJbot
     color: amber
+    category: bot
   - name: shopping-bot
     label: Shopping Bot
     url: https://t.me/shopping_list_manager_bot
     color: rose
+    category: bot
   - name: gpt-bot
     label: GPT Bot
     url: https://t.me/DecreeAiBot
     color: lime
+    category: bot
   - name: n8n
     label: n8n
     url: https://n8n.home.shubapp.com
     color: violet
+    category: automation
