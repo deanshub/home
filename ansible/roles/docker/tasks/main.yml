@@ -6,6 +6,7 @@
       - curl
       - software-properties-common
       - gnupg
+      - yq
     state: present
     update_cache: yes
 
