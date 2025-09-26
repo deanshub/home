@@ -8,7 +8,14 @@
     - name: Handle storage configuration
       include_tasks: tasks/storage.yml
 
-  roles:
-    - network
-    - docker
-    - minidlna
+    - name: Configure network
+      include_role:
+        name: network
+
+    - name: Install docker
+      include_role:
+        name: docker
+
+    - name: Setup minidlna
+      include_role:
+        name: minidlna
