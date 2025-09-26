@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-services=$(yq '.services[]' config.yaml)
+services=$(yq '.services[].name' config.yaml)
 
 while IFS= read -r dir; do
   echo "🚀 Processing $dir..."
