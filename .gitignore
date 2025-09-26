@@ -1,11 +1,8 @@
-!caddy/
-!home-assistant/
-!.gitignore
-!docker-compose.yml
-!README.md
-!friday/
-!friday/**/*
-!gpt-bot/
-!gpt-bot/**/*
 backups/
 node_modules/
+
+config.yaml
+partitions.yaml
+services/caddy/Caddyfile
+services/caddy/site/config.json
+services/caddy/site/config.yaml

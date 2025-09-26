@@ -1,3 +1,4 @@
+import { writeFile } from "fs/promises";
 import prompts from "prompts";
 import si from "systeminformation";
 import { stringify } from "yaml";
@@ -6,7 +7,7 @@ async function main() {
   const usbPartitions = await getAllUSBPartitions();
   if (usbPartitions.length === 0) {
     // console.log("No USB partitions to mount");
-    return "";
+    return;
   }
   const response = await prompts({
     type: "multiselect",
@@ -18,6 +19,10 @@ async function main() {
     })),
   });
 
+  if (!response.partitions || response.partitions.length === 0) {
+    return;
+  }
+
   for (const [index, partition] of response.partitions.entries()) {
     const partitionMountPath = await prompts({
       type: "text",
@@ -28,7 +33,8 @@ async function main() {
     partition.mountPath = partitionMountPath.mountPath;
   }
 
-  console.log(stringify(response.partitions));
+  await writeFile("../partitions.yaml", stringify(response));
+  console.log("Partitions written to partitions.yaml");
 }
 
 async function getAllUSBPartitions() {

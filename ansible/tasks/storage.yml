@@ -1,0 +1,27 @@
+- name: Run storage device selection
+  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-partitions.ts
+
+- name: Check if partitions.yaml was generated
+  stat:
+    path: "{{ playbook_dir }}/partitions.yaml"
+  register: partitions_file
+
+- name: Load partitions config
+  include_vars: "{{ playbook_dir }}/partitions.yaml"
+  when: partitions_file.stat.exists
+
+- name: Mount partitions
+  mount:
+    path: "{{ item.mountPath }}"
+    src: "{{ item.device }}"
+    fstype: "{{ item.fstype | default('ext4') }}"
+    state: mounted
+    fstab: yes
+  loop: "{{ partitions | default([]) }}"
+  when: partitions_file.stat.exists
+
+- name: Delete partitions.yaml
+  file:
+    path: "{{ playbook_dir }}/partitions.yaml"
+    state: absent
+  when: partitions_file.stat.exists

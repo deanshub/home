@@ -2,14 +2,6 @@
   shell: ip route | grep default | awk '{print $5}' | head -1
   register: network_interface
 
-- name: Get current gateway
-  shell: ip route | grep default | awk '{print $3}' | head -1
-  register: current_gateway
-
-- name: Set fallback gateway
-  set_fact:
-    gateway_ip: "{{ current_gateway.stdout if current_gateway.stdout else (static_ip | regex_replace('\\.[0-9]+$', '.1')) }}"
-
 - name: Remove existing netplan files
   shell: rm -f /etc/netplan/*.yaml /etc/netplan/*.yml
 
