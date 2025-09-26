@@ -4,6 +4,7 @@
   - [x] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
   - [x] (enhance the ansible and the fstab)
   - [x] mount extreme sd
+  - [ ] replace generate-partitions.ts with ansible prompting (loop through devices and ask if to mount and where to mount)
   - [ ] (auto backup to extreme sd)
 - work on one container at a time
   - [x] copy .env
