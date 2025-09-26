@@ -48,7 +48,7 @@
   become: no
 
 - name: Run generate-services.ts to get selected services
-  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-services.ts
+  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-services-config.ts
   register: selected_services
   when: not config_file.stat.exists
 
@@ -58,7 +58,6 @@
       static_ip: "{{ static_ip }}"
       username: "{{ username }}"
       gateway_ip: "{{ gateway_ip }}"
-      services:
-      {{ selected_services.stdout | indent(2, true) }}
+      {{ selected_services.stdout }}
     dest: "{{ playbook_dir }}/../config.yaml"
   when: not config_file.stat.exists

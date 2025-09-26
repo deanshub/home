@@ -24,7 +24,7 @@
   - [x] make a script to generate the caddyfile based on services.yaml
   - [x] make ansible generate config.yaml
   - [x] make changes to reference the new config.yaml (instead of services.yaml)
-  - [ ] change in services.yaml the URL to be templated {{ domain }} (instead of home.shubapp.com)
-  - [ ] remove private data (domain, static_ip, gateway_ip, username) from services.yaml
+  - [x] change in services.yaml the URL to be templated {{ domain }} (instead of home.shubapp.com)
+  - [x] remove private data (domain, static_ip, gateway_ip, username) from services.yaml
 - [x] generate the web page based on services.yaml
 - [ ] (integrate with the gate camera)

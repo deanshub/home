@@ -1,7 +1,3 @@
-domain: home.shubapp.com
-static_ip: 192.168.31.153
-gateway_ip: 192.168.31.1
-username: shub
 services:
   - name: caddy
     label: Caddy
@@ -17,47 +13,47 @@ services:
     category: infrastructure
   - name: homeassistant
     label: HA
-    url: https://ha.home.shubapp.com
+    url: https://ha.{{ domain }}
     category: smart home
     color: green
   - name: sonarr
     label: Sonarr
-    url: https://sonarr.home.shubapp.com
+    url: https://sonarr.{{ domain }}
     color: indigo
     category: media
   - name: radarr
     label: Radarr
-    url: https://radarr.home.shubapp.com
+    url: https://radarr.{{ domain }}
     color: teal
     category: media
   - name: prowlarr
     label: Prowlarr
-    url: https://prowlarr.home.shubapp.com
+    url: https://prowlarr.{{ domain }}
     color: purple
     category: media
   - name: flaresolverr
     label: Flaresolverr
-    url: https://flaresolverr.home.shubapp.com
+    url: https://flaresolverr.{{ domain }}
     color: pink
     category: media
   - name: bazarr
     label: Bazarr
-    url: https://bazarr.home.shubapp.com
+    url: https://bazarr.{{ domain }}
     color: orange
     category: media
   - name: jellyfin
     label: Jellyfin
-    url: https://jellyfin.home.shubapp.com
+    url: https://jellyfin.{{ domain }}
     color: gray
     category: media
   - name: transmission
     label: Torrent
-    url: https://torrent.home.shubapp.com
+    url: https://torrent.{{ domain }}
     color: red
     category: media
   - name: filebrowser
     label: Files
-    url: https://files.home.shubapp.com
+    url: https://files.{{ domain }}
     color: yellow
     category: media
   - name: downloader
@@ -82,6 +78,6 @@ services:
     category: bot
   - name: n8n
     label: n8n
-    url: https://n8n.home.shubapp.com
+    url: https://n8n.{{ domain }}
     color: violet
     category: automation
