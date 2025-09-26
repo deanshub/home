@@ -56,8 +56,10 @@
   become: no
 
 - name: Run generate-services.ts to get selected services
-  shell: cd {{ playbook_dir }}/bun-script && echo "{{ domain }}" | /home/{{ username }}/.bun/bin/bun run generate-services-config.ts
+  raw: cd {{ playbook_dir }}/bun-script && echo "{{ domain }}" | /home/{{ username }}/.bun/bin/bun run generate-services-config.ts < /dev/tty > /dev/tty
   when: not config_file.stat.exists
+  become_user: "{{ username }}"
+  become: no
 
 - name: Read generated services config
   slurp:
