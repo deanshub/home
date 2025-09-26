@@ -1,8 +1,48 @@
 services:
+  - name: caddy
+    label: Caddy
+  - name: tailscale
+    label: Tailscale
+  - name: mosquitto
+    label: Mosquitto
+  - name: watchtower
+    label: Watchtower
   - name: homeassistant
     label: HA
     url: https://ha.home.shubapp.com
     color: green
+  - name: sonarr
+    label: Sonarr
+    url: https://sonarr.home.shubapp.com
+    color: indigo
+  - name: radarr
+    label: Radarr
+    url: https://radarr.home.shubapp.com
+    color: teal
+  - name: prowlarr
+    label: Prowlarr
+    url: https://prowlarr.home.shubapp.com
+    color: purple
+  - name: flaresolverr
+    label: Flaresolverr
+    url: https://flaresolverr.home.shubapp.com
+    color: pink
+  - name: bazarr
+    label: Bazarr
+    url: https://bazarr.home.shubapp.com
+    color: orange
+  - name: jellyfin
+    label: Jellyfin
+    url: https://jellyfin.home.shubapp.com
+    color: gray
+  - name: transmission
+    label: Torrent
+    url: https://torrent.home.shubapp.com
+    color: red
+  - name: filebrowser
+    label: Files
+    url: https://files.home.shubapp.com
+    color: yellow
   - name: downloader
     label: Downloader
     url: https://t.me/ShubDownloadBot
@@ -19,46 +59,6 @@ services:
     label: GPT Bot
     url: https://t.me/DecreeAiBot
     color: lime
-  - name: caddy
-    label: Caddy
-  - name: tailscale
-    label: Tailscale
-  - name: mosquitto
-    label: Mosquitto
-  - name: filebrowser
-    label: Files
-    url: https://files.home.shubapp.com
-    color: yellow
-  - name: transmission
-    label: Torrent
-    url: https://torrent.home.shubapp.com
-    color: red
-  - name: prowlarr
-    label: Prowlarr
-    url: https://prowlarr.home.shubapp.com
-    color: purple
-  - name: flaresolverr
-    label: Flaresolverr
-    url: https://flaresolverr.home.shubapp.com
-    color: pink
-  - name: sonarr
-    label: Sonarr
-    url: https://sonarr.home.shubapp.com
-    color: indigo
-  - name: radarr
-    label: Radarr
-    url: https://radarr.home.shubapp.com
-    color: teal
-  - name: bazarr
-    label: Bazarr
-    url: https://bazarr.home.shubapp.com
-    color: orange
-  - name: jellyfin
-    label: Jellyfin
-    url: https://jellyfin.home.shubapp.com
-    color: gray
-  - name: watchtower
-    label: Watchtower
   - name: n8n
     label: n8n
     url: https://n8n.home.shubapp.com
