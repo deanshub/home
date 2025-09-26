@@ -9,3 +9,5 @@
 !gpt-bot/**/*
 backups/
 node_modules/
+/config.yaml
+/partitions.yaml

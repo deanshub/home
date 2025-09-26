@@ -104,7 +104,7 @@ async function generateCaddyfile() {
   }
 }`;
 
-  await writeFile("../../Caddyfile", caddyfile);
+  await writeFile("/etc/caddy/Caddyfile", caddyfile);
   console.log("Caddyfile generated successfully!");
 }
 
