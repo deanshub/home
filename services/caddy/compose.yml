@@ -15,7 +15,6 @@ services:
       - .:/etc/caddy/
       - ./site:/srv
       - ../../config.yaml:/srv/config.yaml
-      - ../../ansible/bun-script/generate-caddyfile.ts:/srv/generate-caddyfile.ts
       - /media/external/caddy_data/:/data/
       - /media/external/caddy_config/:/config/
     env_file:
@@ -25,4 +24,4 @@ services:
     command:
       - sh
       - -c
-      - "yq -o=json /srv/config.yaml > /srv/config.json && cd /srv && bun run generate-caddyfile.ts && caddy run --config /etc/caddy/Caddyfile"
+      - "apk add --no-cache yq && yq -o=json /srv/config.yaml > /srv/config.json && caddy run --config /etc/caddy/Caddyfile"

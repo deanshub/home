@@ -11,3 +11,4 @@ backups/
 node_modules/
 /config.yaml
 /partitions.yaml
+/services/caddy/Caddyfile

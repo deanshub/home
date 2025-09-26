@@ -61,3 +61,8 @@
       {{ selected_services.stdout }}
     dest: "{{ playbook_dir }}/../config.yaml"
   when: not config_file.stat.exists
+
+- name: Generate Caddyfile from config
+  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-caddyfile.ts
+  become_user: "{{ username }}"
+  become: no
