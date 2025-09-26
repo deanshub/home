@@ -1,8 +1,8 @@
 - fstab
   - [x] add the copy to ansible
   - [x] make sure mounts work (properly)
-  - [ ] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
-  - [ ] (enhance the ansible and the fstab)
+  - [x] (make ansible show the devices and choose which to mount and where to default to /media/disk#)
+  - [x] (enhance the ansible and the fstab)
   - [x] mount extreme sd
   - [ ] (auto backup to extreme sd)
 - work on one container at a time
