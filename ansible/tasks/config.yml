@@ -57,7 +57,17 @@
 
 - name: Run generate-services.ts to get selected services
   shell: cd {{ playbook_dir }}/bun-script && echo "{{ domain }}" | /home/{{ username }}/.bun/bin/bun run generate-services-config.ts
-  register: selected_services
+  when: not config_file.stat.exists
+
+- name: Read generated services config
+  slurp:
+    src: "{{ playbook_dir }}/../active-services.yaml"
+  register: services_config_file
+  when: not config_file.stat.exists
+
+- name: Parse services config
+  set_fact:
+    services_config: "{{ services_config_file.content | b64decode | from_yaml }}"
   when: not config_file.stat.exists
 
 - name: Create config.yaml
@@ -67,9 +77,14 @@
       username: "{{ username }}"
       gateway_ip: "{{ gateway_ip }}"
       domain: "{{ domain }}"
-      {{ selected_services.stdout }}
+      services: {{ services_config | to_nice_yaml(indent=2) | indent(2) }}
     dest: "{{ playbook_dir }}/../config.yaml"
   when: not config_file.stat.exists
+
+- name: Clean up temporary services file
+  file:
+    path: "{{ playbook_dir }}/../active-services.yaml"
+    state: absent
 
 - name: Generate Caddyfile from config
   shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-caddyfile.ts

@@ -1,6 +1,7 @@
 import prompts from "prompts";
 import { readFileSync } from "fs";
 import { parse, stringify } from "yaml";
+import { writeFile } from "fs/promises";
 
 type ServiceInYaml = {
   name: string;
@@ -38,11 +39,8 @@ async function main() {
     })
   );
 
-  const config = {
-    services: servicesToActivate
-  };
-
-  console.log(stringify(config));
+  await writeFile("../../active-services.yaml", stringify(servicesToActivate));
+  console.log("Services configuration saved to active-services.yaml");
 }
 
 main();
