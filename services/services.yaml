@@ -1,3 +1,7 @@
+domain: home.shubapp.com
+static_ip: 192.168.31.153
+gateway_ip: 192.168.31.1
+username: shub
 services:
   - name: caddy
     label: Caddy

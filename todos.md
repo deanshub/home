@@ -20,6 +20,10 @@
 - [x] buy smrt.casa and smrt.homes domains and setup amit sub domain to 192.168.31.206
 - [ ] remove /media/external2 and /media/external3
 - [x] move services to services dir
-- [ ] generate the caddyfile based on services.txt
-- [x] generate the web page based on services.txt
+- [ ] generate the caddyfile based on services.yaml
+  - [x] make a script to generate the caddyfile based on services.yaml
+  - [ ] make ansible generate config.yaml
+  - [ ] make changes to reference the new config.yaml (instead of services.yaml)
+  - [ ] remove private data (domain, static_ip, gateway_ip, username) from services.yaml
+- [x] generate the web page based on services.yaml
 - [ ] (integrate with the gate camera)
