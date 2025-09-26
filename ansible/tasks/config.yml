@@ -87,7 +87,8 @@
       username: "{{ username }}"
       gateway_ip: "{{ gateway_ip }}"
       domain: "{{ domain }}"
-      services: {{ selected_services | to_nice_yaml(indent=2) | indent(2) }}
+      services:
+      {{ selected_services | to_nice_yaml(indent=2) | indent(2, true) }}
     dest: "{{ playbook_dir }}/../config.yaml"
   when: not config_file.stat.exists
 
