@@ -14,7 +14,7 @@
 - name: Find unmounted USB partitions
   set_fact:
     usb_partitions: "{{ usb_partitions | default([]) + [item] }}"
-  loop: "{{ usb_devices.blockdevices | json_query('[].children[]') | flatten }}"
+  loop: "{{ usb_devices.blockdevices | default([]) | selectattr('children', 'defined') | map(attribute='children') | flatten }}"
   when: 
     - item.type == "part"
     - item.mountpoint is none or item.mountpoint == ""
