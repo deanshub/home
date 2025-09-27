@@ -1,15 +1,20 @@
-- name: Get all block devices
-  shell: lsblk -J -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE,UUID,LABEL
-  register: block_devices
+- name: Get USB block devices
+  shell: |
+    for dev in $(lsblk -d -n -o NAME | grep -E '^sd[a-z]$'); do
+      if udevadm info --name=/dev/$dev | grep -q "ID_BUS=usb"; then
+        lsblk -J -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE,UUID,LABEL /dev/$dev
+      fi
+    done | jq -s 'add'
+  register: usb_devices_raw
 
-- name: Parse block devices
+- name: Parse USB devices
   set_fact:
-    devices: "{{ (block_devices.stdout | from_json).blockdevices }}"
+    usb_devices: "{{ (usb_devices_raw.stdout | from_json) if usb_devices_raw.stdout != '' else {'blockdevices': []} }}"
 
 - name: Find unmounted USB partitions
   set_fact:
     usb_partitions: "{{ usb_partitions | default([]) + [item] }}"
-  loop: "{{ devices | json_query('[?type==`disk`].children[]') | flatten }}"
+  loop: "{{ usb_devices.blockdevices | json_query('[].children[]') | flatten }}"
   when: 
     - item.type == "part"
     - item.mountpoint is none or item.mountpoint == ""
