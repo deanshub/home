@@ -1,27 +1,67 @@
-- name: Run storage device selection
-  shell: cd {{ playbook_dir }}/bun-script && /home/{{ username }}/.bun/bin/bun run generate-partitions.ts
+- name: Get all block devices
+  shell: lsblk -J -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE,UUID,LABEL
+  register: block_devices
 
-- name: Check if partitions.yaml was generated
-  stat:
-    path: "{{ playbook_dir }}/partitions.yaml"
-  register: partitions_file
+- name: Parse block devices
+  set_fact:
+    devices: "{{ (block_devices.stdout | from_json).blockdevices }}"
 
-- name: Load partitions config
-  include_vars: "{{ playbook_dir }}/partitions.yaml"
-  when: partitions_file.stat.exists
+- name: Find unmounted USB partitions
+  set_fact:
+    usb_partitions: "{{ usb_partitions | default([]) + [item] }}"
+  loop: "{{ devices | json_query('[?type==`disk`].children[]') | flatten }}"
+  when: 
+    - item.type == "part"
+    - item.mountpoint is none or item.mountpoint == ""
+    - item.fstype is defined and item.fstype != ""
+    - item.uuid is defined and item.uuid != ""
+
+- name: Initialize selected partitions list
+  set_fact:
+    selected_partitions: []
+  when: usb_partitions is defined and usb_partitions | length > 0
+
+- name: Prompt for each unmounted partition
+  pause:
+    prompt: |
+      Mount partition {{ item.name }} ({{ item.size }}, {{ item.fstype }}{{ ', Label: ' + item.label if item.label else '' }})?
+      Suggested mount path: /media/disk{{ ansible_loop.index }}
+      Enter mount path (or press Enter for suggested, 'n' to skip):
+    echo: yes
+  register: partition_choice
+  loop: "{{ usb_partitions | default([]) }}"
+  loop_control:
+    extended: yes
+  when: usb_partitions is defined and usb_partitions | length > 0
+
+- name: Build selected partitions list
+  set_fact:
+    selected_partitions: "{{ selected_partitions + [{'device': '/dev/' + item.item.name, 'mountpoint': mount_path, 'fstype': item.item.fstype, 'uuid': item.item.uuid}] }}"
+  vars:
+    suggested_path: "/media/disk{{ item.ansible_loop.index }}"
+    mount_path: "{{ suggested_path if item.user_input == '' else item.user_input }}"
+  loop: "{{ partition_choice.results | default([]) }}"
+  loop_control:
+    extended: yes
+  when: 
+    - usb_partitions is defined and usb_partitions | length > 0
+    - item.user_input | default('n') | lower != 'n'
+
+- name: Create mount directories
+  file:
+    path: "{{ item.mountpoint }}"
+    state: directory
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: "0755"
+  loop: "{{ selected_partitions | default([]) }}"
 
 - name: Mount partitions
   mount:
-    path: "{{ item.mountPath }}"
-    src: "{{ item.device }}"
-    fstype: "{{ item.fstype | default('ext4') }}"
+    path: "{{ item.mountpoint }}"
+    src: "UUID={{ item.uuid }}"
+    fstype: "{{ item.fstype }}"
     state: mounted
     fstab: yes
-  loop: "{{ partitions | default([]) }}"
-  when: partitions_file.stat.exists
-
-- name: Delete partitions.yaml
-  file:
-    path: "{{ playbook_dir }}/partitions.yaml"
-    state: absent
-  when: partitions_file.stat.exists
+    opts: "defaults,uid={{ username }},gid={{ username }},umask=0022"
+  loop: "{{ selected_partitions | default([]) }}"
