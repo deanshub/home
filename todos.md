@@ -29,3 +29,5 @@
   - [x] remove private data (domain, static_ip, gateway_ip, username) from services.yaml
 - [x] generate the web page based on services.yaml
 - [ ] (integrate with the gate camera)
+- [ ] integrate watter consumption with home assistant
+- [ ] integrate electricity consumption with home assistant
