@@ -5,6 +5,7 @@
     "@types/bun": "latest"
   },
   "dependencies": {
+    "dotenv": "^17.2.2",
     "yaml": "^2.8.1"
   }
 }

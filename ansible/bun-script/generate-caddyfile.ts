@@ -1,5 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { parse } from "yaml";
+import { existsSync } from "fs";
+import { config as loadEnv } from "dotenv";
 
 // Static proxy mappings
 const PROXY_TARGETS: Record<string, { target: string; config?: string }> = {
@@ -31,6 +33,19 @@ async function generateCaddyfile() {
 
   const domain = config.domain;
 
+  // Check for DNS provider tokens
+  let dnsConfig = "dns cloudflare {env.CF_API_TOKEN}"; // default
+  const envPath = "../../services/caddy/.env";
+  if (existsSync(envPath)) {
+    const env = loadEnv({ path: envPath }).parsed || {};
+
+    if (env.CF_API_TOKEN) {
+      dnsConfig = "dns cloudflare {env.CF_API_TOKEN}";
+    } else if (env.VERCEL_API_TOKEN) {
+      dnsConfig = "dns vercel {env.VERCEL_API_TOKEN}";
+    }
+  }
+
   // Start Caddyfile
   let caddyfile = `{
     order cgi before respond
@@ -38,7 +53,7 @@ async function generateCaddyfile() {
 
 *.${domain}, ${domain} {
   tls {
-    dns cloudflare {env.CF_API_TOKEN}
+    ${dnsConfig}
   }
 
   @test host test.${domain}
