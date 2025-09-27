@@ -34,15 +34,19 @@ async function generateCaddyfile() {
   const domain = config.domain;
 
   // Check for DNS provider tokens
-  let dnsConfig = "dns cloudflare {env.CF_API_TOKEN}"; // default
+  let tlsConfig = "";
   const envPath = "../../services/caddy/.env";
   if (existsSync(envPath)) {
     const env = loadEnv({ path: envPath }).parsed || {};
 
-    if (env.CF_API_TOKEN) {
-      dnsConfig = "dns cloudflare {env.CF_API_TOKEN}";
-    } else if (env.VERCEL_API_TOKEN) {
-      dnsConfig = "dns vercel {env.VERCEL_API_TOKEN}";
+    if (env.CF_API_TOKEN && env.CF_API_TOKEN.trim()) {
+      tlsConfig = `tls {
+    dns cloudflare {env.CF_API_TOKEN}
+  }`;
+    } else if (env.VERCEL_API_TOKEN && env.VERCEL_API_TOKEN.trim()) {
+      tlsConfig = `tls {
+    dns vercel {env.VERCEL_API_TOKEN}
+  }`;
     }
   }
 
@@ -52,9 +56,7 @@ async function generateCaddyfile() {
 }
 
 *.${domain}, ${domain} {
-  tls {
-    ${dnsConfig}
-  }
+  ${tlsConfig}
 
   @test host test.${domain}
   handle @test {
