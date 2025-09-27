@@ -48,6 +48,12 @@
     domain: "{{ domain_input.user_input if domain_input.user_input != '' else 'home.shubapp.com' }}"
   when: not config_file.stat.exists
 
+- name: Install bun prerequisites
+  apt:
+    name: unzip
+    state: present
+    update_cache: yes
+
 - name: Install bun
   shell: curl -fsSL https://bun.sh/install | bash
   args:
