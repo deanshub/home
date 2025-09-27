@@ -31,3 +31,4 @@
 - [ ] (integrate with the gate camera)
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
+- [ ] .env files creation in ansible
