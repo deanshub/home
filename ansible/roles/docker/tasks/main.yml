@@ -75,6 +75,6 @@
 - name: Start Docker Compose services
   shell: ./casa.sh up -d
   args:
-    chdir: /home/{{ username }}/dev/home
+    chdir: "{{ playbook_dir }}/.."
   become_user: "{{ username }}"
   become: no
