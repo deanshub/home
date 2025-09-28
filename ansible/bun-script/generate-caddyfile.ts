@@ -8,6 +8,7 @@ const PROXY_TARGETS: Record<string, { target: string; config?: string }> = {
   homeassistant: { target: "http://192.168.31.153:8123" },
   sonarr: { target: "sonarr:8989" },
   radarr: { target: "radarr:7878" },
+  lidarr: { target: "lidarr:8686" },
   prowlarr: { target: "prowlarr:9696" },
   flaresolverr: { target: "flaresolverr:8191" },
   bazarr: { target: "bazarr:6767" },

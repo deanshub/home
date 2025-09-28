@@ -36,6 +36,11 @@ services:
     url: https://flaresolverr.{{ domain }}
     color: pink
     category: media
+  - name: lidarr
+    label: Lidarr
+    category: media
+    color: green
+    url: https://lidarr.{{ domain }}
   - name: bazarr
     label: Bazarr
     url: https://bazarr.{{ domain }}
