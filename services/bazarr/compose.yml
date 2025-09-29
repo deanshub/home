@@ -10,6 +10,8 @@ services:
     user: "1000:1000"
     networks:
       - caddy
+    ports:
+      - 6767:6767
     environment:
       - PUID=1000
       - PGID=1000

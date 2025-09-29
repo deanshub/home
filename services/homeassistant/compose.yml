@@ -9,6 +9,8 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     environment:
       - TZ=Asia/Jerusalem
+    ports:
+      - 8123:8123
     volumes:
       - /media/external/homeassistant-config:/config
       - ./configuration.yaml:/config/configuration.yaml

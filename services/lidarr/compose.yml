@@ -9,7 +9,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Asia/Jerusalem
     volumes:
       - /media/external/configs/lidarr:/config
       - /media/external/library/music:/music
