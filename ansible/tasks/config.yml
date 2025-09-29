@@ -61,9 +61,39 @@
   become_user: "{{ username }}"
   become: no
 
-- name: Load services list
-  include_vars: "../../services/services.yaml"
+- name: Get all service directories
+  find:
+    paths: "{{ playbook_dir }}/../services"
+    file_type: directory
+  register: service_dirs
   when: not config_file.stat.exists
+
+- name: Read service compose files and extract labels
+  slurp:
+    src: "{{ item.path }}/compose.yml"
+  register: compose_files
+  loop: "{{ service_dirs.files }}"
+  when: not config_file.stat.exists
+
+- name: Parse compose files and build services list
+  set_fact:
+    all_services: "{{ all_services | default([]) + [service_info] }}"
+  vars:
+    compose_content: "{{ (item.content | b64decode | from_yaml) }}"
+    service_key: "{{ compose_content.services.keys() | first }}"
+    service_data: "{{ compose_content.services[service_key] }}"
+    labels: "{{ service_data.labels | default({}) }}"
+    service_info: "{{ {
+      'name': item.item.path | basename,
+      'label': labels.title | default(''),
+      'category': labels.category | default(''),
+      'color': labels.color | default(''),
+      'url': labels.url | default('')
+    } | dict2items | rejectattr('value', 'equalto', '') | items2dict }}"
+  loop: "{{ compose_files.results }}"
+  when: 
+    - not config_file.stat.exists
+    - item.content is defined
 
 - name: Initialize selected services list
   set_fact:
@@ -72,16 +102,16 @@
 
 - name: Prompt for each service
   pause:
-    prompt: "Include {{ item.label }} service? [Y/n]"
+    prompt: "Include {{ item.label or item.name }} service? [Y/n]"
     echo: yes
   register: service_choice
-  loop: "{{ services }}"
+  loop: "{{ all_services | default([]) }}"
   when: not config_file.stat.exists
 
 - name: Build selected services list
   set_fact:
-    selected_services: "{{ selected_services + [item.item | combine({'url': item.item.url | default('') | replace('{{ domain }}', domain)}) if item.item.url is defined else item.item] }}"
-  loop: "{{ service_choice.results }}"
+    selected_services: "{{ selected_services + [item.item] }}"
+  loop: "{{ service_choice.results | default([]) }}"
   when: 
     - not config_file.stat.exists
     - item.user_input | default('y') | lower in ['y', 'yes', '']
