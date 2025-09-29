@@ -14,13 +14,14 @@ services:
       title: "Files"
       category: "media"
     ports:
-      - 80:80
+      - 8080:8080
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Jerusalem
     volumes:
       - /media/external/configs/filebrowser/settings:/config
+      - ./settings.json:/config/settings.json
       - /media/external/configs/filebrowser/db:/database
       - /media/external/library/downloads:/downloads
       - /media:/srv
