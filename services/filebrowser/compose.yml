@@ -11,6 +11,7 @@ services:
       - caddy
     labels:
       url: "https://files.{{ domain }}"
+      color: "red"
       title: "Files"
       category: "media"
     ports:

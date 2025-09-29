@@ -5,6 +5,7 @@ services:
     image: ghcr.io/deanshub/downloader:master
     labels:
       url: "https://t.me/ShubDownloadBot"
+      color: "yellow"
       title: "Downloader"
       category: "bot"
     env_file:

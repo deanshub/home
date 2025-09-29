@@ -5,6 +5,7 @@ services:
     image: ghcr.io/deanshub/shopping-bot:main
     labels:
       url: "https://t.me/shopping_list_manager_bot"
+      color: "amber"
       title: "Shopping Bot"
       category: "bot"
     env_file:

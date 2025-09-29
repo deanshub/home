@@ -6,6 +6,7 @@ services:
     build: .
     labels:
       url: "https://t.me/fridayJbot"
+      color: "fuchsia"
       title: "Friday"
       category: "bot"
     env_file:

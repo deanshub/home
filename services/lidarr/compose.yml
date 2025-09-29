@@ -17,6 +17,7 @@ services:
       - /media/external/library/downloads:/downloads
     labels:
       url: "https://lidarr.{{ domain }}"
+      color: "purple"
       title: "Lidarr"
       category: "media"
     ports:

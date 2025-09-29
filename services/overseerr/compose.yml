@@ -13,6 +13,7 @@ services:
       - PORT=5055
     labels:
       url: "https://overseerr.{{ domain }}"
+      color: "violet"
       title: "Overseerr"
       category: "media"
     ports:

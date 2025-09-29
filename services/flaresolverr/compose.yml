@@ -16,6 +16,7 @@ services:
       - TZ=Asia/Jerusalem
     labels:
       url: "https://flaresolverr.{{ domain }}"
+      color: "stone"
       title: "Flaresolverr"
       category: "media"
     ports:

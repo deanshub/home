@@ -12,6 +12,7 @@ services:
       - caddy
     labels:
       url: "https://torrent.{{ domain }}"
+      color: "gray"
       title: "Torrent"
       category: "media"
     ports:

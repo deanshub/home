@@ -12,6 +12,7 @@ services:
       - caddy
     labels:
       url: "https://bazarr.{{ domain }}"
+      color: "orange"
       title: "Bazarr"
       category: "media"
     ports:

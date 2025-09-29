@@ -9,6 +9,7 @@ services:
     image: ghcr.io/home-assistant/home-assistant:stable
     labels:
       url: "https://ha.{{ domain }}"
+      color: "green"
       title: "HA"
       category: "smart home"
     environment:

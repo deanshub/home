@@ -5,6 +5,7 @@ services:
     image: ghcr.io/deanshub/gpt-bot:main
     labels:
       url: "https://t.me/DecreeAiBot"
+      color: "rose"
       title: "GPT Bot"
       category: "bot"
     env_file:

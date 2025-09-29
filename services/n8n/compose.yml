@@ -19,6 +19,7 @@ services:
       - caddy
     labels:
       url: "https://n8n.{{ domain }}"
+      color: "lime"
       title: "n8n"
       category: "automation"
     ports:
