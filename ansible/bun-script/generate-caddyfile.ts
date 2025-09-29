@@ -1,10 +1,34 @@
-import { readFile, writeFile } from "fs/promises";
+import { readFile, writeFile, readdir } from "fs/promises";
 import { parse } from "yaml";
 import { existsSync } from "fs";
 import { config as loadEnv } from "dotenv";
 
+interface CasaConfig {
+  static_ip: string;
+  username: string;
+  gateway_ip: string;
+  domain: string;
+  services: ActiveService[];
+}
+
+interface ActiveService {
+  name: string;
+  label: string;
+  category: string;
+  url?: string;
+  color?: string;
+}
+
+interface ServiceInfo {
+  name: string;
+  url: string;
+  title: string;
+  category: string;
+  target: string;
+}
+
 // Static proxy mappings for services that need extra configuration
-const PROXY_TARGETS: Record<string, { config?: string }> = {
+const EXTRA_CONFIG: Record<string, { config?: string }> = {
   n8n: {
     config: `header {
       Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -17,11 +41,14 @@ const PROXY_TARGETS: Record<string, { config?: string }> = {
   },
 };
 
-async function getServiceTarget(
+async function getServiceInfo(
   serviceName: string,
   staticIp: string
-): Promise<string | null> {
+): Promise<ServiceInfo | null> {
   const composePath = `../../services/${serviceName}/compose.yml`;
+  if (!existsSync(composePath)) {
+    return null;
+  }
   const composeContent = await readFile(composePath, "utf8");
   const compose = parse(composeContent);
 
@@ -30,10 +57,18 @@ async function getServiceTarget(
   const serviceKey = Object.keys(services)[0];
   const service = services[serviceKey];
 
-  if (!service?.ports) {
+  const labels = service.labels || {};
+
+  // Skip services without URL labels (infrastructure services)
+  if (!labels.url) {
     return null;
   }
 
+  let target = `${serviceName}:80`; // fallback
+
+  if (!service.ports) {
+    return null;
+  }
   // Extract port from ports array (format: "8080:80" or 8080)
   const portMapping = service.ports[0];
   let port;
@@ -44,19 +79,51 @@ async function getServiceTarget(
     port = portMapping;
   }
 
-  // Check if service uses host networking
-  if (service.network_mode === "host") {
-    return `http://${staticIp}:${port}`;
+  if (!port) {
+    return null;
   }
 
-  return `${serviceName}:${port}`;
+  // Check if service uses host networking
+  if (service.network_mode === "host") {
+    target = `http://${staticIp}:${port}`;
+  } else {
+    target = `${serviceName}:${port}`;
+  }
+
+  return {
+    name: serviceName,
+    url: labels.url,
+    title: labels.title,
+    category: labels.category,
+    target,
+  };
 }
+
+// async function getAllServices(staticIp: string) {
+//   const servicesDir = "../../services";
+//   const serviceDirs = (
+//     await readdir(servicesDir, { withFileTypes: true })
+//   ).sort();
+
+//   const services: ServiceInfo[] = [];
+//   for (const dirent of serviceDirs) {
+//     if (dirent.isDirectory()) {
+//       const serviceInfo = await getServiceInfo(dirent.name, staticIp);
+//       if (serviceInfo) {
+//         services.push(serviceInfo);
+//       }
+//     }
+//   }
+
+//   return services;
+// }
 
 async function generateCaddyfile() {
   const yamlContent = await readFile("../../config.yaml", "utf8");
-  const config = parse(yamlContent);
+  const config = parse(yamlContent) as CasaConfig;
 
   const domain = config.domain;
+  // const allServices = await getAllServices(config.static_ip);
 
   // Check for DNS provider tokens
   let tlsConfig = "";
@@ -92,21 +159,22 @@ async function generateCaddyfile() {
 
   // Add service handlers
   for (const service of config.services) {
-    if (service.url) {
-      const subdomain = service.url.split("//")[1].split(".")[0];
-      const target = await getServiceTarget(service.name, config.static_ip);
-      if (!target) {
-        continue;
-      }
-      const extraConfig = PROXY_TARGETS[service.name]?.config || "";
+    if (!service.url) {
+      continue;
+    }
+    const subdomain = service.url.split("//")[1].split(".")[0];
+    const extraConfig = EXTRA_CONFIG[service.name]?.config ?? "";
+    const serviceInfo = await getServiceInfo(service.name, config.static_ip);
+    if (!serviceInfo?.target) {
+      continue;
+    }
 
-      caddyfile += `  @${service.name} host ${subdomain}.${domain}
+    caddyfile += `  @${service.name} host ${subdomain}.${domain}
   handle @${service.name} {
-    reverse_proxy ${target}
-    ${extraConfig ?? ""}
+    reverse_proxy ${serviceInfo.target}
+    ${extraConfig}
   }
 `;
-    }
   }
 
   // Add static handlers

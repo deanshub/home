@@ -7,6 +7,10 @@ services:
     restart: unless-stopped
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:stable
+    labels:
+      url: "https://ha.{{ domain }}"
+      title: "HA"
+      category: "smart home"
     environment:
       - TZ=Asia/Jerusalem
     ports:

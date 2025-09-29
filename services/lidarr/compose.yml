@@ -4,6 +4,7 @@ networks:
 
 services:
   lidarr:
+    restart: unless-stopped
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
     environment:
@@ -14,8 +15,11 @@ services:
       - /media/external/configs/lidarr:/config
       - /media/external/library/music:/music
       - /media/external/library/downloads:/downloads
+    labels:
+      url: "https://lidarr.{{ domain }}"
+      title: "Lidarr"
+      category: "media"
     ports:
       - 8686:8686
-    restart: unless-stopped
     networks:
       - caddy

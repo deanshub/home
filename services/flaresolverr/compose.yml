@@ -14,5 +14,9 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Asia/Jerusalem
+    labels:
+      url: "https://flaresolverr.{{ domain }}"
+      title: "Flaresolverr"
+      category: "media"
     ports:
       - "8191:8191"

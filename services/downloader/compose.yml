@@ -3,6 +3,10 @@ services:
     restart: on-failure:3
     container_name: downloader
     image: ghcr.io/deanshub/downloader:master
+    labels:
+      url: "https://t.me/ShubDownloadBot"
+      title: "Downloader"
+      category: "bot"
     env_file:
       - .env
     volumes:
