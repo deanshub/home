@@ -41,16 +41,16 @@ services:
     category: media
     color: green
     url: https://lidarr.{{ domain }}
-  - name: overseerr
-    label: Overseerr
-    category: media
-    color: blue
-    url: https://overseerr.{{ domain }}
   - name: bazarr
     label: Bazarr
     url: https://bazarr.{{ domain }}
     color: orange
     category: media
+  - name: overseerr
+    label: Overseerr
+    category: media
+    color: blue
+    url: https://overseerr.{{ domain }}
   - name: jellyfin
     label: Jellyfin
     url: https://jellyfin.{{ domain }}
