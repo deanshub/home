@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  overseerr:
+    restart: unless-stopped
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=Asia/Jerusalem
+      - PORT=5055
+    labels:
+      url: "https://overseerr.{{ domain }}"
+      title: "Overseerr"
+      category: "media"
+    ports:
+      - 5055:5055
+    volumes:
+      - /media/external/configs/overseerr:/app/config
+    networks:
+      - caddy

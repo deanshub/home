@@ -28,7 +28,11 @@
   - [x] change in services.yaml the URL to be templated {{ domain }} (instead of home.shubapp.com)
   - [x] remove private data (domain, static_ip, gateway_ip, username) from services.yaml
 - [x] generate the web page based on services.yaml
-- [ ] (integrate with the gate camera)
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible
+- [ ] remove services.yaml and rely only on compose.yml files
+  - [x] move urls to compose.yml under label "url"
+  - [x] move categories to compose.yml under label "category"
+  - [ ] move colors to be an array in ansible and set the colors and urls in config.yaml
+  - [ ] remove services.yaml

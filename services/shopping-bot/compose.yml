@@ -3,6 +3,10 @@ services:
     restart: unless-stopped
     container_name: shopping-bot
     image: ghcr.io/deanshub/shopping-bot:main
+    labels:
+      url: "https://t.me/shopping_list_manager_bot"
+      title: "Shopping Bot"
+      category: "bot"
     env_file:
       - .env
     volumes:

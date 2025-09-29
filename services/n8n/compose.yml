@@ -17,6 +17,10 @@ services:
       - /media/external/library/n8n:/files
     networks:
       - caddy
+    labels:
+      url: "https://n8n.{{ domain }}"
+      title: "n8n"
+      category: "automation"
     ports:
       - 5678:5678
 

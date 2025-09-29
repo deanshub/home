@@ -10,6 +10,12 @@ services:
     user: "1000:1000"
     networks:
       - caddy
+    ports:
+      - 8989:8989
+    labels:
+      url: "https://sonarr.{{ domain }}"
+      title: "Sonarr"
+      category: "media"
     environment:
       - PUID=1000
       - PGID=1000

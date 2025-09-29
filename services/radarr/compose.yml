@@ -11,6 +11,10 @@ services:
       - caddy
     ports:
       - 7878:7878
+    labels:
+      url: "https://radarr.{{ domain }}"
+      title: "Radarr"
+      category: "media"
     environment:
       - PUID=1000
       - PGID=1000

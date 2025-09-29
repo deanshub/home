@@ -10,6 +10,12 @@ services:
     user: "1000:1000"
     networks:
       - caddy
+    labels:
+      url: "https://bazarr.{{ domain }}"
+      title: "Bazarr"
+      category: "media"
+    ports:
+      - 6767:6767
     environment:
       - PUID=1000
       - PGID=1000

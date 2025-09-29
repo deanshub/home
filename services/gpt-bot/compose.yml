@@ -3,6 +3,10 @@ services:
     restart: unless-stopped
     container_name: gpt-bot
     image: ghcr.io/deanshub/gpt-bot:main
+    labels:
+      url: "https://t.me/DecreeAiBot"
+      title: "GPT Bot"
+      category: "bot"
     env_file:
       - .env
     volumes:

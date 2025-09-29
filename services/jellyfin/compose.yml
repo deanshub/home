@@ -18,6 +18,10 @@ services:
       - /media/external:/data/external
       - type: tmpfs
         target: /tmp-transcoding
+    labels:
+      url: "https://jellyfin.{{ domain }}"
+      title: "Jellyfin"
+      category: "media"
     ports:
       - 8096:8096
       - 8920:8920

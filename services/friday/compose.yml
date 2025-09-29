@@ -4,6 +4,10 @@ services:
     container_name: friday
     user: "1000:1000"
     build: .
+    labels:
+      url: "https://t.me/fridayJbot"
+      title: "Friday"
+      category: "bot"
     env_file:
       - .env
     volumes:
