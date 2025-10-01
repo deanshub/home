@@ -10,8 +10,9 @@ services:
     environment:
       - TZ=Asia/Jerusalem
     cap_add:
-      - net_admin
+      - NET_ADMIN
+      - NET_RAW
       - sys_module
     volumes:
-      - /var/lib:/var/lib
+      - /media/external/configs/tailscale:/var/lib
       - /dev/net/tun:/dev/net/tun
