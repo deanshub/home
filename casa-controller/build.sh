@@ -1,2 +1,2 @@
 go mod tidy
-go build -o casa main.go
+go build -o ../casa main.go
