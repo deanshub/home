@@ -16,7 +16,11 @@ type Config struct {
 }
 
 type Service struct {
-	Name string `yaml:"name"`
+	Name     string `yaml:"name"`
+	Label    string `yaml:"label,omitempty"`
+	Category string `yaml:"category,omitempty"`
+	Color    string `yaml:"color,omitempty"`
+	URL      string `yaml:"url,omitempty"`
 }
 
 func main() {
@@ -77,8 +81,8 @@ func runConfig() {
 		os.Exit(1)
 	}
 	
-	scriptPath := filepath.Join(filepath.Dir(execPath), "ansible", "bun-script", "generate-caddyfile.ts")
-	scriptDir := filepath.Dir(scriptPath)
+	repoRoot := filepath.Dir(execPath)
+	scriptDir := filepath.Join(repoRoot, "ansible", "bun-script")
 	
 	cmd := exec.Command("bun", "run", "generate-caddyfile.ts")
 	cmd.Dir = scriptDir
@@ -98,7 +102,8 @@ func loadConfig() (*Config, error) {
 		return nil, err
 	}
 	
-	configPath := filepath.Join(filepath.Dir(execPath), "config.yaml")
+	repoRoot := filepath.Dir(execPath)
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
@@ -137,10 +142,15 @@ func runAllServicesUp() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
 		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Starting %s...\n", service.Name)
@@ -198,10 +208,15 @@ func runAllServicesDown() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
 		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Stopping %s...\n", service.Name)
@@ -230,6 +245,7 @@ func runAllServicesDown() {
 		}
 	}
 }
+
 func runServiceRestart(serviceName string) {
 	execPath, err := os.Executable()
 	if err != nil {
@@ -258,10 +274,15 @@ func runAllServicesRestart() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
 		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Restarting %s...\n", service.Name)
@@ -290,6 +311,7 @@ func runAllServicesRestart() {
 		}
 	}
 }
+
 func runServiceLog(serviceName string) {
 	execPath, err := os.Executable()
 	if err != nil {
@@ -310,6 +332,7 @@ func runServiceLog(serviceName string) {
 		os.Exit(1)
 	}
 }
+
 func runServiceStatus(serviceName string) {
 	execPath, err := os.Executable()
 	if err != nil {
@@ -338,8 +361,13 @@ func runAllServicesStatus() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
 		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("=== %s ===\n", service.Name)
@@ -355,6 +383,7 @@ func runAllServicesStatus() {
 		fmt.Println()
 	}
 }
+
 func runServiceInstall(serviceName string) {
 	execPath, err := os.Executable()
 	if err != nil {
@@ -362,8 +391,10 @@ func runServiceInstall(serviceName string) {
 		os.Exit(1)
 	}
 	
+	repoRoot := filepath.Dir(execPath)
+	
 	// Read service compose file to get labels
-	composePath := filepath.Join(filepath.Dir(execPath), "services", serviceName, "compose.yml")
+	composePath := filepath.Join(repoRoot, "services", serviceName, "compose.yml")
 	composeData, err := ioutil.ReadFile(composePath)
 	if err != nil {
 		fmt.Printf("Error reading compose file for %s: %v\n", serviceName, err)
@@ -395,7 +426,7 @@ func runServiceInstall(serviceName string) {
 	}
 	
 	// Load existing config
-	configPath := filepath.Join(filepath.Dir(execPath), "..", "config.yaml")
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
@@ -424,8 +455,19 @@ func runServiceInstall(serviceName string) {
 		}
 	}
 	
-	// Add new service
-	newService := Service{Name: serviceName}
+	// Add new service with all metadata
+	url := labels["url"]
+	if url != "" && strings.Contains(url, "{{ domain }}") {
+		url = strings.ReplaceAll(url, "{{ domain }}", config.Domain)
+	}
+	
+	newService := Service{
+		Name:     serviceName,
+		Label:    labels["title"],
+		Category: labels["category"],
+		Color:    labels["color"],
+		URL:      url,
+	}
 	config.Services = append(config.Services, newService)
 	
 	// Write updated config
@@ -445,7 +487,18 @@ func runServiceInstall(serviceName string) {
 	
 	// Run config generation
 	runConfig()
+	
+	// Restart caddy to reload configuration
+	fmt.Println("Restarting caddy...")
+	cmd := exec.Command("docker", "restart", "caddy")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Warning: Failed to restart caddy: %v\n", err)
+	} else {
+		fmt.Println("✅ Caddy restarted successfully")
+	}
 }
+
 func runInteractiveInstall() {
 	execPath, err := os.Executable()
 	if err != nil {
@@ -453,26 +506,60 @@ func runInteractiveInstall() {
 		os.Exit(1)
 	}
 	
+	repoRoot := filepath.Dir(execPath)
+	
 	// Get all available services
-	servicesDir := filepath.Join(filepath.Dir(execPath), "services")
+	servicesDir := filepath.Join(repoRoot, "services")
 	entries, err := ioutil.ReadDir(servicesDir)
 	if err != nil {
 		fmt.Printf("Error reading services directory: %v\n", err)
 		os.Exit(1)
 	}
 	
-	var availableServices []string
+	var availableServices []Service
 	for _, entry := range entries {
 		if entry.IsDir() {
 			composePath := filepath.Join(servicesDir, entry.Name(), "compose.yml")
 			if _, err := os.Stat(composePath); err == nil {
-				availableServices = append(availableServices, entry.Name())
+				// Read compose file to get metadata
+				composeData, err := ioutil.ReadFile(composePath)
+				if err == nil {
+					var compose struct {
+						Services map[string]struct {
+							Labels map[string]string `yaml:"labels"`
+						} `yaml:"services"`
+					}
+					
+					if yaml.Unmarshal(composeData, &compose) == nil {
+						// Get first service and its labels
+						var labels map[string]string
+						for _, service := range compose.Services {
+							labels = service.Labels
+							break
+						}
+						
+						url := labels["url"]
+						if url != "" && strings.Contains(url, "{{ domain }}") {
+							// We'll replace this after loading the config
+							url = labels["url"]
+						}
+						
+						service := Service{
+							Name:     entry.Name(),
+							Label:    labels["title"],
+							Category: labels["category"],
+							Color:    labels["color"],
+							URL:      url,
+						}
+						availableServices = append(availableServices, service)
+					}
+				}
 			}
 		}
 	}
 	
 	// Load existing config
-	configPath := filepath.Join(filepath.Dir(execPath), "..", "config.yaml")
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
@@ -505,18 +592,36 @@ func runInteractiveInstall() {
 	
 	fmt.Println("Select services to install (Y/n for each):")
 	
-	for _, serviceName := range availableServices {
+	for _, service := range availableServices {
 		status := "not installed"
-		if installedServices[serviceName] {
+		if installedServices[service.Name] {
 			status = "installed"
 		}
 		
-		fmt.Printf("Include %s (%s)? [Y/n]: ", serviceName, status)
+		displayName := service.Label
+		if displayName == "" {
+			displayName = service.Name
+		}
+		
+		fmt.Printf("Include %s (%s)? [Y/n]: ", displayName, status)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(strings.ToLower(input))
 		
 		if input == "" || input == "y" || input == "yes" {
-			newServices = append(newServices, Service{Name: serviceName})
+			// Replace URL template with actual domain
+			url := service.URL
+			if url != "" && strings.Contains(url, "{{ domain }}") {
+				url = strings.ReplaceAll(url, "{{ domain }}", config.Domain)
+			}
+			
+			serviceToAdd := Service{
+				Name:     service.Name,
+				Label:    service.Label,
+				Category: service.Category,
+				Color:    service.Color,
+				URL:      url,
+			}
+			newServices = append(newServices, serviceToAdd)
 		}
 	}
 	
@@ -540,7 +645,18 @@ func runInteractiveInstall() {
 	
 	// Run config generation
 	runConfig()
+	
+	// Restart caddy to reload configuration
+	fmt.Println("Restarting caddy...")
+	cmd := exec.Command("docker", "restart", "caddy")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Warning: Failed to restart caddy: %v\n", err)
+	} else {
+		fmt.Println("✅ Caddy restarted successfully")
+	}
 }
+
 func showHelp() {
 	fmt.Println("Casa Controller - Docker Compose Service Manager")
 	fmt.Println()
