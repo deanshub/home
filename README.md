@@ -5,12 +5,14 @@ A complete Docker-based home server setup with automated service management and 
 ## Quick Start
 
 1. **Clone and setup**
+
    ```bash
    git clone <repo>
    cd home
    ```
 
 2. **Build casa controller**
+
    ```bash
    cd casa-controller
    ./build.sh
@@ -18,6 +20,7 @@ A complete Docker-based home server setup with automated service management and 
    ```
 
 3. **Configure services**
+
    ```bash
    ./casa install  # Interactive service selection
    ```
@@ -113,6 +116,7 @@ services:
 ## Deployment
 
 The Ansible playbook handles:
+
 - Docker and Docker Compose installation
 - Network creation
 - Service deployment
