@@ -71,21 +71,14 @@ func main() {
 }
 
 func runConfig() {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	scriptPath := filepath.Join(filepath.Dir(execPath), "ansible", "bun-script", "generate-caddyfile.ts")
-	scriptDir := filepath.Dir(scriptPath)
+	scriptDir := filepath.Join("ansible", "bun-script")
 	
 	cmd := exec.Command("bun", "run", "generate-caddyfile.ts")
 	cmd.Dir = scriptDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Error running bun script: %v\n", err)
 		os.Exit(1)
@@ -105,13 +98,7 @@ func loadConfig() (*Config, error) {
 }
 
 func runServiceUp(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
+	serviceDir := filepath.Join("services", serviceName)
 	
 	fmt.Printf("Starting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "up", "-d")
@@ -135,8 +122,7 @@ func runAllServicesUp() {
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
+		serviceDir := filepath.Join("services", service.Name)
 		
 		fmt.Printf("Starting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "up", "-d")
@@ -166,13 +152,7 @@ func runAllServicesUp() {
 }
 
 func runServiceDown(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
+	serviceDir := filepath.Join("services", serviceName)
 	
 	fmt.Printf("Stopping %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "down")
@@ -196,8 +176,7 @@ func runAllServicesDown() {
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
+		serviceDir := filepath.Join("services", service.Name)
 		
 		fmt.Printf("Stopping %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "down")
@@ -225,14 +204,9 @@ func runAllServicesDown() {
 		}
 	}
 }
+
 func runServiceRestart(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
+	serviceDir := filepath.Join("services", serviceName)
 	
 	fmt.Printf("Restarting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "restart")
@@ -256,8 +230,7 @@ func runAllServicesRestart() {
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
+		serviceDir := filepath.Join("services", service.Name)
 		
 		fmt.Printf("Restarting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "restart")
@@ -285,41 +258,31 @@ func runAllServicesRestart() {
 		}
 	}
 }
+
 func runServiceLog(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
+	serviceDir := filepath.Join("services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "logs", "-f")
 	cmd.Dir = serviceDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Error viewing logs for %s: %v\n", serviceName, err)
 		os.Exit(1)
 	}
 }
+
 func runServiceStatus(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
+	serviceDir := filepath.Join("services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "ps")
 	cmd.Dir = serviceDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err = cmd.Run()
+	err := cmd.Run()
 	if err != nil {
 		fmt.Printf("Error getting status for %s: %v\n", serviceName, err)
 		os.Exit(1)
@@ -334,8 +297,7 @@ func runAllServicesStatus() {
 	}
 	
 	for _, service := range config.Services {
-		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
+		serviceDir := filepath.Join("services", service.Name)
 		
 		fmt.Printf("=== %s ===\n", service.Name)
 		cmd := exec.Command("docker", "compose", "ps")
@@ -350,15 +312,10 @@ func runAllServicesStatus() {
 		fmt.Println()
 	}
 }
+
 func runServiceInstall(serviceName string) {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
 	// Read service compose file to get labels
-	composePath := filepath.Join(filepath.Dir(execPath), "services", serviceName, "compose.yml")
+	composePath := filepath.Join("services", serviceName, "compose.yml")
 	composeData, err := ioutil.ReadFile(composePath)
 	if err != nil {
 		fmt.Printf("Error reading compose file for %s: %v\n", serviceName, err)
@@ -390,7 +347,7 @@ func runServiceInstall(serviceName string) {
 	}
 	
 	// Load existing config
-	configPath := filepath.Join(filepath.Dir(execPath), "..", "config.yaml")
+	configPath := "config.yaml"
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
@@ -441,15 +398,10 @@ func runServiceInstall(serviceName string) {
 	// Run config generation
 	runConfig()
 }
+
 func runInteractiveInstall() {
-	execPath, err := os.Executable()
-	if err != nil {
-		fmt.Printf("Error getting executable path: %v\n", err)
-		os.Exit(1)
-	}
-	
 	// Get all available services
-	servicesDir := filepath.Join(filepath.Dir(execPath), "services")
+	servicesDir := "services"
 	entries, err := ioutil.ReadDir(servicesDir)
 	if err != nil {
 		fmt.Printf("Error reading services directory: %v\n", err)
@@ -467,7 +419,7 @@ func runInteractiveInstall() {
 	}
 	
 	// Load existing config
-	configPath := filepath.Join(filepath.Dir(execPath), "..", "config.yaml")
+	configPath := "config.yaml"
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
@@ -536,6 +488,7 @@ func runInteractiveInstall() {
 	// Run config generation
 	runConfig()
 }
+
 func showHelp() {
 	fmt.Println("Casa Controller - Docker Compose Service Manager")
 	fmt.Println()
