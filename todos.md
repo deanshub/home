@@ -43,4 +43,5 @@
   - [ ] casa service logs
   - [ ] casa service status
   - [ ] casa install service
-- [ ] add portainer
+- [x] add portainer
+- [ ] update the readme

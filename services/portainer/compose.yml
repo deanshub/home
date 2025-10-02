@@ -1,0 +1,22 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    restart: always
+    networks:
+      - caddy
+    labels:
+      url: "https://portainer.{{ domain }}"
+      title: "Portainer"
+      category: "infrastructure"
+      color: "cyan"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /media/external/configs/portainer:/data
+    ports:
+      - 9443:9443
+      - 8000:8000
