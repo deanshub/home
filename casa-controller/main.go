@@ -455,12 +455,18 @@ func runInteractiveInstall() {
 							break
 						}
 						
+						url := labels["url"]
+						if url != "" && strings.Contains(url, "{{ domain }}") {
+							// We'll replace this after loading the config
+							url = labels["url"]
+						}
+						
 						service := Service{
 							Name:     entry.Name(),
 							Label:    labels["title"],
 							Category: labels["category"],
 							Color:    labels["color"],
-							URL:      labels["url"],
+							URL:      url,
 						}
 						availableServices = append(availableServices, service)
 					}
@@ -519,7 +525,20 @@ func runInteractiveInstall() {
 		input = strings.TrimSpace(strings.ToLower(input))
 		
 		if input == "" || input == "y" || input == "yes" {
-			newServices = append(newServices, service)
+			// Replace URL template with actual domain
+			url := service.URL
+			if url != "" && strings.Contains(url, "{{ domain }}") {
+				url = strings.ReplaceAll(url, "{{ domain }}", config.Domain)
+			}
+			
+			serviceToAdd := Service{
+				Name:     service.Name,
+				Label:    service.Label,
+				Category: service.Category,
+				Color:    service.Color,
+				URL:      url,
+			}
+			newServices = append(newServices, serviceToAdd)
 		}
 	}
 	
