@@ -381,12 +381,17 @@ func runServiceInstall(serviceName string) {
 	}
 	
 	// Add new service with all metadata
+	url := labels["url"]
+	if url != "" && strings.Contains(url, "{{ domain }}") {
+		url = strings.ReplaceAll(url, "{{ domain }}", config.Domain)
+	}
+	
 	newService := Service{
 		Name:     serviceName,
 		Label:    labels["title"],
 		Category: labels["category"],
 		Color:    labels["color"],
-		URL:      labels["url"],
+		URL:      url,
 	}
 	config.Services = append(config.Services, newService)
 	
