@@ -25,7 +25,6 @@ services:
       - .env
     volumes:
       - "/media/external/configs/pihole:/etc/pihole"
-      - "/media/external/configs/pihole/external.conf:/etc/lighttpd/external.conf"
     networks:
       - caddy
     cap_add:

@@ -75,14 +75,21 @@ func main() {
 }
 
 func runConfig() {
-	scriptDir := filepath.Join("ansible", "bun-script")
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	repoRoot := filepath.Dir(execPath)
+	scriptDir := filepath.Join(repoRoot, "ansible", "bun-script")
 	
 	cmd := exec.Command("bun", "run", "generate-caddyfile.ts")
 	cmd.Dir = scriptDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("Error running bun script: %v\n", err)
 		os.Exit(1)
@@ -90,7 +97,13 @@ func runConfig() {
 }
 
 func loadConfig() (*Config, error) {
-	configPath := "config.yaml"
+	execPath, err := os.Executable()
+	if err != nil {
+		return nil, err
+	}
+	
+	repoRoot := filepath.Dir(execPath)
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
@@ -102,7 +115,13 @@ func loadConfig() (*Config, error) {
 }
 
 func runServiceUp(serviceName string) {
-	serviceDir := filepath.Join("services", serviceName)
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Starting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "up", "-d")
@@ -123,10 +142,16 @@ func runAllServicesUp() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		serviceDir := filepath.Join("services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Starting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "up", "-d")
@@ -156,7 +181,13 @@ func runAllServicesUp() {
 }
 
 func runServiceDown(serviceName string) {
-	serviceDir := filepath.Join("services", serviceName)
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Stopping %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "down")
@@ -177,10 +208,16 @@ func runAllServicesDown() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		serviceDir := filepath.Join("services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Stopping %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "down")
@@ -210,7 +247,13 @@ func runAllServicesDown() {
 }
 
 func runServiceRestart(serviceName string) {
-	serviceDir := filepath.Join("services", serviceName)
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Restarting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "restart")
@@ -231,10 +274,16 @@ func runAllServicesRestart() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	var succeeded, failed []string
 	
 	for _, service := range config.Services {
-		serviceDir := filepath.Join("services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Restarting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "restart")
@@ -264,14 +313,20 @@ func runAllServicesRestart() {
 }
 
 func runServiceLog(serviceName string) {
-	serviceDir := filepath.Join("services", serviceName)
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "logs", "-f")
 	cmd.Dir = serviceDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("Error viewing logs for %s: %v\n", serviceName, err)
 		os.Exit(1)
@@ -279,14 +334,20 @@ func runServiceLog(serviceName string) {
 }
 
 func runServiceStatus(serviceName string) {
-	serviceDir := filepath.Join("services", serviceName)
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "ps")
 	cmd.Dir = serviceDir
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	
-	err := cmd.Run()
+	err = cmd.Run()
 	if err != nil {
 		fmt.Printf("Error getting status for %s: %v\n", serviceName, err)
 		os.Exit(1)
@@ -300,8 +361,14 @@ func runAllServicesStatus() {
 		os.Exit(1)
 	}
 	
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
 	for _, service := range config.Services {
-		serviceDir := filepath.Join("services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("=== %s ===\n", service.Name)
 		cmd := exec.Command("docker", "compose", "ps")
@@ -318,8 +385,16 @@ func runAllServicesStatus() {
 }
 
 func runServiceInstall(serviceName string) {
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	repoRoot := filepath.Dir(execPath)
+	
 	// Read service compose file to get labels
-	composePath := filepath.Join("services", serviceName, "compose.yml")
+	composePath := filepath.Join(repoRoot, "services", serviceName, "compose.yml")
 	composeData, err := ioutil.ReadFile(composePath)
 	if err != nil {
 		fmt.Printf("Error reading compose file for %s: %v\n", serviceName, err)
@@ -351,7 +426,7 @@ func runServiceInstall(serviceName string) {
 	}
 	
 	// Load existing config
-	configPath := "config.yaml"
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
@@ -425,8 +500,16 @@ func runServiceInstall(serviceName string) {
 }
 
 func runInteractiveInstall() {
+	execPath, err := os.Executable()
+	if err != nil {
+		fmt.Printf("Error getting executable path: %v\n", err)
+		os.Exit(1)
+	}
+	
+	repoRoot := filepath.Dir(execPath)
+	
 	// Get all available services
-	servicesDir := "services"
+	servicesDir := filepath.Join(repoRoot, "services")
 	entries, err := ioutil.ReadDir(servicesDir)
 	if err != nil {
 		fmt.Printf("Error reading services directory: %v\n", err)
@@ -476,7 +559,7 @@ func runInteractiveInstall() {
 	}
 	
 	// Load existing config
-	configPath := "config.yaml"
+	configPath := filepath.Join(repoRoot, "config.yaml")
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf("Error reading config.yaml: %v\n", err)
