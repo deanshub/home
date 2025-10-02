@@ -407,6 +407,16 @@ func runServiceInstall(serviceName string) {
 	
 	// Run config generation
 	runConfig()
+	
+	// Restart caddy to reload configuration
+	fmt.Println("Restarting caddy...")
+	cmd := exec.Command("docker", "restart", "caddy")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Warning: Failed to restart caddy: %v\n", err)
+	} else {
+		fmt.Println("✅ Caddy restarted successfully")
+	}
 }
 
 func runInteractiveInstall() {
@@ -528,6 +538,16 @@ func runInteractiveInstall() {
 	
 	// Run config generation
 	runConfig()
+	
+	// Restart caddy to reload configuration
+	fmt.Println("Restarting caddy...")
+	cmd := exec.Command("docker", "restart", "caddy")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Printf("Warning: Failed to restart caddy: %v\n", err)
+	} else {
+		fmt.Println("✅ Caddy restarted successfully")
+	}
 }
 
 func showHelp() {
