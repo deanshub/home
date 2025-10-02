@@ -43,5 +43,6 @@
   - [ ] casa service logs
   - [ ] casa service status
   - [ ] casa install service
+  - [ ] casa regenerate config (caddyfile?)
 - [x] add portainer
 - [ ] update the readme
