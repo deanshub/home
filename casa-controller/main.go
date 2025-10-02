@@ -21,10 +21,13 @@ type Service struct {
 
 func main() {
 	if len(os.Args) < 2 {
+		showHelp()
 		return
 	}
 
 	switch os.Args[1] {
+	case "--help", "-h", "help":
+		showHelp()
 	case "config":
 		runConfig()
 	case "up":
@@ -61,6 +64,9 @@ func main() {
 		} else {
 			runInteractiveInstall()
 		}
+	default:
+		fmt.Printf("Unknown command: %s\n\n", os.Args[1])
+		showHelp()
 	}
 }
 
@@ -534,4 +540,36 @@ func runInteractiveInstall() {
 	
 	// Run config generation
 	runConfig()
+}
+func showHelp() {
+	fmt.Println("Casa Controller - Docker Compose Service Manager")
+	fmt.Println()
+	fmt.Println("USAGE:")
+	fmt.Println("  casa [COMMAND] [SERVICE_NAME]")
+	fmt.Println()
+	fmt.Println("COMMANDS:")
+	fmt.Println("  Configuration:")
+	fmt.Println("    config                    Generate Caddyfile from service configurations")
+	fmt.Println()
+	fmt.Println("  Service Management:")
+	fmt.Println("    up [SERVICE_NAME]         Start all services or specific service")
+	fmt.Println("    down [SERVICE_NAME]       Stop all services or specific service")
+	fmt.Println("    restart [SERVICE_NAME]    Restart all services or specific service")
+	fmt.Println()
+	fmt.Println("  Service Installation:")
+	fmt.Println("    install                   Interactive service selection")
+	fmt.Println("    install SERVICE_NAME      Install specific service to config.yaml")
+	fmt.Println()
+	fmt.Println("  Monitoring:")
+	fmt.Println("    status [SERVICE_NAME]     Show status of all or specific service")
+	fmt.Println("    log SERVICE_NAME          View live logs for specific service")
+	fmt.Println()
+	fmt.Println("  Help:")
+	fmt.Println("    --help, -h, help          Show this help message")
+	fmt.Println()
+	fmt.Println("EXAMPLES:")
+	fmt.Println("  casa install              # Interactive service selection")
+	fmt.Println("  casa up                   # Start all configured services")
+	fmt.Println("  casa status portainer     # Check portainer status")
+	fmt.Println("  casa log jellyfin         # View jellyfin logs")
 }
