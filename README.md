@@ -19,13 +19,19 @@ A complete Docker-based home server setup with automated service management and 
    cd ..
    ```
 
-3. **Configure services**
+3. **Install casa globally (optional)**
 
    ```bash
-   ./casa install  # Interactive service selection
+   sudo ln -s $(pwd)/casa /usr/local/bin/casa
    ```
 
-4. **Deploy with Ansible**
+4. **Configure services**
+
+   ```bash
+   casa install  # Interactive service selection
+   ```
+
+5. **Deploy with Ansible**
    ```bash
    cd ansible
    ansible-playbook -i inventory.yml playbook.yml
@@ -37,18 +43,18 @@ Command-line tool for managing Docker Compose services:
 
 ```bash
 # Service management
-./casa up                    # Start all services
-./casa down                  # Stop all services
-./casa restart               # Restart all services
-./casa status                # Check service status
+casa up                    # Start all services
+casa down                  # Stop all services
+casa restart               # Restart all services
+casa status                # Check service status
 
 # Individual services
-./casa up jellyfin           # Start specific service
-./casa log portainer         # View service logs
+casa up jellyfin           # Start specific service
+casa log portainer         # View service logs
 
 # Configuration
-./casa install               # Interactive service selection
-./casa config                # Generate Caddyfile
+casa install               # Interactive service selection
+casa config                # Generate Caddyfile
 ```
 
 ## Architecture
@@ -101,7 +107,7 @@ services:
 
 ## Configuration
 
-Edit `config.yaml` or use `./casa install` for interactive setup:
+Edit `config.yaml` or use `casa install` for interactive setup:
 
 ```yaml
 static_ip: "192.168.31.153"
