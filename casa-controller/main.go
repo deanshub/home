@@ -16,7 +16,11 @@ type Config struct {
 }
 
 type Service struct {
-	Name string `yaml:"name"`
+	Name     string `yaml:"name"`
+	Label    string `yaml:"label,omitempty"`
+	Category string `yaml:"category,omitempty"`
+	Color    string `yaml:"color,omitempty"`
+	URL      string `yaml:"url,omitempty"`
 }
 
 func main() {
@@ -376,8 +380,14 @@ func runServiceInstall(serviceName string) {
 		}
 	}
 	
-	// Add new service
-	newService := Service{Name: serviceName}
+	// Add new service with all metadata
+	newService := Service{
+		Name:     serviceName,
+		Label:    labels["title"],
+		Category: labels["category"],
+		Color:    labels["color"],
+		URL:      labels["url"],
+	}
 	config.Services = append(config.Services, newService)
 	
 	// Write updated config
@@ -408,12 +418,38 @@ func runInteractiveInstall() {
 		os.Exit(1)
 	}
 	
-	var availableServices []string
+	var availableServices []Service
 	for _, entry := range entries {
 		if entry.IsDir() {
 			composePath := filepath.Join(servicesDir, entry.Name(), "compose.yml")
 			if _, err := os.Stat(composePath); err == nil {
-				availableServices = append(availableServices, entry.Name())
+				// Read compose file to get metadata
+				composeData, err := ioutil.ReadFile(composePath)
+				if err == nil {
+					var compose struct {
+						Services map[string]struct {
+							Labels map[string]string `yaml:"labels"`
+						} `yaml:"services"`
+					}
+					
+					if yaml.Unmarshal(composeData, &compose) == nil {
+						// Get first service and its labels
+						var labels map[string]string
+						for _, service := range compose.Services {
+							labels = service.Labels
+							break
+						}
+						
+						service := Service{
+							Name:     entry.Name(),
+							Label:    labels["title"],
+							Category: labels["category"],
+							Color:    labels["color"],
+							URL:      labels["url"],
+						}
+						availableServices = append(availableServices, service)
+					}
+				}
 			}
 		}
 	}
@@ -452,18 +488,23 @@ func runInteractiveInstall() {
 	
 	fmt.Println("Select services to install (Y/n for each):")
 	
-	for _, serviceName := range availableServices {
+	for _, service := range availableServices {
 		status := "not installed"
-		if installedServices[serviceName] {
+		if installedServices[service.Name] {
 			status = "installed"
 		}
 		
-		fmt.Printf("Include %s (%s)? [Y/n]: ", serviceName, status)
+		displayName := service.Label
+		if displayName == "" {
+			displayName = service.Name
+		}
+		
+		fmt.Printf("Include %s (%s)? [Y/n]: ", displayName, status)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimSpace(strings.ToLower(input))
 		
 		if input == "" || input == "y" || input == "yes" {
-			newServices = append(newServices, Service{Name: serviceName})
+			newServices = append(newServices, service)
 		}
 	}
 	
