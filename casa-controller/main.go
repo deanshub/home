@@ -93,12 +93,7 @@ func runConfig() {
 }
 
 func loadConfig() (*Config, error) {
-	execPath, err := os.Executable()
-	if err != nil {
-		return nil, err
-	}
-	
-	configPath := filepath.Join(filepath.Dir(execPath), "config.yaml")
+	configPath := "config.yaml"
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
