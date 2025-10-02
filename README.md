@@ -1,45 +1,120 @@
-# Home
+# Home Server Management
 
-## Usage
+A complete Docker-based home server setup with automated service management and reverse proxy configuration.
 
-1. clone
-2. set env files
-3. build
+## Quick Start
+
+1. **Clone and setup**
+   ```bash
+   git clone <repo>
+   cd home
+   ```
+
+2. **Build casa controller**
+   ```bash
+   cd casa-controller
+   ./build.sh
+   cd ..
+   ```
+
+3. **Configure services**
+   ```bash
+   ./casa install  # Interactive service selection
+   ```
+
+4. **Deploy with Ansible**
+   ```bash
+   cd ansible
+   ansible-playbook -i inventory.yml playbook.yml
+   ```
+
+## Casa Controller
+
+Command-line tool for managing Docker Compose services:
 
 ```bash
-docker-compose build
+# Service management
+./casa up                    # Start all services
+./casa down                  # Stop all services
+./casa restart               # Restart all services
+./casa status                # Check service status
+
+# Individual services
+./casa up jellyfin           # Start specific service
+./casa log portainer         # View service logs
+
+# Configuration
+./casa install               # Interactive service selection
+./casa config                # Generate Caddyfile
 ```
 
-4. run
+## Architecture
 
-```bash
-docker-compose up -d
+- **Services**: Docker Compose services in `services/` directory
+- **Reverse Proxy**: Caddy with automatic HTTPS and DNS challenge
+- **Configuration**: Centralized in `config.yaml`
+- **Automation**: Ansible playbooks for deployment
+- **Management**: Casa controller for service operations
+
+## Service Structure
+
+Each service in `services/SERVICE_NAME/compose.yml`:
+
+```yaml
+networks:
+  caddy:
+    external: true
+
+services:
+  service:
+    image: example/service
+    networks:
+      - caddy
+    labels:
+      url: "https://service.{{ domain }}"
+      title: "Service Name"
+      category: "media"
+      color: "blue"
+    ports:
+      - 8080:80
 ```
 
----
+## Features
 
-## **Automatic Refresh with `update-repo.sh`**
+- **Automatic SSL** with DNS challenge (Cloudflare/Vercel)
+- **Service Discovery** from compose file labels
+- **Interactive Management** with casa controller
+- **Status Monitoring** and log viewing
+- **Automated Updates** with watchtower
+- **Persistent Storage** on external media
 
-### **Purpose**
+## Available Services
 
-This script pulls the latest changes from Git and restarts the Docker services.
+- **Media**: Jellyfin, Sonarr, Radarr, Lidarr, Bazarr, Overseerr
+- **Downloads**: Transmission, Prowlarr, Flaresolverr
+- **Management**: Portainer, Filebrowser, n8n
+- **Smart Home**: Home Assistant
+- **Bots**: Telegram bots for various tasks
 
-### **Usage**
+## Configuration
 
-Run manually:
+Edit `config.yaml` or use `./casa install` for interactive setup:
 
-```sh
-./update-repo.sh
+```yaml
+static_ip: "192.168.31.153"
+username: "dean"
+gateway_ip: "192.168.31.1"
+domain: "home.shubapp.com"
+services:
+  - name: jellyfin
+  - name: portainer
 ```
 
-Schedule it with **cron** (e.g., run at 9 AM and 9 PM daily):
+## Deployment
 
-```sh
-crontab -e
-```
-
-Add the following line:
-
-```sh
-0 4,16 * * * /home/dean/dev/home/update-repo.sh
-```
+The Ansible playbook handles:
+- Docker and Docker Compose installation
+- Network creation
+- Service deployment
+- Caddy configuration
+- System updates
