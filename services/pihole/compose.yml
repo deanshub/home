@@ -1,3 +1,7 @@
+networks:
+  caddy:
+    external: true
+
 services:
   pihole:
     container_name: pihole
