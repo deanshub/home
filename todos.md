@@ -31,8 +31,3 @@
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible
-- [ ] remove services.yaml and rely only on compose.yml files
-  - [x] move urls to compose.yml under label "url"
-  - [x] move categories to compose.yml under label "category"
-  - [ ] move colors to be an array in ansible and set the colors and urls in config.yaml
-  - [ ] remove services.yaml
