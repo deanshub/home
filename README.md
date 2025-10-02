@@ -99,11 +99,37 @@ services:
 
 ## Available Services
 
-- **Media**: Jellyfin, Sonarr, Radarr, Lidarr, Bazarr, Overseerr
-- **Downloads**: Transmission, Prowlarr, Flaresolverr
-- **Management**: Portainer, Filebrowser, n8n
-- **Smart Home**: Home Assistant
-- **Bots**: Telegram bots for various tasks
+### Infrastructure
+- **Caddy** - Reverse proxy with automatic HTTPS
+- **Tailscale** - VPN mesh networking
+- **Mosquitto** - MQTT message broker
+- **Watchtower** - Automatic container updates
+- **Portainer** - Docker management interface
+
+### Media Management
+- **Jellyfin** - Media server and streaming
+- **Sonarr** - TV series management
+- **Radarr** - Movie management
+- **Lidarr** - Music management
+- **Bazarr** - Subtitle management
+- **Prowlarr** - Indexer management
+- **Flaresolverr** - Cloudflare bypass proxy
+- **Transmission** - BitTorrent client
+- **Filebrowser** - Web-based file manager
+
+### Smart Home
+- **Home Assistant** - Home automation platform
+
+### Automation & Bots
+- **n8n** - Workflow automation
+- **Downloader** - Telegram download bot
+- **Friday** - Personal assistant bot
+- **Shopping Bot** - Shopping list manager bot
+- **GPT Bot** - AI chat bot
+- **Telegram Bot API** - Local Telegram Bot API server
+
+### Network & Security
+- **Pi-hole** - Network-wide ad blocker and DNS server
 
 ## Configuration
 
