@@ -1,0 +1,26 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    labels:
+      url: "https://pihole.{{ domain }}"
+      title: "Pi-hole"
+      category: "network"
+      color: "emerald"
+    ports:
+      # HTTP Port
+      - "8053:80/tcp"
+      # HTTPs Port
+      - "8443:443/tcp"
+      # DNS Ports
+      - "53:53/tcp"
+      - "53:53/udp"
+    environment:
+      TZ: "Asia/Jerusalem"
+    env_file:
+      - .env
+    volumes:
+      - "/media/external/configs/pihole:/etc/pihole"
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped

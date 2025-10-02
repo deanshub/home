@@ -69,12 +69,14 @@ async function getServiceInfo(
   if (!service.ports) {
     return null;
   }
-  // Extract port from ports array (format: "8080:80" or 8080)
+  // Extract port from ports array (format: "8080:80" or "8080:80/tcp" or 8080)
   const portMapping = service.ports[0];
   let port;
 
   if (typeof portMapping === "string") {
-    port = portMapping.split(":")[0];
+    // Use internal port (right side of mapping), remove protocol suffix
+    const parts = portMapping.split(":");
+    port = parts[0].split("/")[0]; // Remove /tcp or /udp suffix
   } else {
     port = portMapping;
   }
