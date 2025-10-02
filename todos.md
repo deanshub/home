@@ -31,18 +31,18 @@
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible
-- [ ] add casa controler (golang cli tool)
-  - [ ] casa install
-  - [ ] casa status
-  - [ ] casa up
-  - [ ] casa down
-  - [ ] casa restart
-  - [ ] casa service up
-  - [ ] casa service down
-  - [ ] casa service restart
-  - [ ] casa service logs
-  - [ ] casa service status
-  - [ ] casa install service
-  - [ ] casa regenerate config (caddyfile?)
+- [x] add casa controler (golang cli tool)
+  - [x] casa install
+  - [x] casa status
+  - [x] casa up
+  - [x] casa down
+  - [x] casa restart
+  - [x] casa up service
+  - [x] casa down service
+  - [x] casa restart service
+  - [x] casa log service
+  - [x] casa status service
+  - [x] casa install service
+  - [x] casa config (caddyfile?)
 - [x] add portainer
 - [ ] update the readme
