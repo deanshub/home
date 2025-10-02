@@ -77,7 +77,7 @@ func runConfig() {
 		os.Exit(1)
 	}
 	
-	scriptPath := filepath.Join(filepath.Dir(execPath), "..", "ansible", "bun-script", "generate-caddyfile.ts")
+	scriptPath := filepath.Join(filepath.Dir(execPath), "ansible", "bun-script", "generate-caddyfile.ts")
 	scriptDir := filepath.Dir(scriptPath)
 	
 	cmd := exec.Command("bun", "run", "generate-caddyfile.ts")
@@ -98,7 +98,7 @@ func loadConfig() (*Config, error) {
 		return nil, err
 	}
 	
-	configPath := filepath.Join(filepath.Dir(execPath), "..", "config.yaml")
+	configPath := filepath.Join(filepath.Dir(execPath), "config.yaml")
 	data, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func runServiceUp(serviceName string) {
 		os.Exit(1)
 	}
 	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName)
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Starting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "up", "-d")
@@ -141,7 +141,7 @@ func runAllServicesUp() {
 	
 	for _, service := range config.Services {
 		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Starting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "up", "-d")
@@ -177,7 +177,7 @@ func runServiceDown(serviceName string) {
 		os.Exit(1)
 	}
 	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName)
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Stopping %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "down")
@@ -202,7 +202,7 @@ func runAllServicesDown() {
 	
 	for _, service := range config.Services {
 		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Stopping %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "down")
@@ -237,7 +237,7 @@ func runServiceRestart(serviceName string) {
 		os.Exit(1)
 	}
 	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName)
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	fmt.Printf("Restarting %s...\n", serviceName)
 	cmd := exec.Command("docker", "compose", "restart")
@@ -262,7 +262,7 @@ func runAllServicesRestart() {
 	
 	for _, service := range config.Services {
 		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("Restarting %s...\n", service.Name)
 		cmd := exec.Command("docker", "compose", "restart")
@@ -297,7 +297,7 @@ func runServiceLog(serviceName string) {
 		os.Exit(1)
 	}
 	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName)
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "logs", "-f")
 	cmd.Dir = serviceDir
@@ -317,7 +317,7 @@ func runServiceStatus(serviceName string) {
 		os.Exit(1)
 	}
 	
-	serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName)
+	serviceDir := filepath.Join(filepath.Dir(execPath), "services", serviceName)
 	
 	cmd := exec.Command("docker", "compose", "ps")
 	cmd.Dir = serviceDir
@@ -340,7 +340,7 @@ func runAllServicesStatus() {
 	
 	for _, service := range config.Services {
 		execPath, _ := os.Executable()
-		serviceDir := filepath.Join(filepath.Dir(execPath), "..", "services", service.Name)
+		serviceDir := filepath.Join(filepath.Dir(execPath), "services", service.Name)
 		
 		fmt.Printf("=== %s ===\n", service.Name)
 		cmd := exec.Command("docker", "compose", "ps")
@@ -363,7 +363,7 @@ func runServiceInstall(serviceName string) {
 	}
 	
 	// Read service compose file to get labels
-	composePath := filepath.Join(filepath.Dir(execPath), "..", "services", serviceName, "compose.yml")
+	composePath := filepath.Join(filepath.Dir(execPath), "services", serviceName, "compose.yml")
 	composeData, err := ioutil.ReadFile(composePath)
 	if err != nil {
 		fmt.Printf("Error reading compose file for %s: %v\n", serviceName, err)
@@ -454,7 +454,7 @@ func runInteractiveInstall() {
 	}
 	
 	// Get all available services
-	servicesDir := filepath.Join(filepath.Dir(execPath), "..", "services")
+	servicesDir := filepath.Join(filepath.Dir(execPath), "services")
 	entries, err := ioutil.ReadDir(servicesDir)
 	if err != nil {
 		fmt.Printf("Error reading services directory: %v\n", err)
