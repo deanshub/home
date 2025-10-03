@@ -1,32 +1,19 @@
-networks:
-  caddy:
-    external: true
-
 services:
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
+    network_mode: host
     labels:
       url: "https://pihole.{{ domain }}"
       title: "Pi-hole"
       category: "network"
       color: "emerald"
-    ports:
-      # HTTP Port
-      - "8053:8053/tcp"
-      # HTTPs Port
-      - "8443:8443/tcp"
-      # DNS Ports
-      - "53:53/tcp"
-      - "53:53/udp"
     environment:
       TZ: "Asia/Jerusalem"
     env_file:
       - .env
     volumes:
       - "/media/external/configs/pihole:/etc/pihole"
-    networks:
-      - caddy
     cap_add:
       - NET_ADMIN
     restart: unless-stopped
