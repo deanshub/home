@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>smrt casa</title>
     <link rel="icon" type="image/jpeg" href="/casa.jpeg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#000000" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   </head>
   <body>
@@ -28,6 +30,11 @@
           link.textContent = service.label;
           container.appendChild(link);
         });
+
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+      }
     </script>
   </body>
 </html>
