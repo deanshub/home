@@ -1,0 +1,15 @@
+services:
+  ollama-bot:
+    restart: unless-stopped
+    container_name: ollama-bot
+    image: ghcr.io/deanshub/gpt-bot:main
+    labels:
+      url: "https://t.me/local_ollama_bot"
+      color: "sky"
+      title: "Ollama Bot"
+      category: "bot"
+    env_file:
+      - .env
+    volumes:
+      - /media/external/ollama-bot-data:/data
+    privileged: true
