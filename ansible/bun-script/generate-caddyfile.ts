@@ -137,10 +137,6 @@ async function generateCaddyfile() {
       tlsConfig = `tls {
     dns cloudflare {env.CF_API_TOKEN}
   }`;
-    } else if (env.VERCEL_API_TOKEN && env.VERCEL_API_TOKEN.trim()) {
-      tlsConfig = `tls {
-    dns vercel {env.VERCEL_API_TOKEN}
-  }`;
     }
   }
 

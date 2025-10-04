@@ -2,7 +2,6 @@ FROM caddy:builder AS builder
 
 RUN xcaddy build \
   --with github.com/caddy-dns/cloudflare \
-  --with github.com/caddy-dns/vercel \
   --with github.com/aksdb/caddy-cgi/v2
 
 FROM caddy:latest

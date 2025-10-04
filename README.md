@@ -90,7 +90,7 @@ services:
 
 ## Features
 
-- **Automatic SSL** with DNS challenge (Cloudflare/Vercel)
+- **Automatic SSL** with DNS challenge (Cloudflare)
 - **Service Discovery** from compose file labels
 - **Interactive Management** with casa controller
 - **Status Monitoring** and log viewing
@@ -100,6 +100,7 @@ services:
 ## Available Services
 
 ### Infrastructure
+
 - **Caddy** - Reverse proxy with automatic HTTPS
 - **Tailscale** - VPN mesh networking
 - **Mosquitto** - MQTT message broker
@@ -107,6 +108,7 @@ services:
 - **Portainer** - Docker management interface
 
 ### Media Management
+
 - **Jellyfin** - Media server and streaming
 - **Sonarr** - TV series management
 - **Radarr** - Movie management
@@ -118,9 +120,11 @@ services:
 - **Filebrowser** - Web-based file manager
 
 ### Smart Home
+
 - **Home Assistant** - Home automation platform
 
 ### Automation & Bots
+
 - **n8n** - Workflow automation
 - **Downloader** - Telegram download bot
 - **Friday** - Personal assistant bot
@@ -129,6 +133,7 @@ services:
 - **Telegram Bot API** - Local Telegram Bot API server
 
 ### Network & Security
+
 - **Pi-hole** - Network-wide ad blocker and DNS server
 
 ## Configuration
