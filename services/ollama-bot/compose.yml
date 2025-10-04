@@ -11,5 +11,5 @@ services:
     env_file:
       - .env
     volumes:
-      - /media/external/ollama-bot-data:/data
+      - /media/external/library/ollama-bot-data:/data
     privileged: true
