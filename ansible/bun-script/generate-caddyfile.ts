@@ -201,6 +201,11 @@ async function generateCaddyfile() {
     cgi /* /apps/{file}/dist/{file}
   }
 
+  @ai host ai.${domain}
+  handle @ai {
+    reverse_proxy http://192.168.31.153:11434
+  }
+
   @home host ${domain}
   handle @home {
     root * /srv
