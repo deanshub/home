@@ -3,4 +3,3 @@
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible
 - [ ] move all configs and libraries to /media/external/configs/SERVICE_NAME and /media/external/library/SERVICE_NAME (caddy, homeassistant ...)
-- [ ] move friday to their own repo with their own dockerfile
