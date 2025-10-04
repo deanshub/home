@@ -6,7 +6,7 @@ services:
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
-    restart: always
+    restart: unless-stopped
     networks:
       - caddy
     labels:

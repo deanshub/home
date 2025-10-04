@@ -1,6 +1,6 @@
 services:
   downloader:
-    restart: on-failure:3
+    restart: unless-stopped
     container_name: downloader
     image: ghcr.io/deanshub/downloader:master
     labels:
