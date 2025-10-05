@@ -1,7 +1,7 @@
 - [ ] remove /media/external2 and /media/external3
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
-- [ ] .env files creation in ansible
+- [ ] .env files creation in ansible (and handle optional env variables)
 - [x] install git crypt in ansible
 - [ ] move all configs and libraries to /media/external/configs/SERVICE_NAME and /media/external/library/SERVICE_NAME (caddy, homeassistant ...)
   - [ ] bring down the services that need change
