@@ -8,6 +8,8 @@ services:
       color: "sky"
       title: "Ollama Bot"
       category: "bot"
+    environment:
+      - TZ=Asia/Jerusalem
     env_file:
       - .env
     volumes:
