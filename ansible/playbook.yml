@@ -2,6 +2,12 @@
   become: yes
 
   tasks:
+    - name: Install git-crypt
+      apt:
+        name: git-crypt
+        state: present
+        update_cache: yes
+
     - name: Handle configuration management
       include_tasks: tasks/config.yml
 

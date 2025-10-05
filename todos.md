@@ -2,4 +2,11 @@
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible
+- [x] install git crypt in ansible
 - [ ] move all configs and libraries to /media/external/configs/SERVICE_NAME and /media/external/library/SERVICE_NAME (caddy, homeassistant ...)
+  - [ ] bring down the services that need change
+  - [ ] copy their configs to /media/external/configs/SERVICE_NAME
+  - [ ] copy their libraries to /media/external/library/SERVICE_NAME
+  - [ ] bring up the services that need change
+  - [ ] remove the old configs and libraries
+- [ ] rename repo to casa-server
