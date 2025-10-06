@@ -17,8 +17,8 @@ services:
       - .:/etc/caddy/
       - ./site:/srv
       - ../../config.yaml:/srv/config.yaml
-      - /media/external/caddy_data/:/data/
-      - /media/external/caddy_config/:/config/
+      - /media/external/library/caddy:/data/
+      - /media/external/configs/caddy:/config/
     env_file:
       - .env
     networks:
