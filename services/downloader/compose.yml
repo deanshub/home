@@ -13,5 +13,6 @@ services:
     env_file:
       - .env
     volumes:
-      - /media/external:/media/external
+      - /media/external/library/downloads:/downloads
+      - /media/external/library/torrents:/torrents
     privileged: true

@@ -13,5 +13,5 @@ services:
     env_file:
       - .env
     volumes:
-      - /media/external:/media/external
+      - /media/external/library/shopping-bot:/data
     privileged: true

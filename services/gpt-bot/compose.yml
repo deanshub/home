@@ -13,5 +13,5 @@ services:
     env_file:
       - .env
     volumes:
-      - /media/external/gpt-bot-data:/data
+      - /media/external/library/gpt-bot:/data
     privileged: true
