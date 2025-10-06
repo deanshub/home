@@ -1,6 +1,8 @@
 services:
   friday:
     restart: unless-stopped
+    environment:
+      - TZ=Asia/Jerusalem
     container_name: friday
     user: "1000:1000"
     image: ghcr.io/deanshub/friday:main

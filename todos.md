@@ -9,4 +9,4 @@
   - [ ] copy their libraries to /media/external/library/SERVICE_NAME
   - [ ] bring up the services that need change
   - [ ] remove the old configs and libraries
-- [ ] rename repo to casa-server
+- [ ] rename repo to casa

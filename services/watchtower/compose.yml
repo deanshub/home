@@ -1,6 +1,8 @@
 services:
   watchtower:
     restart: unless-stopped
+    environment:
+      - TZ=Asia/Jerusalem
     image: containrrr/watchtower
     container_name: watchtower
     volumes:

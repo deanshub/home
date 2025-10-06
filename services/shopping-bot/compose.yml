@@ -1,6 +1,8 @@
 services:
   shopping-bot:
     restart: unless-stopped
+    environment:
+      - TZ=Asia/Jerusalem
     container_name: shopping-bot
     image: ghcr.io/deanshub/shopping-bot:main
     labels:
