@@ -13,4 +13,4 @@
   - [ ] remove the old configs and libraries
 - [ ] rename repo to casa
 - [x] create the dirs (with user and group) in ansible
-- [ ] add audiobookshelf
+- [x] add audiobookshelf
