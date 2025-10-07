@@ -294,6 +294,10 @@ func runServiceInstall(serviceName string) {
 	
 	runConfig()
 	restartCaddy()
+	
+	// Start the service
+	fmt.Printf("Starting %s...\n", serviceName)
+	runSingleService("up", serviceName)
 }
 
 func runInteractiveInstall() {
