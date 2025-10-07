@@ -35,45 +35,44 @@
     groups: docker
     append: yes
 
-# - name: Create required directories for docker services
-#   file:
-#     path: "{{ item }}"
-#     state: directory
-#     owner: "{{ username }}"
-#     group: "{{ username }}"
-#     mode: "0755"
-#   loop:
-#     - /media/external/homeassistant-config
-#     - /media/external/configs/telegram-bot-api
-#     - /media/external/caddy_data
-#     - /media/external/caddy_config
-#     - /media/external/configs/mosquitto
-#     - /media/external/configs/mosquitto/config
-#     - /media/external/configs/mosquitto/data
-#     - /media/external/configs/mosquitto/log
-#     - /media/external/configs/filebrowser/settings
-#     - /media/external/configs/filebrowser/db
-#     - /media/external/configs/transmission
-#     - /media/external/configs/prowlarr
-#     - /media/external/configs/sonarr
-#     - /media/external/configs/radarr
-#     - /media/external/configs/bazarr
-#     - /media/external/configs/jellyfin
-#     - /media/external/configs/jellyfin/cache
-#     - /media/external/configs/jellyfin/data
-#     - /media/external/configs/jellyfin/log
-#     - /media/external/configs/jellyfin/data/plugins
-#     - /media/external/configs/jellyfin/data/plugins/configurations
-#     - /media/external/configs/jellyfin/data/transcodes
-#     - /media/external/cache/jellyfin
-#     - /media/external/library/downloads
-#     - /media/external/library/tv
-#     - /media/external/library/movies
-#     - /media/external/videos
-#     - /media/external/library/watch
+- name: Read config.yaml
+  slurp:
+    src: "{{ playbook_dir }}/../config.yaml"
+  register: config_content
+
+- name: Parse config.yaml
+  set_fact:
+    casa_config: "{{ config_content.content | b64decode | from_yaml }}"
+
+- name: Find all compose files
+  find:
+    paths: "{{ playbook_dir }}/../services"
+    patterns: "compose.yml"
+    recurse: yes
+  register: compose_files
+
+- name: Extract volume mounts from compose files
+  shell: |
+    grep -E "^\s*-\s*/media/external/" "{{ item.path }}" | \
+    sed 's/.*- //' | \
+    cut -d':' -f1 | \
+    sort -u
+  register: volume_mounts
+  loop: "{{ compose_files.files }}"
+  failed_when: false
+
+- name: Create all volume mount directories
+  file:
+    path: "{{ item.1 }}"
+    state: directory
+    owner: "{{ casa_config.username }}"
+    group: "{{ casa_config.username }}"
+    mode: "0755"
+  loop: "{{ volume_mounts.results | subelements('stdout_lines', skip_missing=True) }}"
+  when: item.1 != ""
 
 - name: Start Docker Compose services
-  shell: ./casa.sh up -d
+  shell: ./casa up
   args:
     chdir: "{{ playbook_dir }}/.."
   become_user: "{{ username }}"
