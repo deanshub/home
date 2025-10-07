@@ -2,6 +2,7 @@
 - [ ] integrate watter consumption with home assistant
 - [ ] integrate electricity consumption with home assistant
 - [ ] .env files creation in ansible (and handle optional env variables)
+  - [ ] take from .env.example if provided value in axample or set as "" than it's optional and the default value from the example will be used
 - [x] install git crypt in ansible
 - [x] move all configs and libraries to /media/external/configs/SERVICE_NAME and /media/external/library/SERVICE_NAME (caddy, homeassistant ...)
   - [x] bring down the services that need change
