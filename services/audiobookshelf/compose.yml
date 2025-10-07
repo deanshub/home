@@ -23,3 +23,4 @@ services:
       - /media/external/library/audiobookshelf/metadata:/metadata
     environment:
       - TZ=Asia/Jerusalem
+      - PORT=13378
