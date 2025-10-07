@@ -1,0 +1,25 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      url: "https://audiobookshelf.{{ domain }}"
+      title: "Audiobookshelf"
+      category: "media"
+      color: "orange"
+    ports:
+      - 13378:80
+    volumes:
+      - /media/external/library/audiobookshelf/audiobooks:/audiobooks
+      - /media/external/library/audiobookshelf/podcasts:/podcasts
+      - /media/external/configs/audiobookshelf:/config
+      - /media/external/library/audiobookshelf/metadata:/metadata
+    environment:
+      - TZ=Asia/Jerusalem
