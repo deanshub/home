@@ -15,8 +15,7 @@ services:
       - /media/external/configs/mosquitto:/mosquitto
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     ports:
-      - published: 1883
-        target: 1883
+      - 1883:1883
     command: >
       sh -c '
         mkdir -p /mosquitto/log &&

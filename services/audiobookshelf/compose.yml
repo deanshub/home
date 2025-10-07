@@ -15,7 +15,7 @@ services:
       category: "media"
       color: "orange"
     ports:
-      - 13378:80
+      - 13378:13378
     volumes:
       - /media/external/library/audiobookshelf/audiobooks:/audiobooks
       - /media/external/library/audiobookshelf/podcasts:/podcasts
