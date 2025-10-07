@@ -12,3 +12,4 @@
   - [x] rename the old configs and libraries
   - [ ] remove the old configs and libraries
 - [ ] rename repo to casa
+- [ ] create the dirs (with user and group) in ansible
