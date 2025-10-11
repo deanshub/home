@@ -1,0 +1,19 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  13ft:
+    container_name: 13ft
+    hostname: 13ft
+    image: ghcr.io/wasi-master/13ft:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      url: "https://13ft.{{ domain }}"
+      title: "13ft"
+      category: "tools"
+      color: "green"
+    ports:
+      - "5000:5000"
