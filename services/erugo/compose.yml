@@ -1,0 +1,24 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  erugo:
+    container_name: erugo
+    image: wardy784/erugo:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      - TZ=Asia/Jerusalem
+      - APP_URL=https://erugo.home.shubapp.com
+      - VITE_API_URL=https://erugo.home.shubapp.com
+    labels:
+      url: "https://erugo.{{ domain }}"
+      title: "Erugo"
+      category: "tools"
+      color: "orange"
+    volumes:
+      - /media/external/library/erugo:/var/www/html/storage
+    ports:
+      - "5001:80"
