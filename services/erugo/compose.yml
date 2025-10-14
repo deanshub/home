@@ -1,14 +1,9 @@
-networks:
-  caddy:
-    external: true
-
 services:
   erugo:
     container_name: erugo
     image: wardy784/erugo:latest
     restart: unless-stopped
-    networks:
-      - caddy
+    network_mode: host
     environment:
       - TZ=Asia/Jerusalem
       - APP_URL=https://erugo.home.shubapp.com
