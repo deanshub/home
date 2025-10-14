@@ -52,6 +52,12 @@ func main() {
 		} else {
 			runInteractiveInstall()
 		}
+	case "uninstall":
+		if len(os.Args) > 2 {
+			runServiceUninstall(os.Args[2])
+		} else {
+			runInteractiveUninstall()
+		}
 	default:
 		fmt.Printf("Unknown command: %s\n\n", os.Args[1])
 		showHelp()
@@ -303,6 +309,136 @@ func runServiceInstall(serviceName string) {
 	runSingleService("up", serviceName)
 }
 
+func runServiceUninstall(serviceName string) {
+	repoRoot := getRepoRoot()
+	configPath := filepath.Join(repoRoot, "config.yaml")
+	configData, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		fmt.Printf("Error reading config.yaml: %v\n", err)
+		os.Exit(1)
+	}
+
+	var config struct {
+		StaticIP  string    `yaml:"static_ip"`
+		Username  string    `yaml:"username"`
+		GatewayIP string    `yaml:"gateway_ip"`
+		Domain    string    `yaml:"domain"`
+		Services  []Service `yaml:"services"`
+	}
+
+	if yaml.Unmarshal(configData, &config) != nil {
+		fmt.Printf("Error parsing config.yaml\n")
+		os.Exit(1)
+	}
+
+	// Remove service from config
+	var updatedServices []Service
+	found := false
+	for _, service := range config.Services {
+		if service.Name != serviceName {
+			updatedServices = append(updatedServices, service)
+		} else {
+			found = true
+		}
+	}
+
+	if !found {
+		fmt.Printf("Service %s not found in config\n", serviceName)
+		return
+	}
+
+	config.Services = updatedServices
+
+	// Write updated config
+	updatedData, _ := yaml.Marshal(&config)
+	ioutil.WriteFile(configPath, updatedData, 0644)
+
+	fmt.Printf("✅ Service %s uninstalled successfully\n", serviceName)
+
+	runConfig()
+	restartCaddy()
+
+	// Stop the service
+	fmt.Printf("Stopping %s...\n", serviceName)
+	runSingleService("down", serviceName)
+}
+
+func runInteractiveUninstall() {
+	repoRoot := getRepoRoot()
+	configPath := filepath.Join(repoRoot, "config.yaml")
+	configData, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		fmt.Printf("Error reading config.yaml: %v\n", err)
+		os.Exit(1)
+	}
+
+	var config struct {
+		StaticIP  string    `yaml:"static_ip"`
+		Username  string    `yaml:"username"`
+		GatewayIP string    `yaml:"gateway_ip"`
+		Domain    string    `yaml:"domain"`
+		Services  []Service `yaml:"services"`
+	}
+
+	yaml.Unmarshal(configData, &config)
+
+	if len(config.Services) == 0 {
+		fmt.Println("No services installed")
+		return
+	}
+
+	var servicesToRemove []string
+
+	fmt.Println("Select services to uninstall (Y/n for each):")
+
+	for _, service := range config.Services {
+		fmt.Printf("  %s (%s) [installed]: ", service.Name, service.Label)
+		var response string
+		fmt.Scanln(&response)
+
+		if response == "" || strings.ToLower(response) == "y" || strings.ToLower(response) == "yes" {
+			servicesToRemove = append(servicesToRemove, service.Name)
+		}
+	}
+
+	if len(servicesToRemove) == 0 {
+		fmt.Println("No services selected for removal")
+		return
+	}
+
+	// Remove selected services
+	var updatedServices []Service
+	for _, service := range config.Services {
+		shouldRemove := false
+		for _, removeService := range servicesToRemove {
+			if service.Name == removeService {
+				shouldRemove = true
+				break
+			}
+		}
+		if !shouldRemove {
+			updatedServices = append(updatedServices, service)
+		}
+	}
+
+	config.Services = updatedServices
+
+	// Write updated config
+	updatedData, _ := yaml.Marshal(&config)
+	ioutil.WriteFile(configPath, updatedData, 0644)
+
+	fmt.Printf("✅ Uninstalled %d services\n", len(servicesToRemove))
+
+	runConfig()
+	restartCaddy()
+
+	// Stop removed services
+	for _, serviceName := range servicesToRemove {
+		fmt.Printf("Stopping %s...\n", serviceName)
+		runSingleService("down", serviceName)
+	}
+}
+
 func createVolumeDirectories(composePath string) {
 	data, err := ioutil.ReadFile(composePath)
 	if err != nil {
@@ -460,6 +596,8 @@ func showHelp() {
 	fmt.Println("  Service Installation:")
 	fmt.Println("    install                   Interactive service selection")
 	fmt.Println("    install SERVICE_NAME      Install specific service to config.yaml")
+	fmt.Println("    uninstall                 Interactive service removal")
+	fmt.Println("    uninstall SERVICE_NAME    Remove specific service from config.yaml")
 	fmt.Println()
 	fmt.Println("  Monitoring:")
 	fmt.Println("    status [SERVICE_NAME]     Show status of all or specific service")

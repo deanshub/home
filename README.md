@@ -54,6 +54,8 @@ casa log portainer         # View service logs
 
 # Configuration
 casa install               # Interactive service selection
+casa uninstall             # Interactive service removal
+casa config                # Generate Caddyfile
 casa config                # Generate Caddyfile
 ```
 

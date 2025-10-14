@@ -22,8 +22,10 @@ A command-line tool for managing Docker Compose services with automatic Caddyfil
 - `casa restart SERVICE_NAME` - Restart specific service
 
 ### Service Installation
-- `casa install` - Interactive service selection (add/remove from config.yaml)
+- `casa install` - Interactive service selection (add to config.yaml)
 - `casa install SERVICE_NAME` - Install specific service to config.yaml
+- `casa uninstall` - Interactive service removal (remove from config.yaml)
+- `casa uninstall SERVICE_NAME` - Remove specific service from config.yaml
 
 ### Monitoring
 - `casa status` - Show status of all configured services
@@ -59,6 +61,9 @@ casa install
 
 # Install specific service
 casa install portainer
+
+# Remove specific service
+casa uninstall portainer
 
 # Start all services
 casa up
