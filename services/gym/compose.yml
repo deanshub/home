@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  gym:
+    container_name: gym
+    image: ghcr.io/deanshub/gym:main
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      - DATABASE_URL=file:/data/app.db
+      - UPLOADS_DIR=/data/uploads
+    labels:
+      url: "https://gym.{{ domain }}"
+      title: "Gym"
+      category: "tools"
+      color: "red"
+    volumes:
+      - /media/external/library/gym:/data
+    ports:
+      - "3000:3000"
