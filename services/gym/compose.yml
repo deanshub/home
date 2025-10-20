@@ -12,6 +12,8 @@ services:
     environment:
       - DATABASE_URL=file:/data/app.db
       - UPLOADS_DIR=/data/uploads
+    env_file:
+      - .env
     labels:
       url: "https://gym.{{ domain }}"
       title: "Gym"
