@@ -46,6 +46,7 @@ Command-line tool for managing Docker Compose services:
 casa up                    # Start all services
 casa down                  # Stop all services
 casa restart               # Restart all services
+casa pull                  # Pull latest images
 casa status                # Check service status
 
 # Individual services

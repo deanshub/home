@@ -40,6 +40,8 @@ func main() {
 		runServiceCommand("down", os.Args[2:])
 	case "restart":
 		runServiceCommand("restart", os.Args[2:])
+	case "pull":
+		runServiceCommand("pull", os.Args[2:])
 	case "log":
 		if len(os.Args) > 2 {
 			runServiceLog(os.Args[2])
@@ -121,6 +123,9 @@ func runSingleService(action, serviceName string) {
 	case "restart":
 		fmt.Printf("Restarting %s...\n", serviceName)
 		cmd = exec.Command("docker", "compose", "restart")
+	case "pull":
+		fmt.Printf("Pulling %s...\n", serviceName)
+		cmd = exec.Command("docker", "compose", "pull")
 	case "status":
 		cmd = exec.Command("docker", "compose", "ps")
 	}
@@ -176,6 +181,9 @@ func runAllServices(action string) {
 		case "restart":
 			fmt.Printf("Restarting %s...\n", service.Name)
 			cmd = exec.Command("docker", "compose", "restart")
+		case "pull":
+			fmt.Printf("Pulling %s...\n", service.Name)
+			cmd = exec.Command("docker", "compose", "pull")
 		}
 
 		cmd.Dir = serviceDir
@@ -592,6 +600,7 @@ func showHelp() {
 	fmt.Println("    up [SERVICE_NAME]         Start all services or specific service")
 	fmt.Println("    down [SERVICE_NAME]       Stop all services or specific service")
 	fmt.Println("    restart [SERVICE_NAME]    Restart all services or specific service")
+	fmt.Println("    pull [SERVICE_NAME]       Pull latest images for all services or specific service")
 	fmt.Println()
 	fmt.Println("  Service Installation:")
 	fmt.Println("    install                   Interactive service selection")

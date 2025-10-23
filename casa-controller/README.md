@@ -20,6 +20,8 @@ A command-line tool for managing Docker Compose services with automatic Caddyfil
 - `casa down SERVICE_NAME` - Stop specific service
 - `casa restart` - Restart all configured services
 - `casa restart SERVICE_NAME` - Restart specific service
+- `casa pull` - Pull latest images for all configured services
+- `casa pull SERVICE_NAME` - Pull latest image for specific service
 
 ### Service Installation
 - `casa install` - Interactive service selection (add to config.yaml)
