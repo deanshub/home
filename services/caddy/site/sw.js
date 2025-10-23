@@ -1,6 +1,5 @@
 const CACHE_NAME = 'casa-v1';
 const urlsToCache = [
-  '/',
   '/casa.jpeg',
   '/manifest.json'
 ];
