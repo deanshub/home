@@ -4,7 +4,8 @@ networks:
 
 services:
   caddy:
-    build: .
+    # build: .
+    image: ghcr.io/deanshub/casa-caddy:main
     restart: unless-stopped
     environment:
       - TZ=Asia/Jerusalem
