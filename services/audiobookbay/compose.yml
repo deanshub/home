@@ -11,7 +11,7 @@ services:
       - caddy
     labels:
       url: "https://audiobookbay.{{ domain }}"
-      title: "Audiobookbay Downloader"
+      title: "Audiobookbay"
       category: "media"
       color: "orange"
     ports:
