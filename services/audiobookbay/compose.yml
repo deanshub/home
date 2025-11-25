@@ -1,0 +1,27 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  audiobookbay:
+    restart: unless-stopped
+    image: ghcr.io/jamesry96/audiobookbay-automated:latest
+    container_name: audiobookbay
+    networks:
+      - caddy
+    labels:
+      url: "https://audiobookbay.{{ domain }}"
+      title: "Audiobookbay"
+      category: "media"
+      color: "orange"
+    ports:
+      - "5078:5078"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    env_file:
+      - .env
+    volumes:
+      - /media/external/configs/audiobookbay:/config
+      - /media/external/library/audiobookshelf/audiobooks:/downloads/audiobooks
