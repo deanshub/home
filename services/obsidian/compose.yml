@@ -1,0 +1,28 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  obsidian:
+    restart: unless-stopped
+    image: lscr.io/linuxserver/obsidian:latest
+    container_name: obsidian
+    networks:
+      - caddy
+    labels:
+      url: "https://obsidian.{{ domain }}"
+      title: "Obsidian"
+      category: "productivity"
+      color: "purple"
+    ports:
+      - "3100:3000"
+      - "3101:3001"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+    env_file:
+      - .env
+    volumes:
+      - /media/external/configs/obsidian:/config
+    shm_size: "1gb"
