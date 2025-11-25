@@ -1,0 +1,25 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  termix:
+    restart: unless-stopped
+    image: ghcr.io/lukegus/termix:latest
+    container_name: termix
+    networks:
+      - caddy
+    labels:
+      url: "https://termix.{{ domain }}"
+      title: "Termix"
+      category: "media"
+      color: "green"
+    ports:
+      - "8082:8082"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+      - PORT=8082
+    volumes:
+      - /media/external/configs/termix:/app/data
