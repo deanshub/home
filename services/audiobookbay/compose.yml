@@ -24,4 +24,4 @@ services:
       - .env
     volumes:
       - /media/external/configs/audiobookbay:/config
-      - /media/external/library/audiobookshelf/audiobooks:/downloads
+      - /media/external/library/audiobookshelf/audiobooks:/downloads/audiobooks
