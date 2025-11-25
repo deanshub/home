@@ -3,10 +3,10 @@ networks:
     external: true
 
 services:
-  audiobookbay-downloader:
+  audiobookbay:
     restart: unless-stopped
     image: ghcr.io/jamesry96/audiobookbay-automated:latest
-    container_name: audiobookbay-downloader
+    container_name: audiobookbay
     networks:
       - caddy
     labels:
@@ -23,5 +23,5 @@ services:
     env_file:
       - .env
     volumes:
-      - /media/external/configs/audiobookbay-downloader:/config
-      - /media/external/library/downloads:/downloads
+      - /media/external/configs/audiobookbay:/config
+      - /media/external/library/audiobookbay:/downloads
