@@ -15,12 +15,14 @@ services:
       category: "productivity"
       color: "purple"
     ports:
-      - "3100:3000"
-      - "3101:3001"
+      - "3100:3100"
+      - "3101:3101"
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Jerusalem
+      - CUSTOM_PORT=3100
+      - CUSTOM_PORT_SSL=3101
     env_file:
       - .env
     volumes:
