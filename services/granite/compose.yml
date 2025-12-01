@@ -1,0 +1,28 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  granite:
+    restart: unless-stopped
+    image: ghcr.io/deanshub/granite:main
+    container_name: granite
+    networks:
+      - caddy
+    labels:
+      url: "https://granite.{{ domain }}"
+      title: "Granite"
+      category: "productivity"
+      color: "gray"
+    ports:
+      - "3200:3200"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+      - NODE_ENV=production
+      - PORT=3200
+    env_file:
+      - .env
+    volumes:
+      - /media/external/library/granite:/app/data
