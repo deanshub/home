@@ -28,3 +28,10 @@
     content: |
       nameserver 8.8.8.8
       nameserver 8.8.4.4
+
+- name: Disable problematic networkd-wait-online service
+  systemd:
+    name: systemd-networkd-wait-online.service
+    enabled: no
+    masked: yes
+  ignore_errors: yes
