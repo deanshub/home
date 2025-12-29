@@ -18,6 +18,7 @@ services:
       - 13378:13378
     volumes:
       - /media/external/library/audiobookshelf/audiobooks:/audiobooks
+      - /media/external/library/audiobookshelf/ebooks:/ebooks
       - /media/external/library/audiobookshelf/podcasts:/podcasts
       - /media/external/configs/audiobookshelf:/config
       - /media/external/library/audiobookshelf/metadata:/metadata
