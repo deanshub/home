@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     networks:
       - caddy
-    image: lscr.io/linuxserver/prowlarr:latest
+    image: bitlessbyte/prowlarr:latest
     container_name: prowlarr
     environment:
       - PUID=1000
