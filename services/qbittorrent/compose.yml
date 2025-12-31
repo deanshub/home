@@ -20,8 +20,10 @@ services:
       - TZ=Asia/Jerusalem
       - WEBUI_PORT=8082
       - TORRENTING_PORT=6881
+      - WebUI\HostHeaderValidation=false
     volumes:
       - /media/external/configs/qbittorrent:/config
+      - ./config/qBittorrent.conf:/config/qBittorrent/config/qBittorrent.conf
       - /media/external/library/downloads:/downloads
       - /media/external/library/audiobookshelf/audiobooks:/downloads/audiobooks
     ports:
