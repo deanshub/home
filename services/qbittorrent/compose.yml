@@ -1,0 +1,30 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  qbittorrent:
+    restart: unless-stopped
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent:latest
+    networks:
+      - caddy
+    labels:
+      url: "https://qbit.{{ domain }}"
+      title: "qBittorrent"
+      category: "media"
+      color: "violet"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jerusalem
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - /media/external/configs/qbittorrent:/config
+      - /media/external/library/downloads:/downloads
+      - /media/external/library/audiobookshelf/audiobooks:/downloads/audiobooks
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
