@@ -120,6 +120,7 @@ services:
 - **Prowlarr** - Indexer management
 - **Flaresolverr** - Cloudflare bypass proxy
 - **Transmission** - BitTorrent client
+- **qBittorrent** - Alternative BitTorrent client
 - **Filebrowser** - Web-based file manager
 
 ### Smart Home
