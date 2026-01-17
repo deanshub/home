@@ -14,8 +14,11 @@ services:
       title: "Vert"
       category: "tools"
       color: "zinc"
+      target: "vert:80"
     env_file:
       - .env
+    environment:
+      - TZ=Asia/Jerusalem
     ports:
       - 5001:80
 
@@ -25,6 +28,8 @@ services:
     restart: unless-stopped
     networks:
       - caddy
+    environment:
+      - TZ=Asia/Jerusalem
     ports:
       - 24153:24153
     devices:

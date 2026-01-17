@@ -66,30 +66,34 @@ async function getServiceInfo(
 
   let target = `${serviceName}:80`; // fallback
 
-  if (!service.ports) {
+  // Check for explicit target override in labels
+  if (labels.target) {
+    target = labels.target;
+  } else if (!service.ports) {
     return null;
-  }
-  // Extract port from ports array (format: "8080:80" or "8080:80/tcp" or 8080)
-  const portMapping = service.ports[0];
-  let port;
-
-  if (typeof portMapping === "string") {
-    // Use internal port (right side of mapping), remove protocol suffix
-    const parts = portMapping.split(":");
-    port = parts[0].split("/")[0]; // Remove /tcp or /udp suffix
   } else {
-    port = portMapping;
-  }
+    // Extract port from ports array (format: "8080:80" or "8080:80/tcp" or 8080)
+    const portMapping = service.ports[0];
+    let port;
 
-  if (!port) {
-    return null;
-  }
+    if (typeof portMapping === "string") {
+      // Use internal port (right side of mapping), remove protocol suffix
+      const parts = portMapping.split(":");
+      port = parts[0].split("/")[0]; // Remove /tcp or /udp suffix
+    } else {
+      port = portMapping;
+    }
 
-  // Check if service uses host networking
-  if (service.network_mode === "host") {
-    target = `http://${staticIp}:${port}`;
-  } else {
-    target = `${serviceName}:${port}`;
+    if (!port) {
+      return null;
+    }
+
+    // Check if service uses host networking
+    if (service.network_mode === "host") {
+      target = `http://${staticIp}:${port}`;
+    } else {
+      target = `${serviceName}:${port}`;
+    }
   }
 
   return {
