@@ -1,0 +1,31 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  vert:
+    image: ghcr.io/vert-sh/vert:latest
+    container_name: vert
+    restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      url: "https://vert.{{ domain }}"
+      title: "Vert"
+      category: "tools"
+      color: "zinc"
+    env_file:
+      - .env
+    ports:
+      - 5001:80
+
+  vertd:
+    image: ghcr.io/vert-sh/vertd:latest
+    container_name: vertd
+    restart: unless-stopped
+    networks:
+      - caddy
+    ports:
+      - 24153:24153
+    devices:
+      - /dev/dri
