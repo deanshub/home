@@ -34,6 +34,9 @@ A command-line tool for managing Docker Compose services with automatic Caddyfil
 - `casa status SERVICE_NAME` - Show status of specific service
 - `casa log SERVICE_NAME` - View live logs for specific service
 
+### Maintenance
+- `casa reset SERVICE_NAME` - Stop service, remove config directory, and restart (useful for re-authentication)
+
 ## How It Works
 
 1. **Services** are defined in `services/SERVICE_NAME/compose.yml` with labels:
@@ -75,4 +78,7 @@ casa status
 
 # View logs
 casa log portainer
+
+# Reset service (e.g., for tailscale re-authentication)
+casa reset tailscale
 ```

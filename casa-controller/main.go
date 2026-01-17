@@ -60,6 +60,12 @@ func main() {
 		} else {
 			runInteractiveUninstall()
 		}
+	case "reset":
+		if len(os.Args) > 2 {
+			runServiceReset(os.Args[2])
+		} else {
+			fmt.Println("Usage: casa reset SERVICE_NAME")
+		}
 	default:
 		fmt.Printf("Unknown command: %s\n\n", os.Args[1])
 		showHelp()
@@ -586,6 +592,65 @@ func restartCaddy() {
 	}
 }
 
+func runServiceReset(serviceName string) {
+	serviceDir := filepath.Join(getRepoRoot(), "services", serviceName)
+	composePath := filepath.Join(serviceDir, "compose.yml")
+
+	// Parse compose file to get volume mount
+	data, err := ioutil.ReadFile(composePath)
+	if err != nil {
+		fmt.Printf("Error reading compose file: %v\n", err)
+		os.Exit(1)
+	}
+
+	var compose struct {
+		Services map[string]struct {
+			Volumes []string `yaml:"volumes"`
+		} `yaml:"services"`
+	}
+
+	if yaml.Unmarshal(data, &compose) != nil {
+		fmt.Printf("Error parsing compose file\n")
+		os.Exit(1)
+	}
+
+	// Stop service
+	fmt.Printf("Stopping %s...\n", serviceName)
+	cmd := exec.Command("docker", "compose", "down")
+	cmd.Dir = serviceDir
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("Error stopping service: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Remove config directories
+	for _, service := range compose.Services {
+		for _, volume := range service.Volumes {
+			if strings.Contains(volume, ":") {
+				hostPath := strings.Split(volume, ":")[0]
+				if strings.HasPrefix(hostPath, "/") {
+					fmt.Printf("Removing %s...\n", hostPath)
+					cmd := exec.Command("sudo", "rm", "-rf", hostPath)
+					if err := cmd.Run(); err != nil {
+						fmt.Printf("Warning: Failed to remove %s: %v\n", hostPath, err)
+					}
+				}
+			}
+		}
+	}
+
+	// Start service
+	fmt.Printf("Starting %s...\n", serviceName)
+	cmd = exec.Command("docker", "compose", "up", "-d")
+	cmd.Dir = serviceDir
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("Error starting service: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("✅ %s reset successfully\n", serviceName)
+}
+
 func showHelp() {
 	fmt.Println("Casa Controller - Docker Compose Service Manager")
 	fmt.Println()
@@ -611,6 +676,9 @@ func showHelp() {
 	fmt.Println("  Monitoring:")
 	fmt.Println("    status [SERVICE_NAME]     Show status of all or specific service")
 	fmt.Println("    log SERVICE_NAME          View live logs for specific service")
+	fmt.Println()
+	fmt.Println("  Maintenance:")
+	fmt.Println("    reset SERVICE_NAME        Stop service, remove config, and restart")
 	fmt.Println()
 	fmt.Println("  Help:")
 	fmt.Println("    --help, -h, help          Show this help message")
