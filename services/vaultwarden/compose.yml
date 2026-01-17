@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    networks:
+      - caddy
+    labels:
+      url: "https://vault.{{ domain }}"
+      title: "Vaultwarden"
+      category: "security"
+      color: "slate"
+      target: "vaultwarden:80"
+    environment:
+      - DOMAIN=https://vault.{{ domain }}
+    volumes:
+      - /media/external/library/vaultwarden:/data
+    ports:
+      - 8001:80
