@@ -9,13 +9,13 @@
     <meta name="theme-color" content="#000000" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
   </head>
-  <body>
-    <div class="">
-      <div class="flex justify-center">
-        <img src="/casa.jpeg" alt="Casa" class="w-16 h-16 rounded-lg" />
+  <body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="flex flex-col items-center mb-8">
+        <img src="/casa.jpeg" alt="Casa" class="w-20 h-20 rounded-2xl shadow-lg mb-4" />
+        <h1 class="text-3xl font-bold text-gray-800">Casa</h1>
       </div>
-      <h1 class="text-2xl font-bold text-center p-2 tracking-wider">Welcome to your Casa!</h1>
-      <div id="services" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"></div>
+      <div id="services" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
     </div>
 
     <script>
@@ -26,7 +26,7 @@
         .forEach(service => {
           const link = document.createElement('a');
           link.href = service.url;
-          link.className = `flex items-center justify-center p-4 text-center text-pretty bg-${service.color}-100 hover:bg-${service.color}-200 capitalize h-40 text-4xl tracking-wide`;
+          link.className = `flex items-center justify-center p-6 text-center bg-${service.color}-100 hover:bg-${service.color}-200 capitalize rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-xl font-semibold text-gray-700`;
           link.textContent = service.label;
           container.appendChild(link);
         });
