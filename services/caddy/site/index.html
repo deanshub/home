@@ -43,7 +43,7 @@
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4';
         
-        servicesByCategory[category].forEach(service => {
+        servicesByCategory[category].sort((a, b) => a.label.localeCompare(b.label)).forEach(service => {
           const link = document.createElement('a');
           link.href = service.url;
           link.className = `flex items-center justify-center p-6 text-center bg-${service.color}-100 hover:bg-${service.color}-200 capitalize rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-xl font-semibold text-gray-700`;
