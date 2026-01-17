@@ -13,7 +13,7 @@ services:
       url: "https://audiobookbay.{{ domain }}"
       title: "Audiobookbay"
       category: "media"
-      color: "orange"
+      color: "yellow"
     ports:
       - "5078:5078"
     environment:

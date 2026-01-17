@@ -18,7 +18,7 @@ services:
       url: "https://gym.{{ domain }}"
       title: "Gym"
       category: "tools"
-      color: "neutral"
+      color: "red"
     volumes:
       - /media/external/library/gym:/data
     ports:

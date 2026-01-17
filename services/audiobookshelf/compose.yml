@@ -13,7 +13,7 @@ services:
       url: "https://audiobookshelf.{{ domain }}"
       title: "Audiobookshelf"
       category: "media"
-      color: "orange"
+      color: "amber"
     ports:
       - 13378:13378
     volumes:
