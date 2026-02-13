@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  fintrack:
+    image: ghcr.io/deanshub/fintrack:latest
+    container_name: fintrack
+    restart: unless-stopped
+    networks:
+      - caddy
+    ports:
+      - "3001:3000"
+    labels:
+      url: "https://fintrack.{{ domain }}"
+      target: "fintrack:3000"
+      title: "Fintrack"
+      category: "automation"
+      color: "emerald"
+    environment:
+      - TZ=Asia/Jerusalem
+    volumes:
+      - /media/external/library/fintrack:/app/data
