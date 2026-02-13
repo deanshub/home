@@ -6,6 +6,7 @@ services:
   fintrack:
     image: ghcr.io/deanshub/fintrack:latest
     container_name: fintrack
+    user: "1000:1000"
     restart: unless-stopped
     networks:
       - caddy
