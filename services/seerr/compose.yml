@@ -11,9 +11,10 @@ services:
     networks:
       - caddy
     ports:
-      - "5055:5055"
+      - "5056:5055"
     labels:
       url: "https://seerr.{{ domain }}"
+      target: "seerr:5055"
       title: "Seerr"
       category: "media"
       color: "blue"

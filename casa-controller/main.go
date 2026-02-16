@@ -60,6 +60,12 @@ func main() {
 		} else {
 			runInteractiveUninstall()
 		}
+	case "update":
+		if len(os.Args) > 2 {
+			runServiceUpdate(os.Args[2])
+		} else {
+			runAllServicesUpdate()
+		}
 	case "reset":
 		if len(os.Args) > 2 {
 			runServiceReset(os.Args[2])
@@ -592,6 +598,54 @@ func restartCaddy() {
 	}
 }
 
+func runAllServicesUpdate() {
+	config, err := loadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		os.Exit(1)
+	}
+
+	for _, service := range config.Services {
+		runServiceUpdate(service.Name)
+	}
+}
+
+func runServiceUpdate(serviceName string) {
+	serviceDir := filepath.Join(getRepoRoot(), "services", serviceName)
+
+	// Pull latest image
+	fmt.Printf("Pulling latest image for %s...\n", serviceName)
+	pullCmd := exec.Command("docker", "compose", "pull")
+	pullCmd.Dir = serviceDir
+	pullOutput, err := pullCmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("❌ Failed to pull %s: %v\n%s\n", serviceName, err, string(pullOutput))
+		return
+	}
+
+	// Stop the service
+	fmt.Printf("Stopping %s...\n", serviceName)
+	downCmd := exec.Command("docker", "compose", "down")
+	downCmd.Dir = serviceDir
+	downOutput, err := downCmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("❌ Failed to stop %s: %v\n%s\n", serviceName, err, string(downOutput))
+		return
+	}
+
+	// Start with new version
+	fmt.Printf("Starting %s...\n", serviceName)
+	upCmd := exec.Command("docker", "compose", "up", "-d")
+	upCmd.Dir = serviceDir
+	upOutput, err := upCmd.CombinedOutput()
+	if err != nil {
+		fmt.Printf("❌ Failed to start %s: %v\n%s\n", serviceName, err, string(upOutput))
+		return
+	}
+
+	fmt.Printf("✅ %s updated successfully\n", serviceName)
+}
+
 func runServiceReset(serviceName string) {
 	serviceDir := filepath.Join(getRepoRoot(), "services", serviceName)
 	composePath := filepath.Join(serviceDir, "compose.yml")
@@ -678,6 +732,7 @@ func showHelp() {
 	fmt.Println("    log SERVICE_NAME          View live logs for specific service")
 	fmt.Println()
 	fmt.Println("  Maintenance:")
+	fmt.Println("    update [SERVICE_NAME]     Pull latest image, stop, and restart all or specific service")
 	fmt.Println("    reset SERVICE_NAME        Stop service, remove config, and restart")
 	fmt.Println()
 	fmt.Println("  Help:")
