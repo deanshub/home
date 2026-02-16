@@ -7,6 +7,7 @@ services:
     image: ghcr.io/seerr-team/seerr:latest
     init: true
     container_name: seerr
+    user: "1000:1000"
     restart: unless-stopped
     networks:
       - caddy
