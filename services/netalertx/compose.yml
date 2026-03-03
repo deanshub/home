@@ -17,6 +17,11 @@ services:
       - SETUID
       - SETGID
     read_only: true
+    tmpfs:
+      - /tmp/run:size=64m
+      - /tmp/log:size=64m
+      - /tmp/api:size=64m
+      - /tmp/nginx/active-config:size=16m
     labels:
       url: "https://netalertx.{{ domain }}"
       title: "NetAlertX"
