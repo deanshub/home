@@ -25,6 +25,8 @@ services:
       - TZ=Asia/Jerusalem
       - PORT=20211
       - GRAPHQL_PORT=20212
+    env_file:
+      - .env
     volumes:
       - /media/external/configs/netalertx:/data
     mem_limit: 2048m
