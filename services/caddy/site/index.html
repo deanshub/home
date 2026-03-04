@@ -15,6 +15,15 @@
         <img src="/casa.jpeg" alt="Casa" class="w-20 h-20 rounded-2xl shadow-lg mb-4" />
         <h1 class="text-3xl font-bold text-gray-800">Casa</h1>
       </div>
+      <div class="mb-8 max-w-md mx-auto w-full">
+        <input
+          id="search"
+          type="text"
+          placeholder="Search services..."
+          autocomplete="off"
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 text-lg text-gray-700 placeholder-gray-400"
+        />
+      </div>
       <div id="services"></div>
     </div>
 
@@ -34,6 +43,7 @@
       Object.keys(servicesByCategory).sort().forEach(category => {
         const section = document.createElement('div');
         section.className = 'mb-8';
+        section.dataset.category = category.toLowerCase();
         
         const heading = document.createElement('h2');
         heading.className = 'text-xl font-semibold text-gray-700 mb-4 capitalize';
@@ -48,11 +58,30 @@
           link.href = service.url;
           link.className = `flex items-center justify-center p-6 text-center bg-${service.color}-100 hover:bg-${service.color}-200 capitalize rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-xl font-semibold text-gray-700`;
           link.textContent = service.label;
+          link.dataset.service = service.label.toLowerCase();
+          link.dataset.category = category.toLowerCase();
           grid.appendChild(link);
         });
         
         section.appendChild(grid);
         container.appendChild(section);
+      });
+
+      const searchInput = document.getElementById('search');
+      searchInput.focus();
+
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        container.querySelectorAll('[data-category]').forEach(section => {
+          const links = section.querySelectorAll('[data-service]');
+          let visible = 0;
+          links.forEach(link => {
+            const match = link.dataset.service.includes(query) || link.dataset.category.includes(query);
+            link.style.display = match ? '' : 'none';
+            if (match) visible++;
+          });
+          section.style.display = visible ? '' : 'none';
+        });
       });
 
       // Register service worker
