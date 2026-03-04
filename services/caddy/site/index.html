@@ -43,7 +43,7 @@
       Object.keys(servicesByCategory).sort().forEach(category => {
         const section = document.createElement('div');
         section.className = 'mb-8';
-        section.dataset.category = category.toLowerCase();
+        section.dataset.section = category.toLowerCase();
         
         const heading = document.createElement('h2');
         heading.className = 'text-xl font-semibold text-gray-700 mb-4 capitalize';
@@ -71,14 +71,14 @@
       searchInput.focus();
 
       searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        container.querySelectorAll('[data-category]').forEach(section => {
+        const query = searchInput.value.toLowerCase().trim();
+        container.querySelectorAll('[data-section]').forEach(section => {
           const links = section.querySelectorAll('[data-service]');
           let visible = 0;
           links.forEach(link => {
-            const match = link.dataset.service.includes(query) || link.dataset.category.includes(query);
-            link.style.display = match ? '' : 'none';
-            if (match) visible++;
+            const show = !query || link.dataset.service.includes(query) || link.dataset.category.includes(query);
+            link.style.display = show ? '' : 'none';
+            if (show) visible++;
           });
           section.style.display = visible ? '' : 'none';
         });
