@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  ladder:
+    image: ghcr.io/everywall/ladder:latest
+    container_name: ladder
+    restart: unless-stopped
+    networks:
+      - caddy
+    ports:
+      - "8081:8081"
+    labels:
+      url: "https://ladder.{{ domain }}"
+      title: "Ladder"
+      category: "tools & automation"
+      color: "stone"
+    environment:
+      - TZ=Asia/Jerusalem
+      - PORT=8081
+    env_file:
+      - .env
