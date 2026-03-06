@@ -14,7 +14,7 @@ services:
       url: "https://bazarr.{{ domain }}"
       color: "orange"
       title: "Bazarr"
-      category: "media"
+      category: "library"
     ports:
       - 6767:6767
     environment:

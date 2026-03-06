@@ -12,7 +12,7 @@ services:
     labels:
       url: "https://audiobookbay.{{ domain }}"
       title: "Audiobookbay"
-      category: "media"
+      category: "library"
       color: "yellow"
     ports:
       - "5078:5078"

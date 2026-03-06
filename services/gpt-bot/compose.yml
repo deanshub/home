@@ -9,7 +9,7 @@ services:
       url: "https://t.me/DecreeAiBot"
       color: "rose"
       title: "GPT Bot"
-      category: "bot"
+      category: "bots"
     env_file:
       - .env
     volumes:

@@ -17,7 +17,7 @@ services:
       url: "https://prowlarr.{{ domain }}"
       color: "pink"
       title: "Prowlarr"
-      category: "media"
+      category: "library"
     ports:
       - 9696:9696
     volumes:

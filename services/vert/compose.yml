@@ -12,7 +12,7 @@ services:
     labels:
       url: "https://vert.{{ domain }}"
       title: "Vert"
-      category: "tools"
+      category: "tools & automation"
       color: "zinc"
       target: "vert:80"
     env_file:

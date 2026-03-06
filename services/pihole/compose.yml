@@ -6,7 +6,7 @@ services:
     labels:
       url: "https://pihole.{{ domain }}"
       title: "Pi-hole"
-      category: "network"
+      category: "home & network"
       color: "emerald"
     ports:
       # HTTP Port

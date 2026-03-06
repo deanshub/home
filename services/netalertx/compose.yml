@@ -19,7 +19,7 @@ services:
     labels:
       url: "https://netalertx.{{ domain }}"
       title: "NetAlertX"
-      category: "network"
+      category: "home & network"
       color: "cyan"
     environment:
       - TZ=Asia/Jerusalem

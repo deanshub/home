@@ -7,7 +7,7 @@ services:
       url: "https://t.me/local_ollama_bot"
       color: "sky"
       title: "Ollama Bot"
-      category: "bot"
+      category: "bots"
     environment:
       - TZ=Asia/Jerusalem
     env_file:

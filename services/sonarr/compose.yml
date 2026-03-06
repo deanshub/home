@@ -16,7 +16,7 @@ services:
       url: "https://sonarr.{{ domain }}"
       color: "indigo"
       title: "Sonarr"
-      category: "media"
+      category: "library"
     environment:
       - PUID=1000
       - PGID=1000

@@ -16,7 +16,7 @@ services:
       url: "https://fintrack.{{ domain }}"
       target: "fintrack:3000"
       title: "Fintrack"
-      category: "automation"
+      category: "tools & automation"
       color: "emerald"
     environment:
       - TZ=Asia/Jerusalem

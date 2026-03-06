@@ -11,7 +11,7 @@ services:
       url: "https://ha.{{ domain }}"
       color: "green"
       title: "HA"
-      category: "smart home"
+      category: "home & network"
     environment:
       - TZ=Asia/Jerusalem
     ports:

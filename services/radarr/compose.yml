@@ -15,7 +15,7 @@ services:
       url: "https://radarr.{{ domain }}"
       color: "teal"
       title: "Radarr"
-      category: "media"
+      category: "library"
     environment:
       - PUID=1000
       - PGID=1000

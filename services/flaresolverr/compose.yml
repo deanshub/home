@@ -18,6 +18,6 @@ services:
       url: "https://flaresolverr.{{ domain }}"
       color: "stone"
       title: "Flaresolverr"
-      category: "media"
+      category: "library"
     ports:
       - "8191:8191"

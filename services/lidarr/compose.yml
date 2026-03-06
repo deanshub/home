@@ -19,7 +19,7 @@ services:
       url: "https://lidarr.{{ domain }}"
       color: "purple"
       title: "Lidarr"
-      category: "media"
+      category: "library"
     ports:
       - 8686:8686
     networks:

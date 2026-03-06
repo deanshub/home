@@ -9,7 +9,7 @@ services:
       url: "https://t.me/ShubDownloadBot"
       color: "yellow"
       title: "Downloader"
-      category: "bot"
+      category: "bots"
     env_file:
       - .env
     volumes:

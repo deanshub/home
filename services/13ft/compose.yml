@@ -13,7 +13,7 @@ services:
     labels:
       url: "https://13ft.{{ domain }}"
       title: "13ft"
-      category: "tools"
+      category: "tools & automation"
       color: "green"
     ports:
       - "5000:5000"

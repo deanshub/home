@@ -12,7 +12,7 @@ services:
     labels:
       url: "https://vault.{{ domain }}"
       title: "Vaultwarden"
-      category: "security"
+      category: "home & network"
       color: "slate"
       target: "vaultwarden:80"
     environment:

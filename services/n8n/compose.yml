@@ -22,7 +22,7 @@ services:
       url: "https://n8n.{{ domain }}"
       color: "lime"
       title: "n8n"
-      category: "automation"
+      category: "tools & automation"
     ports:
       - 5678:5678
 
