@@ -1,0 +1,26 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  tinderior:
+    image: ghcr.io/deanshub/tinderior:main
+    container_name: tinderior
+    restart: unless-stopped
+    networks:
+      - caddy
+    ports:
+      - "3002:3002"
+    labels:
+      url: "https://tinderior.{{ domain }}"
+      title: "Tinderior"
+      category: "tools & automation"
+      color: "rose"
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Jerusalem
+      - PORT=3002
+    volumes:
+      - /media/external/library/tinderior/data:/app/data
+      - /media/external/library/tinderior/uploads:/app/public/uploads
