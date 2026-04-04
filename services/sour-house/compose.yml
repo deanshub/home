@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  sour-house:
+    container_name: sour-house
+    image: ghcr.io/deanshub/sour-house:main
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      - DATA_DIR=/data
+      - PORT=3003
+    labels:
+      url: "https://sour-house.{{ domain }}"
+      title: "Sour House"
+      category: "tools & automation"
+      color: "amber"
+    volumes:
+      - /media/external/library/sour-house:/data
+    ports:
+      - "3003:3003"
