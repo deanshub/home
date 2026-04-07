@@ -1,0 +1,20 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  bentopdf:
+    container_name: bentopdf
+    image: ghcr.io/alam00000/bentopdf:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      - PORT=8084
+    labels:
+      url: "https://bentopdf.{{ domain }}"
+      title: "BentoPDF"
+      category: "tools & automation"
+      color: "orange"
+    ports:
+      - "8084:8084"
