@@ -13,6 +13,9 @@ services:
       - TZ=Asia/Jerusalem
       - BASE_URL=https://mealie.home.shubapp.com
       - API_PORT=9925
+      - ALLOW_SIGNUP=false
+      - PUID=1000
+      - PGID=1000
     labels:
       url: "https://mealie.{{ domain }}"
       title: "Mealie"
