@@ -1,0 +1,24 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  mealie:
+    container_name: mealie
+    image: ghcr.io/mealie-recipes/mealie:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    environment:
+      - TZ=Asia/Jerusalem
+      - BASE_URL=https://mealie.home.shubapp.com
+      - API_PORT=9925
+    labels:
+      url: "https://mealie.{{ domain }}"
+      title: "Mealie"
+      category: "tools & automation"
+      color: "green"
+    volumes:
+      - /media/external/library/mealie:/app/data
+    ports:
+      - "9925:9925"
