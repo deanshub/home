@@ -1,3 +1,7 @@
+networks:
+  caddy:
+    external: true
+
 services:
   downloader:
     restart: unless-stopped
@@ -5,6 +9,8 @@ services:
       - TZ=Asia/Jerusalem
     container_name: downloader
     image: ghcr.io/deanshub/downloader:master
+    networks:
+      - caddy
     labels:
       url: "https://t.me/ShubDownloadBot"
       color: "yellow"

@@ -1,0 +1,23 @@
+networks:
+  caddy:
+    external: true
+
+services:
+  telegram-bot-api:
+    container_name: telegram-bot-api
+    image: aiogram/telegram-bot-api:latest
+    restart: unless-stopped
+    networks:
+      - caddy
+    env_file:
+      - .env
+    environment:
+      - TELEGRAM_LOCAL=true
+    command:
+      - "--local"
+      - "--http-port=8089"
+      - "--verbosity=1"
+    volumes:
+      - /media/external/library/telegram-bot-api:/var/lib/telegram-bot-api
+    ports:
+      - "8089:8089"
