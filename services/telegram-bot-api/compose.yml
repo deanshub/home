@@ -7,7 +7,6 @@ services:
     container_name: telegram-bot-api
     image: aiogram/telegram-bot-api:latest
     restart: unless-stopped
-    user: "1000:1000"
     networks:
       - caddy
     env_file:
