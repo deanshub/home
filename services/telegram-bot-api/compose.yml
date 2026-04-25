@@ -13,10 +13,7 @@ services:
       - .env
     environment:
       - TELEGRAM_LOCAL=true
-    command:
-      - "--local"
-      - "--http-port=8089"
-      - "--verbosity=1"
+      - TELEGRAM_HTTP_PORT=8089
     volumes:
       - /media/external/library/telegram-bot-api:/var/lib/telegram-bot-api
     ports:
