@@ -70,6 +70,23 @@
       const searchInput = document.getElementById('search');
       searchInput.focus();
 
+      let selectedIndex = -1;
+
+      function getVisibleLinks() {
+        return [...container.querySelectorAll('[data-service]')].filter(l => l.style.display !== 'none');
+      }
+
+      function updateSelection() {
+        const links = getVisibleLinks();
+        links.forEach((link, i) => {
+          if (i === selectedIndex) {
+            link.classList.add('ring-2', 'ring-gray-800', 'scale-105');
+          } else {
+            link.classList.remove('ring-2', 'ring-gray-800', 'scale-105');
+          }
+        });
+      }
+
       searchInput.addEventListener('input', () => {
         const query = searchInput.value.toLowerCase().trim();
         container.querySelectorAll('[data-section]').forEach(section => {
@@ -82,6 +99,36 @@
           });
           section.style.display = visible ? '' : 'none';
         });
+        selectedIndex = getVisibleLinks().length ? 0 : -1;
+        updateSelection();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        const links = getVisibleLinks();
+        if (!links.length) return;
+
+        const cols = Math.round(links[0].parentElement.offsetWidth / links[0].offsetWidth);
+
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          selectedIndex = Math.min(selectedIndex + 1, links.length - 1);
+          updateSelection();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          selectedIndex = Math.max(selectedIndex - 1, 0);
+          updateSelection();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIndex = Math.min(selectedIndex + cols, links.length - 1);
+          updateSelection();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIndex = Math.max(selectedIndex - cols, 0);
+          updateSelection();
+        } else if (e.key === 'Enter' && selectedIndex >= 0) {
+          e.preventDefault();
+          links[selectedIndex].click();
+        }
       });
 
       // Register service worker
