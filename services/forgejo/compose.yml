@@ -10,6 +10,7 @@ services:
       - FORGEJO__server__DOMAIN=git.home.shubapp.com
       - FORGEJO__server__ROOT_URL=https://git.home.shubapp.com/
       - FORGEJO__server__HTTP_PORT=3300
+      - FORGEJO__actions__ENABLED=true
     volumes:
       - /media/external/configs/forgejo:/data
     networks:
@@ -22,6 +23,31 @@ services:
       color: "slate"
       title: "Git"
       category: "tools & automation"
+
+  docker-in-docker:
+    image: docker:dind
+    container_name: forgejo-dind
+    privileged: true
+    command: ['dockerd', '-H', 'tcp://0.0.0.0:2375', '--tls=false']
+    restart: unless-stopped
+    networks:
+      - caddy
+
+  forgejo-runner:
+    image: data.forgejo.org/forgejo/runner:12
+    container_name: forgejo-runner
+    restart: unless-stopped
+    depends_on:
+      docker-in-docker:
+        condition: service_started
+    environment:
+      - DOCKER_HOST=tcp://docker-in-docker:2375
+    user: "1000:1000"
+    volumes:
+      - /media/external/configs/forgejo-runner:/data
+    networks:
+      - caddy
+    command: 'forgejo-runner daemon --config runner-config.yml'
 
 networks:
   caddy:
