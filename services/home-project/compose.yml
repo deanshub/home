@@ -5,7 +5,7 @@ networks:
 services:
   home-project:
     container_name: home-project
-    image: ghcr.io/deanshub/home-project:latest
+    image: git.home.shubapp.com/deanshub/home-project:latest
     restart: unless-stopped
     networks:
       - caddy
