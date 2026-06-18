@@ -16,6 +16,7 @@ services:
       - /media/external/library/movies:/data/movies
       - /media/external/library/downloads:/data/videos
       - /media/external:/data/external
+      - /media/external/library/jellybridge:/data/JellyBridge
       - type: tmpfs
         target: /tmp-transcoding
     labels:
