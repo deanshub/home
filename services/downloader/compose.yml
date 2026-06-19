@@ -22,4 +22,6 @@ services:
       - /media/external/library/downloads:/downloads
       - /media/external/library/torrents:/torrents
       - /media/external/library/telegram-bot-api:/var/lib/telegram-bot-api
+      - /media/external/library/movies:/movies
+      - /media/external/library/tv:/tv
     privileged: true
