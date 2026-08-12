@@ -5,7 +5,7 @@ networks:
 services:
   filebrowser:
     restart: unless-stopped
-    image: gtstef/filebrowser:latest
+    image: gtstef/filebrowser:stable
     container_name: filebrowser
     networks:
       - caddy
