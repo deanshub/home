@@ -19,7 +19,7 @@ services:
     environment:
       - TZ=Asia/Jerusalem
       - FILEBROWSER_CONFIG=/config/config.yaml
-      - FILEBROWSER_DATABASE_PATH=/data/database.sqlite
+      - FILEBROWSER_DATABASE=/data/database.sqlite
     volumes:
       - ./config.yaml:/config/config.yaml
       - /media/external/configs/filebrowser/db:/data
