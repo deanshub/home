@@ -5,7 +5,7 @@ networks:
 services:
   filebrowser:
     restart: unless-stopped
-    image: filebrowser/filebrowser:s6
+    image: gtstef/filebrowser:latest
     container_name: filebrowser
     networks:
       - caddy
@@ -17,12 +17,10 @@ services:
     ports:
       - 8080:8080
     environment:
-      - PUID=1000
-      - PGID=1000
       - TZ=Asia/Jerusalem
+      - FILEBROWSER_CONFIG=/config/config.yaml
+      - FILEBROWSER_DATABASE_PATH=/data/database.sqlite
     volumes:
-      - /media/external/configs/filebrowser/settings:/config
-      - ./settings.json:/config/settings.json
-      - /media/external/configs/filebrowser/db:/database
-      - /media/external/library/downloads:/downloads
+      - ./config.yaml:/config/config.yaml
+      - /media/external/configs/filebrowser/db:/data
       - /media:/srv
