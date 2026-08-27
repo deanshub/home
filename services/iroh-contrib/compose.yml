@@ -1,0 +1,20 @@
+services:
+  iroh-contrib:
+    container_name: iroh-contrib
+    image: ghcr.io/schniz/iroh-contrib:latest
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/fuse
+    user: "1000:1000"
+    group_add:
+      # fuse group (getent group fuse -> 104 on the host)
+      - "104"
+    entrypoint: iroh-fuse
+    command:
+      - /config/schniz.pub
+      - /library/schniz
+      - --foreground
+    volumes:
+      - /media/external/library/schniz:/library/schniz:shared
+      - /media/external/configs/iroh-contrib/schniz.pub:/config/schniz.pub:ro
