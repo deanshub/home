@@ -11,7 +11,7 @@ services:
       - |
         set -e
         umount /library/schniz || :
-        iroh-fuse /config/schniz.pub /library/schniz --foreground
+        iroh-fuse /config/schniz.pub /library/schniz --allow-other --foreground
     volumes:
       - /media/external/library/schniz:/library:shared
       - /media/external/configs/iroh-contrib/schniz.pub:/config/schniz.pub:ro
